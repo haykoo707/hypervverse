@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="hy">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://unpkg.com/@tonconnect/ui@0.0.9/dist/tonconnect-ui.min.js"></script>
+  <link rel="script" href="script.js">
+  <title>HyperVerse</title>
+</head>
+
+<body>
+  
+</script>
+<canvas id="starCanvas"></canvas>
+  <div class="app-container">
+    <!-- Վերևի տող -->
+    <div class="top-bar">
+      <div class="title">HyperVerse🪐</div>
+      <div class="score">$𝗛𝗩
+         <span id="userScore">0</span></div>
+    </div>
+    <!-- Tabs բաժին -->
+    <div class="tabs">
+      <button class="tab-button active" data-tab="home">
+        <img src="Picsart_25-03-07_18-16-53-906.jpg" alt="Tasks" class="tasks-icon">
+        <button class="tab-button" data-tab="daily-reward">
+          <img src="Picsart_25-03-07_18-18-09-129.jpg" alt="Reward" class="reward-icon">
+      </button>
+            <button class="tab-button" data-tab="profile">
+        <img src="Picsart_25-03-07_18-16-34-817.jpg" alt="Profile" class="profile-icon">
+    </button>
+    
+    <button class="tab-button" data-tab="Roadmap">
+      <img src="Picsart_25-03-07_18-17-40-466.jpg" alt="Tasks" class="tasks-icon">
+
+      <button class="tab-button" data-tab="profile">
+        <img src="Picsart_25-03-07_20-08-24-989.jpg" alt="Profile" class="shop-icon">
+    </button>
+
+    </div>
+    <!-- Բովանդակության կոնտեյներ -->
+    <div class="content">
+      <!-- Home Tab (Tasks) -->
+      <div id="home" class="tab-content active">
+        <div class="task-section">
+          <h2>Tasks</h2>
+          <div class="task-list" id="taskList">
+            <!-- Tasks ներմուծվում են JS-ով -->
+          </div>
+        </div>
+      </div>
+       <!-- Daily Reward Tab (Նոր բաժին) -->
+  <div id="daily-reward" class="tab-content">
+    <div class="daily-reward-section">
+      <div class="reward-card">
+        <h2>🎁 Daily Reward</h2>
+        <div class="reward-timer" id="rewardTimer">Available now</div>
+        <button 
+          class="reward-btn" 
+          id="claimRewardBtn"
+          onclick="handleDailyClaim()"
+        >
+          Claim +5000 Score
+        </button>
+      </div>
+      <p style="color: #666; text-align: center;">
+        Claim your reward every 24 hours!
+      </p>
+    </div>
+  </div>
+      <!-- profile Tab -->
+      <div id="profile" class="tab-content">
+        <div class="profile-section">
+          <div class="profile-info" id="profileInfo"></div>
+       
+        </div>
+      </div>
+    </div>
+  </div>
+
+    
+    <div id="Roadmap" class="tab-content">
+   <h2 class="road">Roadmap</h2>
+<ul  class="ul">
+  <li>𝗚𝗮𝘁𝗵𝗲𝗿 𝗮 𝗰𝗼𝗺𝗺𝘂𝗻𝗶𝘁𝘆📣
+  </li>
+  <li>𝗕𝗲𝗰𝗼𝗺𝗲 𝗮 𝗳𝗮𝗺𝗼𝘂𝘀 𝗽𝗿𝗼𝗷𝗲𝗰𝘁
+  </li>
+  <li>𝗧𝗚𝗘📊</li>
+  <li>𝗟𝗶𝘀𝘁𝗶𝗻𝗴 𝗗𝗘𝗫🚀
+  </li>
+  <li>𝗟𝗶𝘀𝘁𝗶𝗻𝗴 𝗖𝗘𝗫🚀?
+  </li>
+
+</ul>      </div>
+    </div>
+  </div>
+</div>
+    <div class="loading-screen" id="loadingScreen">
+      <div class="loader"></div>
+      <h3>𝗟𝗼𝗮𝗱𝗶𝗻𝗴...
+      </h3>
+<h1>𝗛𝘆𝗽𝗲𝗿𝗩𝗲𝗿𝘀𝗲
+</h1>
+  </div>
+  <script>
+      setTimeout(() => {
+          document.getElementById("loadingScreen").style.opacity = "0";
+          setTimeout(() => {
+              document.getElementById("loadingScreen").style.display = "none";
+          }, 3000);
+      }, 1);
+  </script>
+
+  <script>
+  
+
+
+    // Օգտատիրոջ միավորները (հեռելով սկզբնական արժեքը localStorage-ից, եթե կան)
+    let userScore = 0;
+    // Փոխարինել tasks-ի նախնական արժեքը՝ սահմանելով let, որպեսզի կարողանանք վերագրել, եթե անհրաժեշտ լինի
+    let tasks = [
+    {
+  id: 1,
+  title: 'Join HyperVerse Community', // Նոր վերնագիր
+  link: 'https://t.me/HyperrVersee',
+  reward: 35000,
+  status: 'pending',
+  claimAvailable: false,
+  timerId: null,
+  icon: '📢'
+}
+,
+
+
+{
+  id: 2,
+  title: 'Join HyperVerse X Community',
+  link: 'https://t.me/HyperrVersee',
+  reward: 20000,
+  status: 'pending',
+  claimAvailable: false,
+  timerId: null,
+  icon: '📢'
+}
+,
+      {
+        id: 3,
+        title: 'Join Another Channel',
+        link: 'https://t.me/someOtherChannel',
+        reward: 20000,
+        status: 'pending',
+        claimAvailable: false,
+        timerId: null,
+        icon: '💬'
+      },
+      
+      {
+        id: 4,
+        title: 'Support the project',
+        link: 'payment.html',
+        reward: 15000,
+        status: 'pending',
+        claimAvailable: false,
+        timerId: null,
+        icon: '💸'
+      },
+
+
+
+    ];
+
+  
+    // Local Storage - ի համար պահպանումի երկիրը
+    function saveState() {
+      localStorage.setItem('userScore', userScore);
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+
+    // Local Storage - ից ներբեռնել ցուցակը; 
+    // եթե որևէ task-ի կարգավիճակը "started" է, վերազգուշացնում ենք, քանի որ setTimeout–ը չի պահպանվում
+    function loadState() {
+      const savedScore = localStorage.getItem('userScore');
+      if (savedScore !== null) {
+        userScore = parseInt(savedScore, 10);
+      }
+      const savedTasks = localStorage.getItem('tasks');
+      if (savedTasks !== null) {
+        tasks = JSON.parse(savedTasks);
+        // Վերածարարում ենք բոլոր "started" task-ները "pending" մակարդակի, որպեսզի վերանայում:
+        tasks.forEach(task => {
+          if (task.status === 'started') {
+            task.status = 'pending';
+            task.claimAvailable = false;
+            task.timerId = null;
+          }
+        });
+      }
+    }
+
+    // Tasks ցուցադրումը (Home Tab)
+    function renderTasks() {
+      const taskList = document.getElementById('taskList');
+      taskList.innerHTML = '';
+
+      tasks.forEach(task => {
+        const taskItem = document.createElement('div');
+        taskItem.classList.add('task-item');
+
+        // Ձախ մաս: Icon, Title, Reward
+        const taskLeft = document.createElement('div');
+        taskLeft.classList.add('task-left');
+
+        const iconDiv = document.createElement('div');
+        iconDiv.classList.add('task-icon');
+        iconDiv.textContent = task.icon || '🐕';
+
+        const taskInfo = document.createElement('div');
+        taskInfo.classList.add('task-info');
+
+        const taskTitle = document.createElement('div');
+        taskTitle.classList.add('task-title');
+        taskTitle.textContent = task.title;
+
+        const taskReward = document.createElement('div');
+        taskReward.classList.add('task-reward');
+        taskReward.textContent = `+${task.reward} Score`;
+
+        taskInfo.appendChild(taskTitle);
+        taskInfo.appendChild(taskReward);
+        taskLeft.appendChild(iconDiv);
+        taskLeft.appendChild(taskInfo);
+
+        // Աջ մաս: Գործողության կոճակ
+        const taskRight = document.createElement('div');
+        taskRight.classList.add('task-right');
+        const actionBtn = document.createElement('button');
+
+        if (task.status === 'pending') {
+          actionBtn.textContent = 'Start';
+          actionBtn.classList.add('start-btn');
+          actionBtn.addEventListener('click', () => handleStart(task.id));
+        } else if (task.status === 'started') {
+          if (!task.claimAvailable) {
+            actionBtn.textContent = 'Wait...';
+            actionBtn.classList.add('waiting-btn');
+            actionBtn.disabled = true;
+          } else {
+            actionBtn.textContent = 'Claim';
+            actionBtn.classList.add('claim-btn');
+            actionBtn.addEventListener('click', () => handleClaim(task.id));
+          }
+        } else if (task.status === 'claimed') {
+          actionBtn.textContent = 'Claimed';
+          actionBtn.classList.add('claimed-btn');
+          actionBtn.disabled = true;
+        }
+
+        taskRight.appendChild(actionBtn);
+        taskItem.appendChild(taskLeft);
+        taskItem.appendChild(taskRight);
+        taskList.appendChild(taskItem);
+      });
+    }
+
+    // Leaderboard-ի ցուցադրումը
+    function renderLeaderboard() {
+      const leaderboardList = document.getElementById('leaderboardList');
+      leaderboardList.innerHTML = '';
+
+      leaderboardData.forEach(item => {
+        const row = document.createElement('div');
+        row.classList.add('leaderboard-item');
+
+        const nameSpan = document.createElement('span');
+        nameSpan.textContent = item.username;
+
+        const scoreSpan = document.createElement('span');
+        scoreSpan.textContent = item.score + ' Score';
+
+        row.appendChild(nameSpan);
+        row.appendChild(scoreSpan);
+        leaderboardList.appendChild(row);
+      });
+    }
+
+
+    // Start կոճակի գործողությունը
+    function handleStart(taskId) {
+      const taskIndex = tasks.findIndex(t => t.id === taskId);
+      if (taskIndex === -1) return;
+      const task = tasks[taskIndex];
+
+      // Բանում ենք հղումը նոր պատուհանում
+      window.open(task.link, '_blank');
+
+      // Փոխում ենք իրավիճակը՝ 'started'
+      task.status = 'started';
+      task.claimAvailable = false;
+
+      // Սկսում ենք 20 վայրկյանանոց թայլմա՝ հետո Claim կոճակը կստացվի
+      task.timerId = setTimeout(() => {
+        task.claimAvailable = true;
+        renderTasks();
+        saveState();
+      }, 20000);
+
+      renderTasks();
+      saveState();
+    }
+
+    // Claim կոճակի գործողությունը
+    function handleClaim(taskId) {
+      const taskIndex = tasks.findIndex(t => t.id === taskId);
+      if (taskIndex === -1) return;
+      const task = tasks[taskIndex];
+
+      // Հավաքում ենք միավորները
+      userScore += task.reward;
+      updateScore();
+
+      // Փոխում ենք վիճակը՝ Claim կատարված
+      task.status = 'claimed';
+      task.claimAvailable = false;
+      if (task.timerId) {
+        clearTimeout(task.timerId);
+        task.timerId = null;
+      }
+      renderTasks();
+      saveState();
+    }
+
+    // Միավորների թարմացում
+    function updateScore() {
+      document.getElementById('userScore').textContent = userScore;
+      localStorage.setItem('userScore', userScore);
+    }
+
+    // Tabs փոխման տրամաբանություն
+    function setupTabs() {
+      const tabButtons = document.querySelectorAll('.tab-button');
+      const tabContents = document.querySelectorAll('.tab-content');
+
+      tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          tabButtons.forEach(btn => btn.classList.remove('active'));
+          tabContents.forEach(tc => tc.classList.remove('active'));
+
+          const tab = button.getAttribute('data-tab');
+          button.classList.add('active');
+          document.getElementById(tab).classList.add('active');
+        });
+      });
+    }
+
+    // «Close» կոճակի գործողությունը (օրինակային)
+    function setupCloseButton() {
+      }
+
+    // Բոլոր բովանդակության սկզբնավորումը
+    function initApp() {
+      loadState();
+      setupTabs();
+      setupCloseButton();
+      renderTasks();
+      renderLeaderboard();
+      renderFriends();
+      updateScore();
+    }
+
+    document.addEventListener('DOMContentLoaded', initApp);
+
+     // Օգտատիրոջ պրոֆիլի տվյալներ
+     let userProfile = {
+      score: localStorage.getItem("userScore") ? parseInt(localStorage.getItem("userScore")) : 0
+    };
+
+    // Profile բաժնի ցուցադրում
+    function renderProfile() {
+      const profileInfo = document.getElementById('profileInfo');
+      profileInfo.innerHTML = `
+        <h2>Profile👤</h2>
+        <div class="profile-item">
+          <span>Airdrop Score:</span>
+          <span class="profile-score">${userProfile.score} Score</span>
+        </div>
+        <button class="withdraw-btn" onclick="withdraw()">Withdraw🔒</button>
+<button class="tg-btn" onclick="window.open('https://t.me/HyperrVersee', '_blank')">Telegram Channel📢</button>
+<button class="x-btn" onclick="window.open('', '_blank')">X Channel📢</button>
+
+<button class="sp-btn" onclick="window.open('ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount = 1000000&text=Support project', '_blank')">
+    Support the project💵
+</button>
+
+                        <button class="hpsup-btn" onclick="window.open('LINK', '_blank')">HyperVerse Support📝</button>
+
+
+
+
+
+      `;
+    }
+
+    // Ելքագրման ֆունկցիա (օրինակ)
+    function withdraw() {
+      alert("SOON!");
+    }
+
+     // Օգտատիրոջ պրոֆիլի տվյալներ
+     let userairdrop = {
+      score: localStorage.getItem("userScore") ? parseInt(localStorage.getItem("userScore")) : 0
+    };
+
+    // Profile բաժնի ցուցադրում
+    function renderairdrop() {
+      const airdropInfo = document.getElementById('airdropInfo');
+      airdropInfo.innerHTML = `
+        <h2>Airdrop</h2>
+        <div class="airdrop-item">
+          <span>Airdrop Score:</span>
+          <span class="airdrop-score">${userairdrop.score} Score</span>
+        </div>
+        <button class="withdraw-btn" onclick="withdraw()">Withdraw🔒</button>
+
+
+
+
+
+
+      `;
+    }
+
+
+    // Ինիցիալիզացիա
+    function initApp() {
+      loadState();
+      setupTabs();
+      setupCloseButton();
+      renderTasks();
+      renderLeaderboard();
+      renderProfile(); // Փոխված է renderFriends()-ից
+      updateScore();
+    }
+    
+
+    // Մնացած կոդը մնում է նույնը...
+
+    // Daily Reward համակարգ
+    let lastClaimTime = localStorage.getItem('lastClaimTime') || 0;
+    let rewardInterval;
+
+    // Daily Reward-ի ցուցադրում
+    function renderDailyReward() {
+      const now = Date.now();
+      const timeLeft = 86400000 - (now - lastClaimTime);
+      const claimBtn = document.getElementById('claimRewardBtn');
+      const timerEl = document.getElementById('rewardTimer');
+
+      if (timeLeft > 0) {
+        claimBtn.disabled = true;
+        updateTimerDisplay(timeLeft);
+        startTimer();
+      } else {
+        claimBtn.disabled = false;
+        timerEl.textContent = "available now";
+      }
+    }
+
+    // Թայմերի ցուցադրում
+    function updateTimerDisplay(ms) {
+      const hours = Math.floor(ms / 3600000);
+      const minutes = Math.floor((ms % 3600000) / 60000);
+      const seconds = Math.floor((ms % 60000) / 1000);
+      
+      document.getElementById('rewardTimer').textContent = 
+        `Next reward in: ${hours}h ${minutes}m ${seconds}s`;
+    }
+
+    // Թայմերի սկսում
+    function startTimer() {
+      clearInterval(rewardInterval);
+      rewardInterval = setInterval(() => {
+        const timeLeft = 86400000 - (Date.now() - lastClaimTime);
+        if (timeLeft <= 0) {
+          renderDailyReward();
+          clearInterval(rewardInterval);
+        } else {
+          updateTimerDisplay(timeLeft);
+        }
+      }, 1000);
+    }
+
+    // Claim-ի մշակում
+    function handleDailyClaim() {
+      lastClaimTime = Date.now();
+      localStorage.setItem('lastClaimTime', lastClaimTime);
+      
+      userScore += 5000;
+      updateScore();
+      renderDailyReward();
+    }
+
+    // Ինիցիալիզացիա
+    function initApp() {
+      loadState();
+      setupTabs();
+      setupCloseButton();
+      renderTasks();
+      renderDailyReward(); // Փոխված է
+      renderProfile();
+      updateScore();
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+            const buttons = document.querySelectorAll(".tab-button");
+            const contents = document.querySelectorAll(".tab-content");
+
+            buttons.forEach(button => {
+                button.addEventListener("click", () => {
+                    const targetTab = button.getAttribute("data-tab");
+
+                    // Remove active class from previous tab & button
+                    document.querySelector(".tab-button.active").classList.remove("active");
+                    document.querySelector(".tab-content.active").classList.remove("active");
+
+                    // Add fade-out effect
+                    setTimeout(() => {
+                        contents.forEach(content => content.style.display = "none");
+
+                        // Activate the new tab
+                        document.getElementById(targetTab).style.display = "block";
+                        setTimeout(() => document.getElementById(targetTab).classList.add("active"), 10);
+                    }, 400);
+
+                    // Add active class to the clicked button
+                    button.classList.add("active");
+                });
+            });
+        });
+  
+        const canvas = document.getElementById("starCanvas");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const stars = [];
+const numStars = 100;
+
+for (let i = 0; i < numStars; i++) {
+    stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 2,
+        speed: Math.random() * 0.5 + 0.2,
+    });
+}
+
+function drawStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "white";
+
+    stars.forEach((star) => {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fill();
+
+        star.y += star.speed;
+        if (star.y > canvas.height) {
+            star.y = 0;
+            star.x = Math.random() * canvas.width;
+        }
+    });
+
+    requestAnimationFrame(drawStars);
+}
+
+drawStars();
+
+window.addEventListener("resize", () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
+
+  </script>
+ 
+</body>
+</html>
