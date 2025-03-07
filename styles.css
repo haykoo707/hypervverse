@@ -500,8 +500,8 @@ left: 0;}
 
 
 .profile-icon, .tasks-icon, .reward-icon, .profile-icon,.shop-icon {
-width: 45px; /* Կամ ցանկացած հարմար չափ */
-height: 45px;
+width: 40px; /* Կամ ցանկացած հարմար չափ */
+height: 40px;
 vertical-align: middle; /* Տեքստի հետ համահավասարեցնելու համար */
 }
 
