@@ -26,11 +26,11 @@ overflow: hidden;
 background-color: black;
 }
 .app-container {
-  max-width: 100px;
-  margin: 0 auto;
-  min-height: 850px;
-  min-width: 425px;
-  display: flex;
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   flex-direction: column;
   border-left: 1px solid #000000;
   border-right: 1px solid #000000;
