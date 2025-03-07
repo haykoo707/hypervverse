@@ -26,8 +26,7 @@ overflow: hidden;
 background-color: black;
 }
 .app-container {
-  max-width: 425px;
-  max-height: 850px;
+  max-width: 100px;
   margin: 0 auto;
   min-height: 850px;
   min-width: 425px;
