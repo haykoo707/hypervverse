@@ -67,7 +67,7 @@ transform: translateX(-50%);
   justify-content: space-around;
   background: #000000;
   border-bottom: 1px solid #000000;
-  box-shadow: 0 0 85px #0083a1;
+  box-shadow: 0 0 75px #0083a1;
 
 }
 
@@ -478,7 +478,6 @@ position: relative;
 padding: 10px 20px;
 border: none;
 background-color: transparent;
-cursor: pointer;
 font-size: 10px;
 transition: color 0.3s;
 }

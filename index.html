@@ -115,7 +115,17 @@
 
     // Օգտատիրոջ միավորները (հեռելով սկզբնական արժեքը localStorage-ից, եթե կան)
    
-  
+    document.querySelector(".play-btn").addEventListener("click", function() {
+      document.querySelector(".tabs").style.display = "none";
+      document.querySelector(".play-btn").classList.add("hidden");
+      document.querySelector(".close-btn").classList.remove("hidden");
+  });
+
+  document.querySelector(".close-btn").addEventListener("click", function() {
+      document.querySelector(".tabs").style.display = "flex";
+      document.querySelector(".close-btn").classList.add("hidden");
+      document.querySelector(".play-btn").classList.remove("hidden");
+  });
   
         
     const playButton = document.querySelector('.play-btn');
