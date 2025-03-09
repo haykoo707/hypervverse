@@ -106,7 +106,7 @@ height: 100%;
   display: none;
 }
 .tab-content.active {
-  display: block;
+  display: none;
 }
 /* Home-ի (Tasks) բաժին */
 .task-section h2 {
@@ -290,8 +290,21 @@ background: #22c5f2;
 /* Նոր ավելացված Daily Reward ոճեր */
 .daily-reward-section {
   padding: 15px;
+
 }
+
+.play-section {
+  padding: 15px;}
 .reward-card {
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.play-card {
   background: #111;
   border: 1px solid #333;
   border-radius: 12px;
@@ -431,9 +444,10 @@ position: absolute;
 top: 11%;
 left: 50%;
 transform: translate(-50%, -50%);
-display: flex;
-justify-content: center;
-align-items: center;
+text-shadow: 0 0 10px #00d0ff, 0 0 20px #00d0ff;
+text-shadow: 0 0 10px #00d0ff, 0 0 20px #00d0ff;
+font-size: 2.5em;
+
 }
 
 
@@ -499,41 +513,64 @@ width: 100%;
 left: 0;}
 
 
-.profile-icon, .tasks-icon, .reward-icon, .profile-icon,.shop-icon {
-width: 40px; /* Կամ ցանկացած հարմար չափ */
-height: 40px;
-vertical-align: middle; /* Տեքստի հետ համահավասարեցնելու համար */
+.profile-icon, .tasks-icon, .reward-icon, .profile-icon,.play-icon {
+width: 51px; /* Կամ ցանկացած հարմար չափ */
+height: 51px;
 }
 
 
-.ul {
-position: fixed;
-left: 50%;
-top: 345%;
-transform: translate(-50%, -345%); /* Կենտրոնացնում է էլեկտորը հորիզոնական ու vertical */
-list-style-type: none; /* Հանում է լիսթ ձևավորումները */
-padding: 0; /* Հանում է պադդինգը */
+.տեքս {
+  position: absolute;
+  left: 50%;
+  top: 2000%;
+  transform: translate(-50%, -2000%);
 }
 
-.ul li {
-color: white; /* Տեքստի գույնը */
-font-size: 16px; /* Տեքստի չափս */
-font-weight: bold; /* Տեքստի հաստություն */
-margin: 10px 0; /* Մինչև յուրաքանչյուր տարրի միջակայքը */
-}
 
-.road {
-    position: fixed;
+.play-btn {
+  background: rgba(0, 0, 0, 0.7);
+  border: 2px solid #00d0ff;
+  color: white;
+  font-size: 2rem;
+  padding: 50px 60px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.7s;
+  box-shadow: 0 0 80px #00d0ff;
+  
+    position: absolute;
     left: 50%;
-    top: 2600%;
-    transform: translate(-50%, -2600%); /* Կենտրոնացնում է էլեկտորը հորիզոնական ու vertical */
-    list-style-type: none; /* Հանում է լիսթ ձևավորումները */
-    padding: 0; /* Հանում է պադդինգը */
-    }
-    
-    .road h2 {
-    color: rgb(179, 179, 179); /* Տեքստի գույնը */
-    font-size: 16px; /* Տեքստի չափս */
-    font-weight: bold; /* Տեքստի հաստություն */
-    margin: 10px 0; /* Մինչև յուրաքանչյուր տարրի միջակայքը */
-    }
+    top: 185px;
+    transform: translate(-50%, -30%);
+  
+}
+
+.play-btn:hover {
+  background: #00d0ff;
+  color: black;
+  box-shadow: 0 0 120px #00d0ff;
+}
+
+.particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+
+.glow {
+  animation: float 3s ease-in-out infinite;
+  text-align: center;
+  font-size: 1.7em;
+  text-shadow: 0 0 20px #00d0ff, 0 0 40px #00d0ff;
+
+}
