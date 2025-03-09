@@ -67,8 +67,10 @@ transform: translateX(-50%);
   justify-content: space-around;
   background: #000000;
   border-bottom: 1px solid #000000;
-  
+  box-shadow: 0 0 85px #0083a1;
+
 }
+
 .tab-button {
   flex: 1;
   padding: 10px;
@@ -76,7 +78,6 @@ transform: translateX(-50%);
   border: none;
   color: #ffffff;
   font-size: 15px;
-  cursor: pointer;
 }
 .tab-button.active {
   color: #22c5f2;
@@ -164,7 +165,6 @@ height: 100%;
   font-size: 14px;
   border-radius: 4px;
   border: none;
-  cursor: pointer;
   color: #fff;
 }
 .start-btn {
@@ -258,7 +258,6 @@ background: #22c5f2;
   border-radius: 8px;
   color: white;
   font-weight: bold;
-  cursor: pointer;
   margin-top: 20px;
   background: #555;
 }
@@ -274,7 +273,6 @@ background: #22c5f2;
         color: white;
         border: none;
         border-radius: 5px;
-        cursor: pointer;
         margin: 10px;
     }
 
@@ -325,7 +323,6 @@ background: #22c5f2;
   border-radius: 12px;
   color: #000;
   font-weight: bold;
-  cursor: pointer;
   font-size: 16px;
   transition: opacity 0.3s;
 }
@@ -341,7 +338,6 @@ background: #22c5f2;
   border-radius: 8px;
   color: white;
   font-weight: bold;
-  cursor: pointer;
   margin-top: 20px;
   background: #00bbff;
 }
@@ -353,7 +349,6 @@ background: #22c5f2;
   border-radius: 8px;
   color: white;
   font-weight: bold;
-  cursor: pointer;
   margin-top: 20px;
   background: #00bbff;
 }
@@ -366,7 +361,6 @@ background: #22c5f2;
   border-radius: 8px;
   color: white;
   font-weight: bold;
-  cursor: pointer;
   margin-top: 20px;
   background: #00bbff;
 }
@@ -377,7 +371,6 @@ width: 100%;
   border-radius: 8px;
   color: white;
   font-weight: bold;
-  cursor: pointer;
   margin-top: 20px;
   background: #00bbff;
 }
@@ -422,9 +415,7 @@ width: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
-        transition: opacity 0.5s ease-out;
-        background-image: url('_rasterize.jpg');
-        
+        transition: opacity 0.5s ease-out;        
         
     }
     
@@ -461,7 +452,6 @@ font-size: 2.5em;
         padding: 10px 20px;
         border: none;
         background-color: #000000;
-        cursor: pointer;
         border-radius: 5px;
         transition: background 0.9s;
     }
@@ -534,9 +524,9 @@ height: 51px;
   font-size: 2rem;
   padding: 50px 60px;
   border-radius: 50%;
-  cursor: pointer;
-  transition: 0.7s;
+  transition: 0.4s;
   box-shadow: 0 0 80px #00d0ff;
+  
   
     position: absolute;
     left: 50%;
@@ -549,6 +539,7 @@ height: 51px;
   background: #00d0ff;
   color: black;
   box-shadow: 0 0 120px #00d0ff;
+  
 }
 
 .particles {
@@ -561,16 +552,63 @@ height: 51px;
 }
 
 
-@keyframes float {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0); }
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
 }
 
 .glow {
-  animation: float 3s ease-in-out infinite;
+  animation: shake 2.8s ease infinite;
+  
   text-align: center;
   font-size: 1.7em;
-  text-shadow: 0 0 20px #00d0ff, 0 0 40px #00d0ff;
+  text-shadow: 0 0 10px #00d0ff, 0 0 25px #00d0ff;
 
+}
+
+
+
+
+#gameArea {
+  position: relative;
+  width: 400px;
+  height: 400px;
+  border: 2px solid #000;
+  overflow: hidden;
+  background-color: #000000;
+}
+
+#ball {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background-color: rgb(0, 183, 255);
+  border-radius: 50%;
+  transition: 0.1s;
+  box-shadow: 0 0 800px #00d0ff;
+  border: 3px solid #ffffff;
+
+}
+#ball:hover {
+  transform: scale(1.1); /* Ավելացված մեծացում սեղմելու ժամանակ */
+  box-shadow: 0 0 30px rgba(0, 208, 255, 0.7), 0 0 60px rgba(0, 208, 255, 0.5); /* Ավելացված ստվեր */
+}
+
+.hidden {
+  display: none;
+}
+.close-btn {
+  font-size: 18px;
+  padding: 12px 14px;
+  margin: 5px;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  background: #00bbff;
+  position: absolute;
+  top: 335px;
 }

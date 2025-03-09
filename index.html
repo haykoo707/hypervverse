@@ -76,11 +76,23 @@
         </div>
       </div>
 
-   <!-- Play Tab -->
-   <div id="play" class="tab-content active">
-    <h2 class="glow">HyperVerse</h2>
-    <button class="play-btn">▶</button>
+     <!-- Play Tab -->
+<div id="play" class="tab-content active">
+  <h2 class="glow">HyperVerse</h2>
+  <button class="play-btn">▶</button>
+  </div>
 </div>
+<div id="gameArea" class="hidden">
+  <div id="ball"></div>
+  <div id="score">Score: 0</div>
+  <button class="close-btn hidden">X</button>
+  <div id="gameArea" class="hidden">
+      <div id="ball"></div>
+      <div id="score">Score: 0</div>
+  </div>
+</div>
+
+
     <div class="loading-screen" id="loadingScreen">
       <div class="loader"></div>
       <h3>𝗟𝗼𝗮𝗱𝗶𝗻𝗴...
@@ -94,7 +106,7 @@
           setTimeout(() => {
               document.getElementById("loadingScreen").style.display = "none";
           }, 3000);
-      }, 3000);
+      }, 2500);
   </script>
 
   <script>
@@ -102,9 +114,65 @@
 
 
     // Օգտատիրոջ միավորները (հեռելով սկզբնական արժեքը localStorage-ից, եթե կան)
-    let userScore = 0;
-    // Փոխարինել tasks-ի նախնական արժեքը՝ սահմանելով let, որպեսզի կարողանանք վերագրել, եթե անհրաժեշտ լինի
-    const TASKS_VERSION = "v3"; // Նոր task ավելացնելիս փոխիր այս տարբերակը
+   
+  
+  
+        
+    const playButton = document.querySelector('.play-btn');
+const closeButton = document.querySelector('.close-btn');
+const gameArea = document.getElementById('gameArea');
+const ball = document.getElementById('ball');
+const scoreDisplay = document.getElementById('score');
+
+let score = 0;
+let userScore = localStorage.getItem('userScore') ? parseInt(localStorage.getItem('userScore')) : 0;
+let speed = 1000; // Initial speed in milliseconds
+let gameInterval;
+
+playButton.addEventListener('click', startGame);
+closeButton.addEventListener('click', closeGame);
+
+function startGame() {
+    playButton.classList.add('hidden');
+    closeButton.classList.remove('hidden');
+    gameArea.classList.remove('hidden');
+    score = 0;
+    updateScoreDisplay();
+    moveBall();
+}
+
+function moveBall() {
+    if (gameInterval) clearInterval(gameInterval);
+    
+    gameInterval = setInterval(() => {
+        const x = Math.random() * (gameArea.clientWidth - 30);
+        const y = Math.random() * (gameArea.clientHeight - 30);
+        ball.style.left = `${x}px`;
+        ball.style.top = `${y}px`;
+    }, speed);
+}
+
+ball.addEventListener('click', () => {
+    score += 1; // Increase score by 1 on each click
+    userScore += 1; // Also increase userScore for localStorage
+    localStorage.setItem('userScore', userScore);
+    updateScoreDisplay(); // Update the score display
+});
+
+function updateScoreDisplay() {
+    scoreDisplay.textContent = `Score: ${score}`;
+}
+
+function closeGame() {
+    clearInterval(gameInterval); // Stop the game interval
+    gameArea.classList.add('hidden'); // Hide the game area
+    playButton.classList.remove('hidden'); // Show the play button
+    closeButton.classList.add('hidden'); // Hide the close button
+    alert(`Restart the game❗ Your score is ${userScore}`); // Show alert with final score
+}
+        
+   
+      const TASKS_VERSION = "v3"; // Նոր task ավելացնելիս փոխիր այս տարբերակը
 
 let tasks = [
     {
