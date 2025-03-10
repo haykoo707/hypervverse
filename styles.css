@@ -502,17 +502,9 @@ width: 100%;
 left: 0;}
 
 
-.profile-icon, .tasks-icon, .reward-icon, .profile-icon,.play-icon {
+.tasks-icon, .reward-icon, .profile-icon,.play-icon {
 width: 51px; /* Կամ ցանկացած հարմար չափ */
 height: 51px;
-}
-
-
-.տեքս {
-  position: absolute;
-  left: 50%;
-  top: 2000%;
-  transform: translate(-50%, -2000%);
 }
 
 
@@ -573,11 +565,11 @@ height: 51px;
 
 #gameArea {
   position: relative;
-  width: 400px;
-  height: 400px;
+  width: 440px;
+  height: 800px;
   border: 2px solid #000;
   overflow: hidden;
-  background-color: #000000;
+  background-color: #0f0f0f;
 }
 
 #ball {
@@ -609,5 +601,20 @@ height: 51px;
   font-weight: bold;
   background: #00bbff;
   position: absolute;
-  top: 335px;
+  top: 5px;
+  right: 5px;
+}
+
+.game2-btn{
+  font-size: 18px;
+  padding: 12px 14px;
+  margin: 5px;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  background: #00bbff;
+  position: absolute;
+  top: 5px;
+  right: 50px;
 }
