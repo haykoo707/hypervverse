@@ -148,38 +148,34 @@ sendTransaction();
 
     // Օգտատիրոջ միավորները (հեռելով սկզբնական արժեքը localStorage-ից, եթե կան)
    
-    document.querySelector(".play-btn").addEventListener("click", function() {
-      document.querySelector(".tabs").style.display = "none";
-      document.querySelector(".play-btn").classList.add("hidden");
-      document.querySelector(".close-btn").classList.remove("hidden");
-  });
-
-  document.querySelector(".close-btn").addEventListener("click", function() {
-      document.querySelector(".tabs").style.display = "flex";
-      document.querySelector(".close-btn").classList.add("hidden");
-      document.querySelector(".play-btn").classList.remove("hidden");
-  });
-  
-        
-const playButton = document.querySelector('.play-btn');
+    const playButton = document.querySelector('.play-btn');
 const closeButton = document.querySelector('.close-btn');
 const gameArea = document.getElementById('gameArea');
 const ball = document.getElementById('ball');
 const scoreDisplay = document.getElementById('score');
+const bonus = document.createElement('div');
+bonus.id = 'bonus';
+bonus.textContent = '🎁';
+bonus.classList.add('hidden');
+gameArea.appendChild(bonus);
 
 let score = 0;
 let userScore = localStorage.getItem('userScore') ? parseInt(localStorage.getItem('userScore')) : 0;
 let speed = 1000; // Initial speed in milliseconds
 let gameInterval;
+let ballClickable = true;
 
 playButton.addEventListener('click', startGame);
 closeButton.addEventListener('click', closeGame);
+bonus.addEventListener('click', collectBonus);
 
 function startGame() {
     playButton.classList.add('hidden');
     closeButton.classList.remove('hidden');
     gameArea.classList.remove('hidden');
     score = 0;
+    speed = 1000; // Reset speed on new game start
+    ballClickable = true;
     updateScoreDisplay();
     moveBall();
 }
@@ -192,18 +188,58 @@ function moveBall() {
         const y = Math.random() * (gameArea.clientHeight - 30);
         ball.style.left = `${x}px`;
         ball.style.top = `${y}px`;
+        ballClickable = true; // Reset clickability when ball moves
     }, speed);
 }
 
 ball.addEventListener('click', () => {
+    if (!ballClickable) return; // Prevent multiple clicks
+    
     score += 1; // Increase score by 1 on each click
     userScore += 1; // Also increase userScore for localStorage
     localStorage.setItem('userScore', userScore);
     updateScoreDisplay(); // Update the score display
+    ballClickable = false; // Disable further clicks until it moves
+
+    if (score % 10 === 0) {
+        showBonus();
+    }
+
+    if (score % 15 === 0) {
+        speed = Math.max(200, speed - 100); // Decrease interval time, minimum 200ms
+        moveBall(); // Restart interval with new speed
+    }
 });
 
 function updateScoreDisplay() {
     scoreDisplay.textContent = `Score: ${score}`;
+}
+
+function showBonus() {
+    bonus.classList.remove('hidden');
+    moveBonus();
+    
+    let bonusInterval = setInterval(moveBonus, 1000);
+    
+    setTimeout(() => {
+        clearInterval(bonusInterval);
+        bonus.classList.add('hidden');
+    }, 3000); // Hide bonus after 3 seconds if not collected
+}
+
+function moveBonus() {
+    const x = Math.random() * (gameArea.clientWidth - 50);
+    const y = Math.random() * (gameArea.clientHeight - 50);
+    bonus.style.left = `${x}px`;
+    bonus.style.top = `${y}px`;
+}
+
+function collectBonus() {
+    score += 50;
+    userScore += 50;
+    localStorage.setItem('userScore', userScore);
+    updateScoreDisplay();
+    bonus.classList.add('hidden');
 }
 
 function closeGame() {
@@ -213,6 +249,7 @@ function closeGame() {
     closeButton.classList.add('hidden'); // Hide the close button
     alert(`Restart the game❗ Your score is ${userScore}`); // Show alert with final score
 }
+
         
    
       const TASKS_VERSION = "v3"; // Նոր task ավելացնելիս փոխիր այս տարբերակը
