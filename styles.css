@@ -604,17 +604,3 @@ height: 51px;
   top: 5px;
   right: 5px;
 }
-
-.game2-btn{
-  font-size: 12px;
-  padding: 10px 12px;
-  margin: 5px;
-  border: none;
-  border-radius: 8px;
-  color: white;
-  font-weight: bold;
-  background: #00bbff;
-  position: absolute;
-  top: 5px;
-  right: 50px;
-}

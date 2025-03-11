@@ -26,7 +26,7 @@
     <div class="tabs">
     </button>
     <button class="tab-button active" data-tab="play">
-<img src="photo_2025-03-08_18-47-48.jpg" alt="play-xax" class="play-icon">
+<img src="photo_2025-03-11_09-47-28.jpg" alt="play-xax" class="play-icon">
 </button>
       <button class="tab-button" data-tab="home">
         <img src="Picsart_25-03-07_18-16-53-906.jpg" alt="Tasks" class="tasks-icon">
@@ -72,7 +72,14 @@
       <div id="profile" class="tab-content">
         <div class="profile-section">
           <div class="profile-info" id="profileInfo"></div>
-       
+          <div id="connect" style="cursor: pointer;
+          margin-top: 20px;  width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        color: white;
+        align-items: center;
+        font-weight: bold; "></div> 
         </div>
       </div>
 
@@ -86,7 +93,6 @@
   <div id="ball"></div>
   <div id="score">Score: 0</div>
   <button class="close-btn ">X</button>
-  <button class="game2-btn ">Falling balls</button>
   <div id="gameArea" class="hidden">
       <div id="ball"></div>
       <div id="score">Score: 0</div>
@@ -101,6 +107,32 @@
 <h1 class="loadingh1">𝗛𝘆𝗽𝗲𝗿𝗩𝗲𝗿𝘀𝗲
 </h1>
   </div>
+  <script>
+    const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+        manifestUrl: 'https://you.app/tonconnect-manifest.json',
+        buttonRootId: 'connect'
+    });
+    async function transaction() {
+    const transaction = {
+        validUntil: Math.round(Date.now() / 1000) + 10,
+        messages: [
+            {
+                address: "0:000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                amount: "1000000" // Example amount in nanoton
+            }
+        ]
+    };
+
+try {
+    await tonConnectUI.sendTransaction(transaction);
+    console.log("Transaction sent successfully!");
+} catch (e) {
+    console.error("Failed to send transaction:", e);
+}
+}
+
+sendTransaction();
+</script>
   <script>
       setTimeout(() => {
           document.getElementById("loadingScreen").style.opacity = "0";
@@ -129,7 +161,7 @@
   });
   
         
-    const playButton = document.querySelector('.play-btn');
+const playButton = document.querySelector('.play-btn');
 const closeButton = document.querySelector('.close-btn');
 const gameArea = document.getElementById('gameArea');
 const ball = document.getElementById('ball');
@@ -443,8 +475,9 @@ renderTasks();
 <button class="tg-btn" onclick="window.open('https://t.me/HyperrVersee', '_blank')">Telegram Channel📢</button>
 <button class="x-btn" onclick="window.open('', '_blank')">X Channel📢</button>
 
-<button class="sp-btn" onclick="window.open('ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount = 1000000&text=Support project', '_blank')">
-    Support the project💵
+<button class="sp-btn" onclick="window.open('ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=1000000')">Support the project💵
+</button>
+</a>
 </button>
 
                         <button class="hpsup-btn" onclick="window.open('LINK', '_blank')">HyperVerse Support📝</button>
