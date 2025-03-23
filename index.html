@@ -17,8 +17,8 @@
   <div class="app-container">
     <!-- Վերևի տող -->
     <div class="top-bar">
-      <div class="title">   </div>
-      <div class="score">$𝗛𝗩
+      <div class="title">Beta Test</div>
+      <div class="score">🌟
          <span id="userScore">𝟬
         </span></div>
     </div>
@@ -60,7 +60,7 @@
           id="claimRewardBtn"
           onclick="handleDailyClaim()"
         >
-          Claim +5000 Score
+          Claim 5000🌟
         </button>
       </div>
       <p style="color: #666; text-align: center;">
@@ -84,7 +84,7 @@
 
      <!-- Play Tab -->
 <div id="play" class="tab-content active">
-  <h2 class="glow">HyperVerse</h2>
+  <h2 class="glow">HyperVerse🛸</h2>
   <button class="play-btn">▶</button>
   </div>
 </div>
@@ -99,13 +99,31 @@
 </div>
 
 
-    <div class="loading-screen" id="loadingScreen">
-      <div class="loader"></div>
+<div class="loading-screen" id="loadingScreen">
+  <section class="dots-container">
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
       <h3>𝗟𝗼𝗮𝗱𝗶𝗻𝗴...
       </h3>
 <h1 class="loadingh1">𝗛𝘆𝗽𝗲𝗿𝗩𝗲𝗿𝘀𝗲
 </h1>
   </div>
+  <!-- Popup -->
+<div id="popup" class="popup-container">
+  <p id="popup-message">Restart the game❗ Your score is <span id="final-score"></span></p>
+  <button id="ok-button" class="popup-btn">OK</button>
+</div>
+<!-- Popup-ի կոնտեյներ -->
+<div id="popup" class="popup-container hidden">
+  <div class="popup-content">
+      <p>SOON!</p>
+      <button id="popup-close">OK</button>
+  </div>
+</div>
+
+
   <script>
     const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
         manifestUrl: 'https://you.app/tonconnect-manifest.json',
@@ -143,6 +161,36 @@ sendTransaction();
 
   <script>
   
+  document.addEventListener("DOMContentLoaded", function () {
+    const tabs = document.querySelector(".tabs");
+    const playBtn = document.querySelector(".play-btn");
+    const closeBtn = document.querySelector(".close-btn");
+    const popupBtn = document.querySelector(".popup-btn");
+
+    // Խաղի մեկնարկի ժամանակ թաքցնում ենք tabs
+    if (playBtn) {
+        playBtn.addEventListener("click", function () {
+            tabs.classList.add("hidden");
+            tabs.classList.remove("visible"); // Չեզոքացնում ենք
+        });
+    }
+
+    function showTabs() {
+        if (tabs) {
+            tabs.classList.remove("hidden"); // Ցույց ենք տալիս
+            tabs.classList.add("visible");
+        }
+    }
+
+    if (closeBtn) {
+        closeBtn.addEventListener("click", showTabs);
+    }
+
+    if (popupBtn) {
+        popupBtn.addEventListener("click", showTabs);
+    }
+});
+
 
 
     // Օգտատիրոջ միավորները (հեռելով սկզբնական արժեքը localStorage-ից, եթե կան)
@@ -246,8 +294,17 @@ function closeGame() {
     gameArea.classList.add('hidden'); // Hide the game area
     playButton.classList.remove('hidden'); // Show the play button
     closeButton.classList.add('hidden'); // Hide the close button
-    alert(`Restart the game❗ Your score is ${userScore}`); // Show alert with final score
+
+    // Show popup instead of alert
+    document.getElementById("final-score").innerText = userScore;
+    document.getElementById("popup").style.display = "block";
 }
+
+// Close popup on "OK" button click
+document.getElementById("ok-button").addEventListener("click", function() {
+    document.getElementById("popup").style.display = "none";
+});
+
 
         
    
@@ -620,10 +677,10 @@ function renderTasks() {
     function renderProfile() {
       const profileInfo = document.getElementById('profileInfo');
       profileInfo.innerHTML = `
-        <h2>Profile👤</h2>
+        <h2>Profile👽</h2>
         <div class="profile-item">
-          <span>Airdrop Score:</span>
-          <span class="profile-score">${userProfile.score} Score</span>
+          <span>Your total 🌟</span>
+          <span class="profile-score">${userProfile.score}🌟</span>
         </div>
         <button class="withdraw-btn" onclick="withdraw()">Withdraw🔒</button>
 <button class="tg-btn" onclick="window.open('https://t.me/HyperrVersee', '_blank')">Telegram Channel📢</button>

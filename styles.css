@@ -62,33 +62,60 @@ transform: translateX(-50%);
   font-weight: bold;
 }
 /* Tabs */
+/* Tabs կոնտեյներ */
 .tabs {
   display: flex;
   justify-content: space-around;
   background: #000000;
   border-bottom: 1px solid #000000;
-  box-shadow: 0 0 75px #0083a1;
-
 }
 
+/* Tab Button */
 .tab-button {
   flex: 1;
   padding: 10px;
   background: none;
   border: none;
   color: #ffffff;
-  font-size: 15px;
+  font-size: 10px;
+  transition: color 0.3s ease;
 }
+
+/* Hover effect */
+.tab-button:hover {
+  color: #22c5f2;
+  text-shadow: 0 0 5px #22c5f2;
+}
+
+/* Active Tab */
 .tab-button.active {
   color: #22c5f2;
+  font-weight: bold;
 }
+
 /* Բովանդակության կոնտեյներ */
 .content {
   flex: 1;
   overflow-y: auto;
- background-color: #000;
+  background-color: #000;
   padding: 11px;
+    border-radius: 10px;}
+
+/* Թաքցնելու կարգավորում */
+.hidden {
+  display: none !important;
 }
+
+/* Ցուցադրելու կարգավորում */
+.visible {
+  display: flex !important;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+
+
 body {
 margin: 0;
 overflow: hidden;
@@ -518,11 +545,30 @@ height: 51px;
   transition: 0.4s;
   box-shadow: 0 0 80px #00d0ff;
   
-  
-    position: absolute;
-    left: 50%;
-    top: 185px;
-    transform: translate(-50%, -30%);
+  position: absolute;
+  left: 50%;
+  top: 185px;
+  transform: translate(-50%, -30%);
+
+  animation: glow 4s infinite linear;
+}
+
+@keyframes glow {
+  0% {
+    box-shadow: -10px -10px 30px #00d0ff, 10px 10px 0px transparent;
+  }
+  25% {
+    box-shadow: 10px -10px 30px #00d0ff, -10px 10px 0px transparent;
+  }
+  50% {
+    box-shadow: 10px 10px 30px #00d0ff, -10px -10px 0px transparent;
+  }
+  75% {
+    box-shadow: -10px 10px 30px #00d0ff, 10px -10px 0px transparent;
+  }
+  100% {
+    box-shadow: -10px -10px 30px #00d0ff, 10px 10px 0px transparent;
+  }
   
 }
 
@@ -603,4 +649,87 @@ height: 51px;
   position: absolute;
   top: 5px;
   right: 5px;
+}
+.dots-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.dot {
+  height: 15px;
+  width: 15px;
+  margin-right: 10px;
+  border-radius: 10px;
+  background-color: #b3d4fc;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.dot:last-child {
+  margin-right: 0;
+}
+
+.dot:nth-child(1) {
+  animation-delay: -0.3s;
+}
+
+.dot:nth-child(2) {
+  animation-delay: -0.1s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.1s;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.8);
+    background-color: #b3d4fc;
+    box-shadow: 0 0 0 0 rgba(178, 212, 252, 0.7);
+  }
+
+  50% {
+    transform: scale(1.2);
+    background-color: #00bbff;
+    box-shadow: 0 0 0 10px rgba(178, 212, 252, 0);
+  }
+
+  100% {
+    transform: scale(0.8);
+    background-color: #b3d4fc;
+    box-shadow: 0 0 0 0 rgba(178, 212, 252, 0.7);
+  }
+}
+/* Popup Container */
+.popup-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px #00d0ff;
+  text-align: center;
+  display: none; /* Initially hidden */
+}
+
+/* Popup Button */
+.popup-btn {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: #00d0ff;
+  border: none;
+  color: white;
+  font-size: 16px;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+.popup-btn:hover {
+  background: #0099cc;
 }
