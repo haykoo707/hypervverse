@@ -90,11 +90,12 @@
 </div>
 <div id="gameArea" class="hidden">
   <div id="ball"></div>
+  <audio id="clickSound" src="pop-39222.mp3"></audio> 
+
   <div id="score">Score: 0</div>
   <button class="close-btn ">X</button>
   <div id="gameArea" class="hidden">
       <div id="ball"></div>
-      <div id="score">Score: 0</div>
   </div>
 </div>
 
@@ -105,9 +106,8 @@
     <div class="dot"></div>
     <div class="dot"></div>
     <div class="dot"></div>
-      <h3>𝗟𝗼𝗮𝗱𝗶𝗻𝗴...
-      </h3>
-<h1 class="loadingh1">𝗛𝘆𝗽𝗲𝗿𝗩𝗲𝗿𝘀𝗲
+      
+<h1 class="loadingh1">ʜʏᴘᴇʀᴠᴇʀꜱᴇ
 </h1>
   </div>
   <!-- Popup -->
@@ -200,11 +200,31 @@ const closeButton = document.querySelector('.close-btn');
 const gameArea = document.getElementById('gameArea');
 const ball = document.getElementById('ball');
 const scoreDisplay = document.getElementById('score');
-const bonus = document.createElement('div');
+// Ստեղծում ենք bonus էլեմենտը
+let bonus = document.createElement('div');
 bonus.id = 'bonus';
-bonus.textContent = '🎁';
+bonus.classList.add('hidden');
+
+// Կարգավորում ենք նկարը CSS-ի միջոցով
+bonus.style.width = '45px';
+bonus.style.height = '45px';
+bonus.style.backgroundImage = 'url("inverted_image.png")';
+bonus.style.backgroundSize = 'cover';
+
+gameArea.appendChild(bonus);
+
+
 bonus.classList.add('hidden');
 gameArea.appendChild(bonus);
+
+// Ավելացնում ենք ձայնային տարրը
+let bonusSound = new Audio('game-bonus-144751.mp3'); // Նշիր ձայնային ֆայլի ճիշտ անունը
+
+// Ավելացնում ենք event listener, որ սեղմելիս ձայն նվագարկվի
+bonus.addEventListener('click', function () {
+    bonusSound.play();
+});
+
 
 let score = 0;
 let userScore = localStorage.getItem('userScore') ? parseInt(localStorage.getItem('userScore')) : 0;
@@ -215,6 +235,9 @@ let ballClickable = true;
 playButton.addEventListener('click', startGame);
 closeButton.addEventListener('click', closeGame);
 bonus.addEventListener('click', collectBonus);
+ document.getElementById("ball").addEventListener("click", function() {
+            document.getElementById("clickSound").play();
+        });
 
 function startGame() {
     playButton.classList.add('hidden');
@@ -259,7 +282,7 @@ ball.addEventListener('click', () => {
 });
 
 function updateScoreDisplay() {
-    scoreDisplay.textContent = `Score: ${score}`;
+    scoreDisplay.textContent = `🌟 ${score}`;
 }
 
 function showBonus() {
