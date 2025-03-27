@@ -50,24 +50,36 @@
         </div>
       </div>
        <!-- Daily Reward Tab (Նոր բաժին) -->
-  <div id="daily-reward" class="tab-content">
-    <div class="daily-reward-section">
-      <div class="reward-card">
-        <h2>🎁 Daily Reward</h2>
-        <div class="reward-timer" id="rewardTimer">Available now</div>
-        <button 
-          class="reward-btn" 
-          id="claimRewardBtn"
-          onclick="handleDailyClaim()"
-        >
-          Claim 5000🌟
-        </button>
-      </div>
-      <p style="color: #666; text-align: center;">
-        Claim your reward every 24 hours!
-      </p>
+       <div id="daily-reward" class="tab-content">
+        <div class="daily-reward-section">
+            <div class="reward-card">
+                <h2>🎁 Daily Reward</h2>
+                <div class="reward-timer" id="rewardTimer">Available now</div>
+                <button class="reward-btn" id="claimRewardBtn" onclick="handleDailyClaim()">
+                    Claim 5000🌟
+                </button>
+            </div>
+            <p style="color: #666; text-align: center;">
+                Claim your reward every 24 hours!
+            </p>
+        </div>
+    
+        <!-- Daily Quest Section -->
+        <div class="daily-quest-section">
+            <div class="reward-card">
+                <h2>📝 Daily Quest</h2>
+                <input class="" type="text" id="dailyCodeInput" placeholder="Enter today's code" />
+                <button class="reward-btn" id="submitQuestBtn" onclick="handleDailyQuest()">
+                    Submit Code
+                </button>
+                <div id="questMessage" style="color: #666; text-align: center; margin-top: 10px;"></div>
+            </div>
+            <p style="color: #666; text-align: center;">
+                Enter the correct code once every 24 hours!
+            </p>
+        </div>
     </div>
-  </div>
+    
       <!-- profile Tab -->
       <div id="profile" class="tab-content">
         <div class="profile-section">
@@ -204,6 +216,8 @@ const scoreDisplay = document.getElementById('score');
 let bonus = document.createElement('div');
 bonus.id = 'bonus';
 bonus.classList.add('hidden');
+const dailyCode = "SECRET123"; // ✅ Փոխարինիր քո օրվա կոդով
+const questCooldownKey = "dailyQuestCooldown";
 
 // Կարգավորում ենք նկարը CSS-ի միջոցով
 bonus.style.width = '45px';
@@ -901,6 +915,25 @@ window.addEventListener("resize", () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 });
+
+function handleDailyQuest() {
+        const lastClaimTime = localStorage.getItem(questCooldownKey);
+        const now = new Date().getTime();
+        const cooldownTime = 24 * 60 * 60 * 1000; // 24 ժամ
+
+        if (lastClaimTime && now - lastClaimTime < cooldownTime) {
+            document.getElementById("questMessage").innerText = "❌ You can enter the code again in 24 hours!";
+            return;
+        }
+
+        const userCode = document.getElementById("dailyCodeInput").value;
+        if (userCode === dailyCode) {
+            document.getElementById("questMessage").innerText = "✅ Correct code! Reward granted!";
+            localStorage.setItem(questCooldownKey, now);
+        } else {
+            document.getElementById("questMessage").innerText = "❌ Incorrect code! Try again.";
+        }
+    }
 
   </script>
  
