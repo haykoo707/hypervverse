@@ -27,15 +27,15 @@
     <div class="tabs">
     </button>
     <button class="tab-button active" data-tab="play">
-<img src="photo_2025-03-11_09-47-28.jpg" alt="play-xax" class="play-icon">
+<img src="Picsart_25-03-28_20-51-07-122.jpg" alt="play-xax" class="play-icon">
 </button>
       <button class="tab-button" data-tab="home">
-        <img src="Picsart_25-03-07_18-16-53-906.jpg" alt="Tasks" class="tasks-icon">
+        <img src="Picsart_25-03-28_20-52-07-873.jpg" alt="Tasks" class="tasks-icon">
         <button class="tab-button" data-tab="daily-reward">
-          <img src="Picsart_25-03-07_18-18-09-129.jpg" alt="Reward" class="reward-icon">
+          <img src="Picsart_25-03-28_20-51-28-628.jpg" alt="Reward" class="reward-icon">
 
       <button class="tab-button" data-tab="profile">
-        <img src="Picsart_25-03-07_18-16-34-817.jpg" alt="Profile" class="profile-icon">
+        <img src="Picsart_25-03-28_20-52-49-352.jpg" alt="Profile" class="profile-icon">
     </button>
 
     </div>
@@ -349,7 +349,7 @@ document.getElementById("ok-button").addEventListener("click", function() {
 
         
    
-      const TASKS_VERSION = "v12"; // Նոր task ավելացնելիս փոխիր այս տարբերակը
+      const TASKS_VERSION = "v13"; // Նոր task ավելացնելիս փոխիր այս տարբերակը
 
 let tasks = [
     {
@@ -386,26 +386,6 @@ let tasks = [
     {
         id: 4,
         title: 'Support the project',
-        link: 'payment.html',
-        reward: 1500,
-        status: 'pending',
-        claimAvailable: false,
-        timerId: null,
-        icon: '💸'
-    },
-    {
-        id: 5,
-        title: ' project',
-        link: 'payment.html',
-        reward: 1500,
-        status: 'pending',
-        claimAvailable: false,
-        timerId: null,
-        icon: '💸'
-    },
-    {
-        id: 6,
-        title: 't',
         link: 'payment.html',
         reward: 1500,
         status: 'pending',
@@ -813,20 +793,20 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 const stars = [];
-const numStars = 100;
+const numStars = 220;
 
 for (let i = 0; i < numStars; i++) {
     stars.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
         radius: Math.random() * 2,
-        speed: Math.random() * 0.5 + 0.2,
+        speed: Math.random() * 0.1 + 0.1,
     });
 }
 
 function drawStars() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "white";
+    ctx.fillStyle = "gray";
 
     stars.forEach((star) => {
         ctx.beginPath();
