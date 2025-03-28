@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="hy">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
-  <script src="https://unpkg.com/@tonconnect/ui@0.0.9/dist/tonconnect-ui.min.js"></script>
-  <link rel="script" href="script.js">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
   <title>HyperVerse</title>
 </head>
 
@@ -135,32 +136,35 @@
   </div>
 </div>
 
+<div id="ton-connect"></div>
+
+
 
   <script>
+    
     const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-        manifestUrl: 'https://you.app/tonconnect-manifest.json',
-        buttonRootId: 'connect'
-    });
-    async function transaction() {
-    const transaction = {
-        validUntil: Math.round(Date.now() / 1000) + 10,
-        messages: [
-            {
-                address: "0:000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-                amount: "1000000" // Example amount in nanoton
-            }
-        ]
-    };
+            manifestUrl: 'https://haykoo707.github.io/hyperversee/tonconnect-manifest.json',
+            buttonRootId: 'connect'
+            
+        });
+        async function transaction() {
+        const transaction = {
+            validUntil: Math.round(Date.now() / 1000) + 10,
+            messages: [
+                {
+                    address: "UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK",
+                    amount: "1000000" // Example amount in nanoton
+                }
+            ]
+        };
 
-try {
-    await tonConnectUI.sendTransaction(transaction);
-    console.log("Transaction sent successfully!");
-} catch (e) {
-    console.error("Failed to send transaction:", e);
+    try {
+        await tonConnectUI.sendTransaction(transaction);
+        console.log("Transaction sent successfully!");
+    } catch (e) {
+        console.error("Failed to send transaction:", e);
+    }
 }
-}
-
-sendTransaction();
 </script>
   <script>
       setTimeout(() => {
@@ -595,73 +599,6 @@ function handleClaim(taskId) {
 // Բեռնում ենք տվյալները
 loadState();
 renderTasks();
-// Tasks display (Home Tab)
-function renderTasks() {
-    const taskList = document.getElementById('taskList');
-    taskList.innerHTML = '';
-
-    // Filter out tasks that are claimed
-    const visibleTasks = tasks.filter(task => task.status !== 'claimed');
-
-    visibleTasks.forEach(task => {
-        const taskItem = document.createElement('div');
-        taskItem.classList.add('task-item');
-
-        // Left part: Icon, Title, Reward
-        const taskLeft = document.createElement('div');
-        taskLeft.classList.add('task-left');
-
-        const iconDiv = document.createElement('div');
-        iconDiv.classList.add('task-icon');
-        iconDiv.textContent = task.icon || '🐕';
-
-        const taskInfo = document.createElement('div');
-        taskInfo.classList.add('task-info');
-
-        const taskTitle = document.createElement('div');
-        taskTitle.classList.add('task-title');
-        taskTitle.textContent = task.title;
-
-        const taskReward = document.createElement('div');
-        taskReward.classList.add('task-reward');
-        taskReward.textContent = `+${task.reward} Score`;
-
-        taskInfo.appendChild(taskTitle);
-        taskInfo.appendChild(taskReward);
-        taskLeft.appendChild(iconDiv);
-        taskLeft.appendChild(taskInfo);
-
-        // Right part: Action button
-        const taskRight = document.createElement('div');
-        taskRight.classList.add('task-right');
-        const actionBtn = document.createElement('button');
-
-        if (task.status === 'pending') {
-            actionBtn.textContent = 'Start';
-            actionBtn.classList.add('start-btn');
-            actionBtn.addEventListener('click', () => handleStart(task.id));
-        } else if (task.status === 'started') {
-            if (!task.claimAvailable) {
-                actionBtn.textContent = 'Wait...';
-                actionBtn.classList.add('waiting-btn');
-                actionBtn.disabled = true;
-            } else {
-                actionBtn.textContent = 'Claim';
-                actionBtn.classList.add('claim-btn');
-                actionBtn.addEventListener('click', () => handleClaim(task.id));
-            }
-        } else if (task.status === 'claimed') {
-            actionBtn.textContent = 'Claimed';
-            actionBtn.classList.add('claimed-btn');
-            actionBtn.disabled = true;
-        }
-
-        taskRight.appendChild(actionBtn);
-        taskItem.appendChild(taskLeft);
-        taskItem.appendChild(taskRight);
-        taskList.appendChild(taskItem);
-    });
-}
 
 
 
@@ -735,10 +672,7 @@ function renderTasks() {
       `;
     }
 
-    // Ելքագրման ֆունկցիա (օրինակ)
-    function withdraw() {
-      alert("SOON!");
-    }
+
 
      // Օգտատիրոջ պրոֆիլի տվյալներ
      let userairdrop = {
