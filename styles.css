@@ -737,13 +737,15 @@ height: 51px;
   width: 80%;
   padding: 10px;
   margin: 10px 0;
-  border: 2px solid #9b9b9b;
+  border: 2px solid #ffffff;
   border-radius: 12px;
   font-size: 16px;
   text-align: center;
+  background-color: #474747;
+  color: white;
 }
 
 #dailyCodeInput:focus {
-  border-color: #ffffff;
+  border-color: #00d0ff;
   outline: none;
 }

@@ -18,7 +18,7 @@
   <div class="app-container">
     <!-- Վերևի տող -->
     <div class="top-bar">
-      <div class="title">Beta Test</div>
+      <div class="title">SOON!</div>
       <div class="score">🌟
          <span id="userScore">𝟬
         </span></div>
@@ -85,7 +85,7 @@
       <div id="profile" class="tab-content">
         <div class="profile-section">
           <div class="profile-info" id="profileInfo"></div>
-          <div id="connect" style="cursor: pointer;
+          <div id="connect" style="
           margin-top: 10px;  
         padding: 8px;
         border-radius: 8px;
@@ -135,10 +135,23 @@
       <button id="popup-close">OK</button>
   </div>
 </div>
+<script>
+    // Ստուգել, արդյոք կայքը բացված է Telegram-ի մեջ
+    function checkTelegramContext() {
+        if (window.Telegram && Telegram.WebApp) {
+            Telegram.WebApp.ready(); // Ակտիվացնել WebApp-ը
+            Telegram.WebApp.expand(); // Ընդլայնել էկրանը
+        } else {
+            // Ոչ Telegram միջավայրում է
+            window.location.href = "https://t.me/hyperrverse_bot"; // Փոխարինել ձեր բոտի հղումով
+            // Կամ ցույց տալ սխալի հաղորդագրություն
+            // document.body.innerHTML = "<h1>Մուտքը միայն Telegram-ի միջոցով</h1>";
+        }
+    }
 
-<div id="ton-connect"></div>
-
-
+    // Սկզբնավորել ստուգումը
+    checkTelegramContext();
+</script>
 
   <script>
     
@@ -222,6 +235,8 @@ bonus.id = 'bonus';
 bonus.classList.add('hidden');
 const dailyCode = "SECRET123"; // ✅ Փոխարինիր քո օրվա կոդով
 const questCooldownKey = "dailyQuestCooldown";
+const userScoreKey = "userScore"; // 🔥 Պահում ենք score Local Storage-ում
+
 
 // Կարգավորում ենք նկարը CSS-ի միջոցով
 bonus.style.width = '45px';
@@ -793,14 +808,14 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 const stars = [];
-const numStars = 220;
+const numStars = 222;
 
 for (let i = 0; i < numStars; i++) {
     stars.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
         radius: Math.random() * 2,
-        speed: Math.random() * 0.1 + 0.1,
+        speed: Math.random() * 0.2 + 0.1,
     });
 }
 
@@ -842,8 +857,13 @@ function handleDailyQuest() {
 
         const userCode = document.getElementById("dailyCodeInput").value;
         if (userCode === dailyCode) {
-            document.getElementById("questMessage").innerText = "✅ Correct code! Reward granted!";
+            document.getElementById("questMessage").innerText = "✅ Correct code! You earned +1500🌟!";
             localStorage.setItem(questCooldownKey, now);
+
+            // Ավելացնել +1500 score
+            let currentScore = parseInt(localStorage.getItem(userScoreKey)) || 0;
+            currentScore += 1500;
+            localStorage.setItem(userScoreKey, currentScore);
         } else {
             document.getElementById("questMessage").innerText = "❌ Incorrect code! Try again.";
         }
