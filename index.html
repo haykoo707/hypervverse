@@ -86,7 +86,7 @@
         <div class="profile-section">
           <div class="profile-info" id="profileInfo"></div>
           <div id="connect" style="
-          margin-top: 10px;  
+          margin-top: 70px;  
         padding: 8px;
         border-radius: 8px;
         position: absolute;
@@ -233,7 +233,7 @@ const scoreDisplay = document.getElementById('score');
 let bonus = document.createElement('div');
 bonus.id = 'bonus';
 bonus.classList.add('hidden');
-const dailyCode = "SECRET123"; // ✅ Փոխարինիր քո օրվա կոդով
+const dailyCode = "1234"; // ✅ Փոխարինիր քո օրվա կոդով
 const questCooldownKey = "dailyQuestCooldown";
 const userScoreKey = "userScore"; // 🔥 Պահում ենք score Local Storage-ում
 
@@ -646,7 +646,7 @@ renderTasks();
     function renderProfile() {
       const profileInfo = document.getElementById('profileInfo');
       profileInfo.innerHTML = `
-        <h2>Profile👽</h2>
+        <h2>                                            </h2>
         <div class="profile-item">
           <span>Your total 🌟</span>
           <span class="profile-score">${userProfile.score}🌟</span>
@@ -659,6 +659,19 @@ renderTasks();
 </button>
 </a>
 </button>
+<!-- From Uiverse.io by StealthWorm --> 
+<button type="button" class="btn">
+  <strong>Upgrade Premium</strong>
+  <div id="container-stars">
+    <div id="stars"></div>
+  </div>
+
+  <div id="glow">
+    <div class="circle"></div>
+    <div class="circle"></div>
+  </div>
+</button>
+
 
 
 
