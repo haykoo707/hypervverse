@@ -92,18 +92,17 @@ transform: translateX(-50%);
 /* Active Tab */
 .tab-button.active {
   color: #22c5f2;
-  font-weight: bold;
   
 }
 
 /* Բովանդակության կոնտեյներ */
 .content {
-  flex: 1;
-  overflow-y: auto;
-  background-color: #000;
-  padding: 11px;
-    border-radius: 10px;}
-
+flex: 1;
+overflow-y: auto;
+background-color: #000;
+padding: 11px;
+border-radius: 10px;
+margin-top: 5px;}
 /* Թաքցնելու կարգավորում */
 .hidden {
   display: none !important;
@@ -769,7 +768,7 @@ height: 48px;
 strong {
   z-index: 2;
   font-family: "Avalors Personal Use";
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 5px;
   color: #ffffff;
   text-shadow: 0 0 4px white;
@@ -800,10 +799,6 @@ strong {
 .btn:hover #container-stars {
   z-index: 1;
   background-color: #212121;
-}
-
-.btn:hover {
-    
 }
 
 .btn:active {

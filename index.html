@@ -185,7 +185,7 @@
           setTimeout(() => {
               document.getElementById("loadingScreen").style.display = "none";
           }, 3000);
-      }, 2500);
+      }, 3000);
   </script>
 
   <script>
@@ -496,7 +496,7 @@ function renderTasks() {
 
         const iconDiv = document.createElement('div');
         iconDiv.classList.add('task-icon');
-        iconDiv.textContent = task.icon || '🐕';
+        iconDiv.textContent = task.icon || '';
 
         const taskInfo = document.createElement('div');
         taskInfo.classList.add('task-info');
@@ -661,7 +661,7 @@ renderTasks();
 </button>
 <!-- From Uiverse.io by StealthWorm --> 
 <button type="button" class="btn">
-  <strong>Upgrade Premium</strong>
+  <strong>Upgrade</strong>
   <div id="container-stars">
     <div id="stars"></div>
   </div>
@@ -671,11 +671,6 @@ renderTasks();
     <div class="circle"></div>
   </div>
 </button>
-
-
-
-
-
 
       `;
     }
@@ -881,6 +876,111 @@ function handleDailyQuest() {
             document.getElementById("questMessage").innerText = "❌ Incorrect code! Try again.";
         }
     }
+// Պահպանենք սկզբնական նկարները և սեղմելուց հետո փոփոխվող նկարները
+const tabImages = {
+        play: {
+            default: "Picsart_25-03-28_20-51-07-122.jpg",
+            active: "ChatGPT Image Mar 30, 2025, 03_34_08 PM.png"
+        },
+        home: {
+            default: "Picsart_25-03-28_20-52-07-873.jpg",
+            active: "ChatGPT Image Mar 30, 2025, 03_34_12 PM.png"
+        },
+        "daily-reward": {
+            default: "Picsart_25-03-28_20-51-28-628.jpg",
+            active: "ChatGPT Image Mar 30, 2025, 11_21_31 PM.png"
+        },
+        profile: {
+            default: "Picsart_25-03-28_20-52-49-352.jpg",
+            active: "ChatGPT Image Mar 30, 2025, 03_34_04 PM.png"
+        }
+    };
+
+    document.querySelectorAll(".tab-button").forEach(button => {
+        button.addEventListener("click", function () {
+            // Հանում ենք active դասը բոլոր կոճակներից
+            document.querySelectorAll(".tab-button").forEach(btn => {
+                btn.classList.remove("active");
+                const img = btn.querySelector("img");
+                const tabName = btn.getAttribute("data-tab");
+                img.src = tabImages[tabName].default; // Վերադարձնում ենք նորմալ նկարը
+            });
+
+            // Ավելացնում ենք active դասը սեղմված կոճակին
+            this.classList.add("active");
+            const img = this.querySelector("img");
+            const tabName = this.getAttribute("data-tab");
+            img.src = tabImages[tabName].active; // Փոխում ենք նկարը
+        });
+    });
+    // TON վճարման ֆունկցիա
+async function initiateTONTransaction() {
+    const tonAddress = "UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK"; // Ընդունողի TON հասցեն
+    const amountTON = 1; // TON գումարը
+    
+    const transactionUrl = `https://tonkeeper.com/transfer/${tonAddress}?amount=${amountTON * 1e9}`;
+    
+    window.open(transactionUrl, "_blank");
+    
+    // Սպասում ենք, որ օգտատերը կատարի վճարումը
+    checkTransactionStatus();
+}
+
+// Վճարման ստուգման ֆունկցիա (պետք է backend-ով մշակվի)
+async function checkTransactionStatus() {
+    setTimeout(() => {
+        showPremiumPopup(); // Այստեղ պետք է իրականում ստուգել blockchain-ը
+    }, 5000);
+}
+
+// Premium Player հաստատման popup
+function showPremiumPopup() {
+    const popup = document.createElement("div");
+    popup.innerHTML = `
+        <div class='popup'>
+            <h2>Congratulations!</h2>
+            <p>You are now a Premium Player.</p>
+            <button onclick='closePopup()'>OK</button>
+        </div>
+    `;
+    document.body.appendChild(popup);
+}
+
+// Popup-ի փակման ֆունկցիա
+function closePopup() {
+    document.querySelector(".popup").remove();
+}
+
+// Event Listener կոճակի համար
+document.querySelector(".btn").addEventListener("click", initiateTONTransaction);
+
+// CSS popup-ի համար
+const style = document.createElement("style");
+style.innerHTML = `
+    .popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        text-align: center;
+    }
+    .popup h2 {
+        color: #4CAF50;
+    }
+    .popup button {
+        margin-top: 10px;
+        padding: 10px;
+        border: none;
+        background: #4CAF50;
+        color: white;
+        cursor: pointer;
+    }
+`;
+document.head.appendChild(style);
 
   </script>
  
