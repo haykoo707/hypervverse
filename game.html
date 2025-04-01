@@ -102,19 +102,18 @@ height: 100%;
             border-radius: 5px;
             cursor: pointer;
         }
-        #backButton:hover {
-            background-color: #00a7cd;
-        }
+       
     </style>
 </head>
 <body>
+    
+    
     <canvas id="starCanvas"></canvas>
     <a href="index.html">
         <button id="backButton">Back</button>
       </a>
 
     <h2 class="glow">HyperVerse🛸</h2>
-    <p>Swipe left or right to move</p>
     <div id="gameContainer">
         <div id="player"></div>
     </div>
@@ -125,68 +124,100 @@ height: 100%;
         <button class="restart" onclick="restartGame()">Restart</button>
     </div>
     <script>
-        let player = document.getElementById("player");
-        let container = document.getElementById("gameContainer");
-        let scoreDisplay = document.getElementById("score");
-        let userScoreDisplay = document.getElementById("userScore");
-        let gameOverPopup = document.getElementById("gameOverPopup");
-        let playerPos = container.clientWidth / 2 - 25;
-        let score = 0;
-        let userScore = localStorage.getItem("userScore") || 0;
-        userScoreDisplay.textContent = userScore;
+      let player = document.getElementById("player");
+let container = document.getElementById("gameContainer");
+let scoreDisplay = document.getElementById("score");
+let userScoreDisplay = document.getElementById("userScore");
+let gameOverPopup = document.getElementById("gameOverPopup");
+let playerPos = container.clientWidth / 2 - 25;
+let score = 0;
+let userScore = localStorage.getItem("userScore") || 0;
+let gameOverFlag = false; // New variable to track if the game is over
+userScoreDisplay.textContent = userScore;
 
-        let touchStartX = 0;
-        container.addEventListener("touchstart", (e) => {
-            touchStartX = e.touches[0].clientX;
-        });
-        
-        container.addEventListener("touchmove", (e) => {
-            let touchX = e.touches[0].clientX;
-            let deltaX = touchX - touchStartX;
-            playerPos += deltaX * 0.5;
-            playerPos = Math.max(0, Math.min(container.clientWidth - 50, playerPos));
-            player.style.left = playerPos + "px";
-            touchStartX = touchX;
-        });
+let touchStartX = 0;
+let velocity = 0; // New variable for velocity (smoothness)
+let friction = 0.1; // Adjust this value for more/less smoothness
+let maxSpeed = 5; // Maximum speed of the player
 
-        function createFallingObject() {
-            let obj = document.createElement("div");
-            obj.classList.add("fallingObject");
-            obj.style.left = Math.random() * (container.clientWidth - 30) + "px";
-            container.appendChild(obj);
-            obj.style.animationDuration = Math.random() * 2 + 2 + "s";
+container.addEventListener("touchstart", (e) => {
+    touchStartX = e.touches[0].clientX;
+});
 
-            let fallInterval = setInterval(() => {
-                let objRect = obj.getBoundingClientRect();
-                let playerRect = player.getBoundingClientRect();
+container.addEventListener("touchmove", (e) => {
+    if (gameOverFlag) return; // Stop player movement if the game is over
 
-                if (objRect.bottom >= playerRect.top && objRect.left > playerRect.left - 20 && objRect.right < playerRect.right + 20) {
-                    score++;
-                    userScore++;  // Increase both score and userScore
-                    scoreDisplay.textContent = score;
-                    userScoreDisplay.textContent = userScore;
-                    localStorage.setItem("userScore", userScore);  // Store updated userScore
-                    obj.remove();
-                    clearInterval(fallInterval);
-                }
-                if (objRect.top > container.clientHeight) {
-                    gameOver();
-                    obj.remove();
-                    clearInterval(fallInterval);
-                }
-            }, 10);
+    let touchX = e.touches[0].clientX;
+    let deltaX = touchX - touchStartX;
+
+    // Update velocity based on the touch movement
+    velocity += deltaX * 0.5;
+    velocity = Math.max(-maxSpeed, Math.min(maxSpeed, velocity)); // Limit the speed
+
+    touchStartX = touchX;
+});
+
+// Update the player's position smoothly
+function updatePlayerPosition() {
+    if (gameOverFlag) return;
+
+    playerPos += velocity; // Move the player by the current velocity
+
+    // Apply friction to gradually reduce speed
+    velocity *= (1 - friction);
+
+    // Ensure the player stays within the container bounds
+    playerPos = Math.max(0, Math.min(container.clientWidth - 50, playerPos));
+
+    player.style.left = playerPos + "px";
+}
+
+function createFallingObject() {
+    if (gameOverFlag) return; // Stop creating falling objects if the game is over
+
+    let obj = document.createElement("div");
+    obj.classList.add("fallingObject");
+    obj.style.left = Math.random() * (container.clientWidth - 30) + "px";
+    container.appendChild(obj);
+    obj.style.animationDuration = Math.random() * 2 + 2 + "s";
+
+    let fallInterval = setInterval(() => {
+        let objRect = obj.getBoundingClientRect();
+        let playerRect = player.getBoundingClientRect();
+
+        if (objRect.bottom >= playerRect.top && objRect.left > playerRect.left - 30 && objRect.right < playerRect.right + 30) {
+            score++;
+            userScore++;  // Increase both score and userScore
+            scoreDisplay.textContent = score;
+            userScoreDisplay.textContent = userScore;
+            localStorage.setItem("userScore", userScore);  // Store updated userScore
+            obj.remove();
+            clearInterval(fallInterval);
         }
-        
-        function gameOver() {
-            gameOverPopup.style.display = "block";
+        if (objRect.top > container.clientHeight) {
+            gameOver();
+            obj.remove();
+            clearInterval(fallInterval);
         }
-        
-        function restartGame() {
-            location.reload();
-        }
-        
-        setInterval(createFallingObject, 1000);
-        const canvas = document.getElementById("starCanvas");
+    }, 10);
+}
+
+function gameOver() {
+    gameOverFlag = true; // Set game over flag to true
+    gameOverPopup.style.display = "block"; // Display the game over popup
+    container.style.display = "none"; // Hide the game container
+    scoreDisplay.style.display = "none"; // Hide the score display
+    userScoreDisplay.style.display = "none"; // Hide the user score display
+}
+
+function restartGame() {
+    location.reload();
+}
+
+setInterval(createFallingObject, 1000);
+setInterval(updatePlayerPosition, 10); // Update the player's position smoothly every 10ms
+
+const canvas = document.getElementById("starCanvas");
 const ctx = canvas.getContext("2d");
 
 canvas.width = window.innerWidth;
@@ -229,6 +260,57 @@ window.addEventListener("resize", () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 });
+let touchEndX = 0;
+let touchThreshold = 30; // Քանի պիքսել պետք է շարժվի, որ շարժումը հաշվվի որպես swipe
+
+document.addEventListener("touchstart", (e) => {
+    touchStartX = e.touches[0].clientX;
+});
+
+document.addEventListener("touchmove", (e) => {
+    touchEndX = e.touches[0].clientX;
+});
+
+document.addEventListener("touchend", () => {
+    let diffX = touchEndX - touchStartX;
+
+    if (Math.abs(diffX) > touchThreshold) {
+        if (diffX > 0) {
+            // Շարժվում է աջ
+            velocity = 5;
+        } else {
+            // Շարժվում է ձախ
+            velocity = -5;
+        }
+    }
+});
+container.addEventListener("touchstart", (e) => {
+    touchStartX = e.touches[0].clientX;
+    playerStartX = player.offsetLeft; // Պահում ենք խաղացողի սկզբնական դիրքը
+});
+
+container.addEventListener("touchmove", (e) => {
+    let touchX = e.touches[0].clientX;
+    let deltaX = touchX - touchStartX; // Հաշվում ենք փոփոխությունը
+    
+    let newPlayerPos = playerStartX + deltaX; // Նոր դիրքը
+
+    // Վերահսկում ենք, որ խաղացողը չանցնի սահմաններից
+    newPlayerPos = Math.max(0, Math.min(container.clientWidth - player.clientWidth, newPlayerPos));
+
+    player.style.left = newPlayerPos + "px";
+});
+document.addEventListener("touchend", () => {
+    let diffX = touchEndX - touchStartX;
+
+    if (Math.abs(diffX) > touchThreshold) {
+        velocity = diffX > 0 ? 5 : -5;
+        setTimeout(() => {
+            velocity = 0;
+        }, 200); // 200ms հետո կանգնում է
+    }
+});
+
 
     </script>
 </body>
