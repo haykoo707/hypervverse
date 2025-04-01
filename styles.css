@@ -43,6 +43,7 @@ background-color: black;
   padding: 10px;
   background: #000000;
   border-bottom: 1px solid #000000;
+  
 }
 
 
@@ -55,11 +56,13 @@ font-size: 14px;
 position: absolute;
 left: 50%;
 transform: translateX(-50%);
+
 }
 
 .top-bar .score span {
-  color: #22c5f2;
+  color: #00d0ff;
   font-weight: bold;
+  
 }
 /* Tabs */
 /* Tabs կոնտեյներ */
@@ -157,6 +160,8 @@ height: 100%;
   align-items: center;
   justify-content: space-between;
   transition: background 0.2s;
+  box-shadow: 0 0 6px #00d0ff;
+
 }
 .task-item:hover {
   background: #1a1a1a;
@@ -167,7 +172,7 @@ height: 100%;
   gap: 10px;
 }
 .task-icon {
-  width: 32px;
+  width: 33px;
   height: 32px;
   background: #333;
   border-radius: 50%;
@@ -300,6 +305,8 @@ background: #22c5f2;
   padding: 20px;
   text-align: center;
   margin-bottom: 15px;
+  box-shadow: 0 0 16px #00d0ff;
+
 }
 
 .play-card {
@@ -505,7 +512,6 @@ left: 0;}
 width: 48px; /* Կամ ցանկացած հարմար չափ */
 height: 48px;
 }
-
 
 .play-btn {
   background: rgba(0, 0, 0, 0.7);
