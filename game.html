@@ -1,316 +1,158 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hy">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>Catch the Ball Game</title>
     <style>
-        body {
-            text-align: center;
-            font-family: Arial, sans-serif;
-            background-color: #ffffff;
+        body { 
+            display: flex; justify-content: center; align-items: center; 
+            height: 100vh; background: #f0f0f0; margin: 0;
         }
         #gameContainer {
-            width: 90vw;
-            height: 70vh;
-            max-width: 400px;
-            max-height: 500px;
-            border: 3px solid black;
-            margin: auto;
             position: relative;
+            width: 100%;
+            height: 100%;
+            background: rgb(0, 0, 0);
             overflow: hidden;
-            background-color: white;
+            box-shadow: 0 0 10px rgba(55, 222, 255, 0.3);
         }
-        #player {
-            width: 45px;
-            height: 90px;
-            background: #00d0ff;
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-radius: 10%;
-            transition: left 0.1s ease-in-out;
+        #score, #userScore { 
+            position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+            font-size: 24px; color: rgb(255, 255, 255); font-weight: bold;
         }
-        .fallingObject {
-            width: 30px;
-            height: 30px;
-            background: red;
-            position: absolute;
-            top: 0;
-            border-radius: 50%;
-            animation: fall linear;
+        #userScore {
+            top: 40px;
+            font-size: 18px;
         }
-        @keyframes fall {
-            from { transform: translateY(0); }
-            to { transform: translateY(100vh); }
-        }
-        #gameOverPopup {
-            position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 150px;
-  background: rgba(0, 0, 0, 0.85);
-  color: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 15px #00d0ff;
-  text-align: center;
-  display: none; /* Initially hidden */
-        }
-        canvas {
-position: fixed;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-}
-@keyframes shake {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  50% { transform: translateX(5px); }
-  75% { transform: translateX(-5px); }
-  100% { transform: translateX(0); }
-}
-.glow {
-  animation: shake 2.8s ease infinite;
-  
-  text-align: center;
-  font-size: 1.7em;
-  text-shadow: 0 0 10px #393939, 0 0 25px #858585;
+        canvas { display: block; }
 
+
+        .custom-button {
+    padding: 12px 24px;
+    font-size: 12px;
+    color: white;
+    background-color: #00d0ff;
+    border: none;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+    position: absolute;
+    top: 1%;
+    left: 1%;
 }
-.restart{
-    margin-top: 15px;
-  padding: 10px 20px;
-  background: #00d0ff;
-  border: none;
-  color: rgb(0, 0, 0);
-  font-size: 14px;
-  border-radius: 5px;
-  transition: 0.3s;
+
+.custom-button:hover {
+    background-color: #439eff;
 }
-#backButton {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background-color: #00d0ff;
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-       
+
     </style>
 </head>
 <body>
-    
-    
-    <canvas id="starCanvas"></canvas>
-    <a href="index.html">
-        <button id="backButton">Back</button>
-      </a>
-
-    <h2 class="glow">HyperVerse🛸</h2>
     <div id="gameContainer">
-        <div id="player"></div>
-    </div>
-    <p>Score: <span id="score">0</span></p>
-    <p>User Score: <span id="userScore">0</span></p>
-    <div id="gameOverPopup">
-        <h3>Game Over</h3>
-        <button class="restart" onclick="restartGame()">Restart</button>
+        <div id="score">Score: 0</div>
+        <div id="userScore">Total Score: 0</div>
+        <canvas id="gameCanvas" width="400" height="600"></canvas>
+        <button class="custom-button" onclick="window.location.href='index.html'">
+            Back
+        </button>    
     </div>
     <script>
-      let player = document.getElementById("player");
-let container = document.getElementById("gameContainer");
-let scoreDisplay = document.getElementById("score");
-let userScoreDisplay = document.getElementById("userScore");
-let gameOverPopup = document.getElementById("gameOverPopup");
-let playerPos = container.clientWidth / 2 - 25;
-let score = 0;
-let userScore = localStorage.getItem("userScore") || 0;
-let gameOverFlag = false; // New variable to track if the game is over
-userScoreDisplay.textContent = userScore;
-
-let touchStartX = 0;
-let velocity = 0; // New variable for velocity (smoothness)
-let friction = 0.1; // Adjust this value for more/less smoothness
-let maxSpeed = 5; // Maximum speed of the player
-
-container.addEventListener("touchstart", (e) => {
-    touchStartX = e.touches[0].clientX;
-});
-
-container.addEventListener("touchmove", (e) => {
-    if (gameOverFlag) return; // Stop player movement if the game is over
-
-    let touchX = e.touches[0].clientX;
-    let deltaX = touchX - touchStartX;
-
-    // Update velocity based on the touch movement
-    velocity += deltaX * 0.5;
-    velocity = Math.max(-maxSpeed, Math.min(maxSpeed, velocity)); // Limit the speed
-
-    touchStartX = touchX;
-});
-
-// Update the player's position smoothly
-function updatePlayerPosition() {
-    if (gameOverFlag) return;
-
-    playerPos += velocity; // Move the player by the current velocity
-
-    // Apply friction to gradually reduce speed
-    velocity *= (1 - friction);
-
-    // Ensure the player stays within the container bounds
-    playerPos = Math.max(0, Math.min(container.clientWidth - 50, playerPos));
-
-    player.style.left = playerPos + "px";
-}
-
-function createFallingObject() {
-    if (gameOverFlag) return; // Stop creating falling objects if the game is over
-
-    let obj = document.createElement("div");
-    obj.classList.add("fallingObject");
-    obj.style.left = Math.random() * (container.clientWidth - 30) + "px";
-    container.appendChild(obj);
-    obj.style.animationDuration = Math.random() * 2 + 2 + "s";
-
-    let fallInterval = setInterval(() => {
-        let objRect = obj.getBoundingClientRect();
-        let playerRect = player.getBoundingClientRect();
-
-        if (objRect.bottom >= playerRect.top && objRect.left > playerRect.left - 30 && objRect.right < playerRect.right + 30) {
-            score++;
-            userScore++;  // Increase both score and userScore
-            scoreDisplay.textContent = score;
-            userScoreDisplay.textContent = userScore;
-            localStorage.setItem("userScore", userScore);  // Store updated userScore
-            obj.remove();
-            clearInterval(fallInterval);
-        }
-        if (objRect.top > container.clientHeight) {
-            gameOver();
-            obj.remove();
-            clearInterval(fallInterval);
-        }
-    }, 10);
-}
-
-function gameOver() {
-    gameOverFlag = true; // Set game over flag to true
-    gameOverPopup.style.display = "block"; // Display the game over popup
-    container.style.display = "none"; // Hide the game container
-    scoreDisplay.style.display = "none"; // Hide the score display
-    userScoreDisplay.style.display = "none"; // Hide the user score display
-}
-
-function restartGame() {
-    location.reload();
-}
-
-setInterval(createFallingObject, 1000);
-setInterval(updatePlayerPosition, 10); // Update the player's position smoothly every 10ms
-
-const canvas = document.getElementById("starCanvas");
+       const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
+const scoreDisplay = document.getElementById("score");
+const userScoreDisplay = document.getElementById("userScore");
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+let box, balls, score, gameOver, touchX;
 
-const stars = [];
-const numStars = 333;
+// Ստանալ userScore-ը Local Storage-ից (եթե չկա, նշանակել 0)
+let userScore = localStorage.getItem("userScore") ? parseInt(localStorage.getItem("userScore")) : 0;
+userScoreDisplay.innerText = "Total Score: " + userScore;
 
-for (let i = 0; i < numStars; i++) {
-    stars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        radius: Math.random() * 2,
-        speed: Math.random() * 0.4 + 0.2,
-    });
+function resetGame() {
+    box = { x: 175, y: 550, width: 50, height: 10 };
+    balls = [];
+
+    // Ստեղծել 5 գնդակ
+    for (let i = 0; i < 2; i++) {
+        balls.push({
+            x: Math.random() * 380,
+            y: Math.random() * -500,
+            radius: 10,
+            speed: Math.random() * 1 + 3
+        });
+    }
+
+    score = 0;
+    gameOver = false;
+    scoreDisplay.innerText = "Score: 0";
+    updateGame();
 }
 
-function drawStars() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "black";
+function drawBox() {
+    ctx.fillStyle = "red";
+    ctx.fillRect(box.x, box.y, box.width, box.height);
+}
 
-    stars.forEach((star) => {
+function drawBalls() {
+    ctx.fillStyle = "#7bb6ff";
+    balls.forEach(ball => {
         ctx.beginPath();
-        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
         ctx.fill();
+    });
+}
 
-        star.y += star.speed;
-        if (star.y > canvas.height) {
-            star.y = 0;
-            star.x = Math.random() * canvas.width;
+function updateGame() {
+    if (gameOver) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawBox();
+    drawBalls();
+
+    balls.forEach(ball => {
+        ball.y += ball.speed;
+
+        // Ստուգել՝ գնդակը հասել է ներքևի սահմանին
+        if (ball.y > 900) {
+            gameOver = true;
+            ctx.fillStyle = "white";
+            ctx.font = "24px Arial";
+            ctx.fillText("Game Over! Restarting...", 45, 200);
+            setTimeout(resetGame, 2000);
+            return;
+        }
+
+        // Ստուգել՝ արդյոք գնդակը դիպչել է տուփին
+        if (ball.y + ball.radius >= box.y && ball.x > box.x && ball.x < box.x + box.width) {
+            score++;
+            scoreDisplay.innerText = "Score: " + score;
+            
+            // Թարմացնել userScore-ը Local Storage-ում
+            userScore++;
+            localStorage.setItem("userScore", userScore);
+            userScoreDisplay.innerText = "Total Score: " + userScore;
+
+            ball.y = 0;
+            ball.x = Math.random() * 380;
         }
     });
 
-    requestAnimationFrame(drawStars);
+    requestAnimationFrame(updateGame);
 }
 
-drawStars();
-
-window.addEventListener("resize", () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-});
-let touchEndX = 0;
-let touchThreshold = 30; // Քանի պիքսել պետք է շարժվի, որ շարժումը հաշվվի որպես swipe
-
-document.addEventListener("touchstart", (e) => {
-    touchStartX = e.touches[0].clientX;
+canvas.addEventListener("touchstart", (e) => {
+    touchX = e.touches[0].clientX;
 });
 
-document.addEventListener("touchmove", (e) => {
-    touchEndX = e.touches[0].clientX;
-});
-
-document.addEventListener("touchend", () => {
-    let diffX = touchEndX - touchStartX;
-
-    if (Math.abs(diffX) > touchThreshold) {
-        if (diffX > 0) {
-            // Շարժվում է աջ
-            velocity = 5;
-        } else {
-            // Շարժվում է ձախ
-            velocity = -5;
-        }
-    }
-});
-container.addEventListener("touchstart", (e) => {
-    touchStartX = e.touches[0].clientX;
-    playerStartX = player.offsetLeft; // Պահում ենք խաղացողի սկզբնական դիրքը
-});
-
-container.addEventListener("touchmove", (e) => {
-    let touchX = e.touches[0].clientX;
-    let deltaX = touchX - touchStartX; // Հաշվում ենք փոփոխությունը
+canvas.addEventListener("touchmove", (e) => {
+    let moveX = e.touches[0].clientX - touchX;
+    box.x += moveX;
+    touchX = e.touches[0].clientX;
     
-    let newPlayerPos = playerStartX + deltaX; // Նոր դիրքը
-
-    // Վերահսկում ենք, որ խաղացողը չանցնի սահմաններից
-    newPlayerPos = Math.max(0, Math.min(container.clientWidth - player.clientWidth, newPlayerPos));
-
-    player.style.left = newPlayerPos + "px";
-});
-document.addEventListener("touchend", () => {
-    let diffX = touchEndX - touchStartX;
-
-    if (Math.abs(diffX) > touchThreshold) {
-        velocity = diffX > 0 ? 5 : -5;
-        setTimeout(() => {
-            velocity = 0;
-        }, 200); // 200ms հետո կանգնում է
-    }
+    if (box.x < 0) box.x = 0;
+    if (box.x + box.width > 400) box.x = 400 - box.width;
 });
 
+resetGame();
 
     </script>
 </body>

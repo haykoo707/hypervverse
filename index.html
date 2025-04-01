@@ -99,16 +99,6 @@
   </a>
     </div>
 </div>
-<div id="gameArea" class="hidden">
-  <div id="ball"></div>
-  <audio id="clickSound" src="pop-39222.mp3"></audio> 
-
-  <div id="score">Score: 0</div>
-  <button class="close-btn ">X</button>
-  <div id="gameArea" class="hidden">
-      <div id="ball"></div>
-  </div>
-</div>
 
 
 <div class="loading-screen" id="loadingScreen">
@@ -121,11 +111,7 @@
 <h1 class="loadingh1">ʜʏᴘᴇʀᴠᴇʀꜱᴇ
 </h1>
   </div>
-  <!-- Popup -->
-<div id="popup" class="popup-container">
-  <p id="popup-message">Restart the game❗ Your score is <span id="final-score"></span></p>
-  <button id="ok-button" class="popup-btn">OK</button>
-</div>
+ 
 <!-- Popup-ի կոնտեյներ -->
 <div id="popup" class="popup-container hidden">
   <div class="popup-content">
@@ -224,7 +210,6 @@
    
     const playButton = document.querySelector('.play-btn');
 const closeButton = document.querySelector('.close-btn');
-const gameArea = document.getElementById('gameArea');
 const ball = document.getElementById('ball');
 const scoreDisplay = document.getElementById('score');
 // Ստեղծում ենք bonus էլեմենտը
@@ -236,132 +221,13 @@ const questCooldownKey = "dailyQuestCooldown";
 const userScoreKey = "userScore"; // 🔥 Պահում ենք score Local Storage-ում
 
 
-// Կարգավորում ենք նկարը CSS-ի միջոցով
-bonus.style.width = '45px';
-bonus.style.height = '45px';
-bonus.style.backgroundImage = 'url("inverted_image.png")';
-bonus.style.backgroundSize = 'cover';
 
-gameArea.appendChild(bonus);
-
-
-bonus.classList.add('hidden');
-gameArea.appendChild(bonus);
-
-// Ավելացնում ենք ձայնային տարրը
-let bonusSound = new Audio('game-bonus-144751.mp3'); // Նշիր ձայնային ֆայլի ճիշտ անունը
-
-// Ավելացնում ենք event listener, որ սեղմելիս ձայն նվագարկվի
-bonus.addEventListener('click', function () {
-    bonusSound.play();
-});
 
 
 let score = 0;
 let userScore = localStorage.getItem('userScore') ? parseInt(localStorage.getItem('userScore')) : 0;
-let speed = 1000; // Initial speed in milliseconds
-let gameInterval;
-let ballClickable = true;
-
-playButton.addEventListener('click', startGame);
-closeButton.addEventListener('click', closeGame);
-bonus.addEventListener('click', collectBonus);
- document.getElementById("ball").addEventListener("click", function() {
-            document.getElementById("clickSound").play();
-        });
-
-function startGame() {
-    playButton.classList.add('hidden');
-    closeButton.classList.remove('hidden');
-    gameArea.classList.remove('hidden');
-    score = 0;
-    speed = 1000; // Reset speed on new game start
-    ballClickable = true;
-    updateScoreDisplay();
-    moveBall();
-}
-
-function moveBall() {
-    if (gameInterval) clearInterval(gameInterval);
-    
-    gameInterval = setInterval(() => {
-        const x = Math.random() * (gameArea.clientWidth - 30);
-        const y = Math.random() * (gameArea.clientHeight - 30);
-        ball.style.left = `${x}px`;
-        ball.style.top = `${y}px`;
-        ballClickable = true; // Reset clickability when ball moves
-    }, speed);
-}
-
-ball.addEventListener('click', () => {
-    if (!ballClickable) return; // Prevent multiple clicks
-    
-    score += 1; // Increase score by 1 on each click
-    userScore += 1; // Also increase userScore for localStorage
-    localStorage.setItem('userScore', userScore);
-    updateScoreDisplay(); // Update the score display
-    ballClickable = false; // Disable further clicks until it moves
-
-    if (score % 10 === 0) {
-        showBonus();
-    }
-
-    if (score % 15 === 0) {
-        speed = Math.max(200, speed - 100); // Decrease interval time, minimum 200ms
-        moveBall(); // Restart interval with new speed
-    }
-});
-
-function updateScoreDisplay() {
-    scoreDisplay.textContent = `🌟 ${score}`;
-}
-
-function showBonus() {
-    bonus.classList.remove('hidden');
-    moveBonus();
-    
-    let bonusInterval = setInterval(moveBonus, 1000);
-    
-    setTimeout(() => {
-        clearInterval(bonusInterval);
-        bonus.classList.add('hidden');
-    }, 3000); // Hide bonus after 3 seconds if not collected
-}
-
-function moveBonus() {
-    const x = Math.random() * (gameArea.clientWidth - 50);
-    const y = Math.random() * (gameArea.clientHeight - 50);
-    bonus.style.left = `${x}px`;
-    bonus.style.top = `${y}px`;
-}
-
-function collectBonus() {
-    score += 50;
-    userScore += 50;
-    localStorage.setItem('userScore', userScore);
-    updateScoreDisplay();
-    bonus.classList.add('hidden');
-}
-
-function closeGame() {
-    clearInterval(gameInterval); // Stop the game interval
-    gameArea.classList.add('hidden'); // Hide the game area
-    playButton.classList.remove('hidden'); // Show the play button
-    closeButton.classList.add('hidden'); // Hide the close button
-
-    // Show popup instead of alert
-    document.getElementById("final-score").innerText = userScore;
-    document.getElementById("popup").style.display = "block";
-}
-
-// Close popup on "OK" button click
-document.getElementById("ok-button").addEventListener("click", function() {
-    document.getElementById("popup").style.display = "none";
-});
-
 
         
-   
       const TASKS_VERSION = "v13"; // Նոր task ավելացնելիս փոխիր այս տարբերակը
 
 let tasks = [
