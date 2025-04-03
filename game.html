@@ -44,36 +44,85 @@
 .custom-button:hover {
     background-color: #439eff;
 }
-
+canvas {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+}
     </style>
 </head>
 <body>
+
     <div id="gameContainer">
-        <div id="score">Score: 0</div>
-        <div id="userScore">Total Score: 0</div>
-        <canvas id="gameCanvas" width="400" height="600"></canvas>
+        <div id="score">🌟 0</div>
+        <div id="userScore">Total 🌟 0</div>
+        <canvas id="starCanvas" width="100%" height="100%"></canvas>
         <button class="custom-button" onclick="window.location.href='index.html'">
             Back
         </button>    
     </div>
     <script>
-       const canvas = document.getElementById("gameCanvas");
-const ctx = canvas.getContext("2d");
+      
 const scoreDisplay = document.getElementById("score");
 const userScoreDisplay = document.getElementById("userScore");
+const canvas = document.getElementById("starCanvas");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const stars = [];
+const numStars = 188;
+
+for (let i = 0; i < numStars; i++) {
+    stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 2,
+        speed: Math.random() * 0.1 + 0.1,
+    });
+}
+
+function drawStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "white";
+
+    stars.forEach((star) => {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fill();
+
+        star.y += star.speed;
+        if (star.y > canvas.height) {
+            star.y = 0;
+            star.x = Math.random() * canvas.width;
+        }
+    });
+
+    requestAnimationFrame(drawStars);
+}
+
+drawStars();
+
+window.addEventListener("resize", () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
 
 let box, balls, score, gameOver, touchX;
 
 // Ստանալ userScore-ը Local Storage-ից (եթե չկա, նշանակել 0)
 let userScore = localStorage.getItem("userScore") ? parseInt(localStorage.getItem("userScore")) : 0;
-userScoreDisplay.innerText = "Total Score: " + userScore;
+userScoreDisplay.innerText = "Total 🌟 " + userScore;
 
 function resetGame() {
-    box = { x: 175, y: 550, width: 88, height: 11, };
+    box = { x: 170, y: 850, width: 90, height: 11, };
     balls = [];
 
-    // Ստեղծել 5 գնդակ
-    for (let i = 0; i < 2; i++) {
+    // Ստեղծել xx գնդակ
+    for (let i = 0; i < 3; i++) {
         balls.push({
             x: Math.random() * 380,
             y: Math.random() * -500,
@@ -84,7 +133,7 @@ function resetGame() {
 
     score = 0;
     gameOver = false;
-    scoreDisplay.innerText = "Score: 0";
+    scoreDisplay.innerText = "🌟 0";
     updateGame();
 }
 
@@ -124,15 +173,15 @@ function updateGame() {
         // Ստուգել՝ արդյոք գնդակը դիպչել է տուփին
         if (ball.y + ball.radius >= box.y && ball.x > box.x && ball.x < box.x + box.width) {
             score++;
-            scoreDisplay.innerText = "Score: " + score;
+            scoreDisplay.innerText = "🌟 " + score;
             
             // Թարմացնել userScore-ը Local Storage-ում
             userScore++;
             localStorage.setItem("userScore", userScore);
-            userScoreDisplay.innerText = "Total Score: " + userScore;
+            userScoreDisplay.innerText = "Total 🌟 " + userScore;
 
             ball.y = 0;
-            ball.x = Math.random() * 380;
+            ball.x = Math.random() * 180;
         }
     });
 
