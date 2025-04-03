@@ -118,7 +118,7 @@ let userScore = localStorage.getItem("userScore") ? parseInt(localStorage.getIte
 userScoreDisplay.innerText = "Total 🌟 " + userScore;
 
 function resetGame() {
-    box = { x: 170, y: 850, width: 90, height: 11, };
+    box = { x: 170, y: 650, width: 90, height: 11, };
     balls = [];
 
     // Ստեղծել xx գնդակ
@@ -143,11 +143,9 @@ function drawBox() {
 }
 
 function drawBalls() {
-    ctx.fillStyle = "#7bb6ff";
+    ctx.font = "20px Arial"; // Սահմանում ենք font-ի չափը
     balls.forEach(ball => {
-        ctx.beginPath();
-        ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.fillText("⭐", ball.x - 10, ball.y + 10); // Տեղադրում ենք emoji-ն
     });
 }
 
