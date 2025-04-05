@@ -51,11 +51,25 @@ left: 0;
 width: 100%;
 height: 100%;
 }
+#timer {
+    position: absolute;
+    top: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 18px;
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+}
+
     </style>
 </head>
 <body>
-
+ 
     <div id="gameContainer">
+        <audio id="beep" src="short-beep-tone-47916.mp3"></audio>
+        <audio id="boom" src="explosion-under-snow-sfx-230505.mp3"></audio>
+        <audio id="starSound" src="pop-39222.mp3" preload="auto"></audio>
+        <div id="timer">⏱ 30</div>
         <div id="score">🌟 0</div>
         <div id="userScore">Total 🌟 0</div>
         <canvas id="starCanvas" width="100%" height="100%"></canvas>
@@ -64,143 +78,242 @@ height: 100%;
         </button>    
     </div>
     <script>
-      
-const scoreDisplay = document.getElementById("score");
-const userScoreDisplay = document.getElementById("userScore");
-const canvas = document.getElementById("starCanvas");
-const ctx = canvas.getContext("2d");
+        const scoreDisplay = document.getElementById("score");
+        const userScoreDisplay = document.getElementById("userScore");
+        const canvas = document.getElementById("starCanvas");
+        const ctx = canvas.getContext("2d");
+        const timerDisplay = document.getElementById("timer");
+        const boomSound = document.getElementById("boom");
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+        let timeLeft = 30;
+        let countdownInterval;
 
-const stars = [];
-const numStars = 188;
-
-for (let i = 0; i < numStars; i++) {
-    stars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        radius: Math.random() * 2,
-        speed: Math.random() * 0.1 + 0.1,
-    });
-}
-
-function drawStars() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "white";
-
-    stars.forEach((star) => {
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-        ctx.fill();
-
-        star.y += star.speed;
-        if (star.y > canvas.height) {
-            star.y = 0;
-            star.x = Math.random() * canvas.width;
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const stars = [];
+        const numStars = 188;
+        
+        for (let i = 0; i < numStars; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 2,
+                speed: Math.random() * 0.1 + 0.1,
+            });
         }
-    });
-
-    requestAnimationFrame(drawStars);
-}
-
-drawStars();
-
-window.addEventListener("resize", () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-});
-
-let box, balls, score, gameOver, touchX;
-
-// Ստանալ userScore-ը Local Storage-ից (եթե չկա, նշանակել 0)
-let userScore = localStorage.getItem("userScore") ? parseInt(localStorage.getItem("userScore")) : 0;
-userScoreDisplay.innerText = "Total 🌟 " + userScore;
-
-function resetGame() {
-    box = { x: 170, y: 650, width: 90, height: 11, };
-    balls = [];
-
-    // Ստեղծել xx գնդակ
-    for (let i = 0; i < 3; i++) {
-        balls.push({
-            x: Math.random() * 380,
-            y: Math.random() * -500,
-            radius: 10,
-            speed: Math.random() * 1 + 3
+        
+        function drawStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "gray";
+        
+            stars.forEach((star) => {
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                ctx.fill();
+        
+                star.y += star.speed;
+                if (star.y > canvas.height) {
+                    star.y = 0;
+                    star.x = Math.random() * canvas.width;
+                }
+            });
+        
+            requestAnimationFrame(drawStars);
+        }
+        drawStars();
+        
+        window.addEventListener("resize", () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         });
+        
+        let box, balls, badBalls, score, gameOver, touchX;
+        let userScore = localStorage.getItem("userScore") ? parseInt(localStorage.getItem("userScore")) : 0;
+        userScoreDisplay.innerText = "Total 🌟 " + userScore;
+        
+        let gameTimer;
+        let showPopup = false;
+        
+        function createPopup() {
+            const popup = document.createElement("div");
+            popup.id = "popup";
+            popup.style.position = "fixed";
+            popup.style.top = "50%";
+            popup.style.left = "50%";
+            popup.style.transform = "translate(-50%, -50%)";
+            popup.style.background = "white";
+            popup.style.padding = "30px";
+            popup.style.borderRadius = "18px";
+            popup.style.boxShadow = "0 0 20px rgb(66, 236, 255);";
+            popup.style.textAlign = "center";
+            popup.innerHTML = `
+                <h2>⏱ Time is up!</h2>
+                <p>Your score՝ ${score}</p>
+                <button id="startBtn" style="padding:10px 20px; font-size:16px;background-color: #00d0ff;border: none;border-radius: 10px;transition: background-color 0.3s ease;">Start</button>
+            `;
+            document.body.appendChild(popup);
+document.getElementById("startBtn").addEventListener("click", () => {
+    location.reload(); // Էջը թարմացվում է ամբողջությամբ
+});
+        }
+        
+        function resetGame() {
+            box = { x: 170, y: 650, width: 90, height: 11 };
+            balls = [];
+            badBalls = [];
+            for (let i = 0; i < 3; i++) {
+                balls.push({
+                    x: Math.random() * 380,
+                    y: Math.random() * -500,
+                    radius: 10,
+                    speed: Math.random() * 1 + 3,
+                    type: "good"
+                });
+            }
+            for (let i = 0; i < 2; i++) {
+                badBalls.push({
+                    x: Math.random() * 380,
+                    y: Math.random() * -500,
+                    radius: 10,
+                    speed: Math.random() * 1 + 2,
+                    type: "bad"
+                });
+            }
+        
+            score = 0;
+            gameOver = false;
+            scoreDisplay.innerText = "🌟 0";
+        
+            clearTimeout(gameTimer);
+            gameTimer = setTimeout(() => {
+                gameOver = true;
+                createPopup();
+            }, 30000); // 30 վայրկյան
+        
+            updateGame();
+        }
+        
+        function drawBox() {
+            ctx.fillStyle = "red";
+            ctx.fillRect(box.x, box.y, box.width, box.height);
+        }
+        
+        function drawBalls() {
+            ctx.font = "20px Arial";
+            balls.forEach(ball => {
+                ctx.fillText("⭐", ball.x - 10, ball.y + 10);
+            });
+            badBalls.forEach(ball => {
+                ctx.fillText("💣", ball.x - 10, ball.y + 10);
+            });
+        }
+        
+        function updateGame() {
+            if (gameOver) return;
+        
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawBox();
+            drawBalls();
+        
+            balls.forEach(ball => {
+    ball.y += ball.speed;
+
+    // Եթե հասնում է ներքև՝ ուղարկում ենք վերևից նորից
+    if (ball.y > 900) {
+        ball.y = 0;
+        ball.x = Math.random() * 380;
     }
 
-    score = 0;
-    gameOver = false;
-    scoreDisplay.innerText = "🌟 0";
-    updateGame();
-}
+    if (ball.y + ball.radius >= box.y && ball.x > box.x && ball.x < box.x + box.width) {
+    score++;
+    scoreDisplay.innerText = "🌟 " + score;
+    userScore++;
+    localStorage.setItem("userScore", userScore);
+    userScoreDisplay.innerText = "Total 🌟 " + userScore;
 
-function drawBox() {
-    ctx.fillStyle = "red";
-    ctx.fillRect(box.x, box.y, box.width, box.height);
-}
+    document.getElementById("starSound").play(); // ⭐ Հնչում է ձայն
 
-function drawBalls() {
-    ctx.font = "20px Arial"; // Սահմանում ենք font-ի չափը
-    balls.forEach(ball => {
-        ctx.fillText("⭐", ball.x - 10, ball.y + 10); // Տեղադրում ենք emoji-ն
-    });
-}
-
-function updateGame() {
-    if (gameOver) return;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawBox();
-    drawBalls();
-
-    balls.forEach(ball => {
-        ball.y += ball.speed;
-
-        // Ստուգել՝ գնդակը հասել է ներքևի սահմանին
-        if (ball.y > 900) {
-            gameOver = true;
-            ctx.fillStyle = "white";
-            ctx.font = "24px Arial";
-            ctx.fillText("Game Over! Restarting...", 45, 200);
-            setTimeout(resetGame, 2000);
-            return;
-        }
-
-        // Ստուգել՝ արդյոք գնդակը դիպչել է տուփին
-        if (ball.y + ball.radius >= box.y && ball.x > box.x && ball.x < box.x + box.width) {
-            score++;
-            scoreDisplay.innerText = "🌟 " + score;
-            
-            // Թարմացնել userScore-ը Local Storage-ում
-            userScore++;
-            localStorage.setItem("userScore", userScore);
-            userScoreDisplay.innerText = "Total 🌟 " + userScore;
-
-            ball.y = 0;
-            ball.x = Math.random() * 180;
-        }
-    });
-
-    requestAnimationFrame(updateGame);
-}
-
-canvas.addEventListener("touchstart", (e) => {
-    touchX = e.touches[0].clientX;
+    ball.y = 0;
+    ball.x = Math.random() * 180;
+    }
 });
 
-canvas.addEventListener("touchmove", (e) => {
-    let moveX = e.touches[0].clientX - touchX;
-    box.x += moveX;
-    touchX = e.touches[0].clientX;
-    
-    if (box.x < 0) box.x = 0;
-    if (box.x + box.width > 400) box.x = 400 - box.width;
-});
+        
+            badBalls.forEach(ball => {
+                ball.y += ball.speed;
+                if (ball.y > 900) {
+                    ball.y = 0;
+                    ball.x = Math.random() * 380;
+                }
+        
+                if (ball.y + ball.radius >= box.y && ball.x > box.x && ball.x < box.x + box.width) {
+    boomSound.play(); // Բոմբի ձայն
+    score -= 10;
+    if (score < 0) score = 0;
+    scoreDisplay.innerText = "🌟 " + score;
+
+    ball.y = 0;
+    ball.x = Math.random() * 380;
+                }
+            });
+        
+            requestAnimationFrame(updateGame);
+        }
+        
+        canvas.addEventListener("touchstart", (e) => {
+            touchX = e.touches[0].clientX;
+        });
+        canvas.addEventListener("touchmove", (e) => {
+            let moveX = e.touches[0].clientX - touchX;
+            box.x += moveX;
+            touchX = e.touches[0].clientX;
+        
+            if (box.x < 0) box.x = 0;
+            if (box.x + box.width > 400) box.x = 400 - box.width;
+        });
+        document.addEventListener("keydown", (e) => {
+            const speed = 15;
+            if (e.key === "ArrowLeft") box.x -= speed;
+            if (e.key === "ArrowRight") box.x += speed;
+        
+            if (box.x < 0) box.x = 0;
+            if (box.x + box.width > 400) box.x = 400 - box.width;
+        });
+        
+        timeLeft = 30;
+timerDisplay.innerText = "⏱ " + timeLeft;
+
+clearInterval(countdownInterval);
+countdownInterval = setInterval(() => {
+    timeLeft--;
+    timerDisplay.innerText = "⏱ " + timeLeft;
+
+    if (timeLeft <= 0) {
+        clearInterval(countdownInterval);
+    }
+}, 1000);
+const beepSound = document.getElementById("beep");
+timeLeft = 30;
+timerDisplay.innerText = "⏱ " + timeLeft;
+timerDisplay.style.color = "white"; // Սկզբնական գույն
+
+clearInterval(countdownInterval);
+countdownInterval = setInterval(() => {
+    timeLeft--;
+    timerDisplay.innerText = "⏱ " + timeLeft;
+
+    // Վերջին 5 վայրկյանում գույն փոխենք ու հնչեցնենք beep
+    if (timeLeft <= 5) {
+        timerDisplay.style.color = "red";
+        beepSound.play(); // Հնչում է beep
+    }
+
+    if (timeLeft <= 0) {
+        clearInterval(countdownInterval);
+    }
+}, 1000);
 
 resetGame();
-
-    </script>
-</body>
-</html>
+        </script>
+        
