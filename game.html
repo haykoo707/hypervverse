@@ -19,22 +19,22 @@
         }
         #score, #userScore { 
             position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
-            font-size: 24px; color: rgb(255, 255, 255); font-weight: bold;
+            font-size: 20px; color: rgb(255, 255, 255); font-weight: bold;
         }
         #userScore {
             top: 40px;
-            font-size: 18px;
+            font-size: 16px;
         }
         canvas { display: block; }
 
 
         .custom-button {
-    padding: 12px 24px;
+    padding: 10px 18px;
     font-size: 12px;
-    color: white;
+    color: rgb(0, 0, 0);
     background-color: #00d0ff;
     border: none;
-    border-radius: 10px;
+    border-radius: 12px;
     transition: background-color 0.3s ease;
     position: absolute;
     top: 1%;
@@ -56,7 +56,7 @@ height: 100%;
     top: 70px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 18px;
+    font-size: 20px;
     color: rgb(255, 255, 255);
     font-weight: bold;
 }
@@ -67,8 +67,6 @@ height: 100%;
  
     <div id="gameContainer">
         <audio id="beep" src="short-beep-tone-47916.mp3"></audio>
-        <audio id="boom" src="explosion-under-snow-sfx-230505.mp3"></audio>
-        <audio id="starSound" src="pop-39222.mp3" preload="auto"></audio>
         <div id="timer">⏱ 30</div>
         <div id="score">🌟 0</div>
         <div id="userScore">Total 🌟 0</div>
@@ -83,7 +81,6 @@ height: 100%;
         const canvas = document.getElementById("starCanvas");
         const ctx = canvas.getContext("2d");
         const timerDisplay = document.getElementById("timer");
-        const boomSound = document.getElementById("boom");
 
         let timeLeft = 30;
         let countdownInterval;
@@ -136,21 +133,24 @@ height: 100%;
         let showPopup = false;
         
         function createPopup() {
-            const popup = document.createElement("div");
-            popup.id = "popup";
-            popup.style.position = "fixed";
-            popup.style.top = "50%";
-            popup.style.left = "50%";
-            popup.style.transform = "translate(-50%, -50%)";
-            popup.style.background = "white";
-            popup.style.padding = "30px";
-            popup.style.borderRadius = "18px";
-            popup.style.boxShadow = "0 0 20px rgb(66, 236, 255);";
-            popup.style.textAlign = "center";
+    const popup = document.createElement("div");
+    popup.id = "popup";
+    popup.style.position = "fixed";
+    popup.style.top = "50%";
+    popup.style.left = "50%";
+    popup.style.transform = "translate(-50%, -50%) scale(1)";
+    popup.style.background = "linear-gradient(145deg, #1e90ff, #63c2ff)";
+    popup.style.padding = "35px 40px";
+    popup.style.borderRadius = "20px";
+    popup.style.boxShadow = "0 10px 25px rgba(0, 0, 0, 0.3)";
+    popup.style.textAlign = "center";
+    popup.style.color = "white";
+    popup.style.fontFamily = "Arial, sans-serif";
+    popup.style.transition = "transform 0.3s ease";
             popup.innerHTML = `
                 <h2>⏱ Time is up!</h2>
                 <p>Your score՝ ${score}</p>
-                <button id="startBtn" style="padding:10px 20px; font-size:16px;background-color: #00d0ff;border: none;border-radius: 10px;transition: background-color 0.3s ease;">Start</button>
+                <button id="startBtn" style="padding:10px 20px; font-size:14px;background-color: white;border: none;border-radius: 10px;transition: background-color 0.3s ease;">Start</button>
             `;
             document.body.appendChild(popup);
 document.getElementById("startBtn").addEventListener("click", () => {
@@ -159,7 +159,7 @@ document.getElementById("startBtn").addEventListener("click", () => {
         }
         
         function resetGame() {
-            box = { x: 170, y: 650, width: 90, height: 11 };
+            box = { x: 170, y: 650, width: 100, height: 12 };
             balls = [];
             badBalls = [];
             for (let i = 0; i < 3; i++) {
@@ -167,7 +167,7 @@ document.getElementById("startBtn").addEventListener("click", () => {
                     x: Math.random() * 380,
                     y: Math.random() * -500,
                     radius: 10,
-                    speed: Math.random() * 1 + 3,
+                    speed: Math.random() * 1 + 4,
                     type: "good"
                 });
             }
@@ -195,17 +195,17 @@ document.getElementById("startBtn").addEventListener("click", () => {
         }
         
         function drawBox() {
-            ctx.fillStyle = "red";
+            ctx.fillStyle = "#00d0ff";
             ctx.fillRect(box.x, box.y, box.width, box.height);
         }
         
         function drawBalls() {
-            ctx.font = "20px Arial";
+            ctx.font = "25px Arial";
             balls.forEach(ball => {
                 ctx.fillText("⭐", ball.x - 10, ball.y + 10);
             });
             badBalls.forEach(ball => {
-                ctx.fillText("💣", ball.x - 10, ball.y + 10);
+                ctx.fillText("🪨", ball.x - 10, ball.y + 10);
             });
         }
         
@@ -232,7 +232,6 @@ document.getElementById("startBtn").addEventListener("click", () => {
     localStorage.setItem("userScore", userScore);
     userScoreDisplay.innerText = "Total 🌟 " + userScore;
 
-    document.getElementById("starSound").play(); // ⭐ Հնչում է ձայն
 
     ball.y = 0;
     ball.x = Math.random() * 180;
@@ -248,7 +247,6 @@ document.getElementById("startBtn").addEventListener("click", () => {
                 }
         
                 if (ball.y + ball.radius >= box.y && ball.x > box.x && ball.x < box.x + box.width) {
-    boomSound.play(); // Բոմբի ձայն
     score -= 10;
     if (score < 0) score = 0;
     scoreDisplay.innerText = "🌟 " + score;
