@@ -29,8 +29,8 @@
 
 
         .custom-button {
-    padding: 10px 18px;
-    font-size: 12px;
+    padding: 10px 14px;
+    font-size: 14px;
     color: rgb(0, 0, 0);
     background-color: #00d0ff;
     border: none;
@@ -39,6 +39,7 @@
     position: absolute;
     top: 1%;
     left: 1%;
+    font-weight: bold;
 }
 
 .custom-button:hover {
@@ -72,7 +73,7 @@ height: 100%;
         <div id="userScore">Total 🌟 0</div>
         <canvas id="starCanvas" width="100%" height="100%"></canvas>
         <button class="custom-button" onclick="window.location.href='index.html'">
-            Back
+            X
         </button>    
     </div>
     <script>
@@ -147,11 +148,13 @@ height: 100%;
     popup.style.color = "white";
     popup.style.fontFamily = "Arial, sans-serif";
     popup.style.transition = "transform 0.3s ease";
-            popup.innerHTML = `
-                <h2>⏱ Time is up!</h2>
-                <p>Your score՝ ${score}</p>
-                <button id="startBtn" style="padding:10px 20px; font-size:14px;background-color: white;border: none;border-radius: 10px;transition: background-color 0.3s ease;">Start</button>
-            `;
+    popup.innerHTML = `
+  <h2>⏱ Time is up!</h2>
+  <p>Your 🌟${score}</p>
+  <button id="startBtn" style="padding:10px 20px; font-size:14px; background-color: white; border: none; border-radius: 10px; transition: background-color 0.3s ease;">Start</button>
+`;
+
+                
             document.body.appendChild(popup);
 document.getElementById("startBtn").addEventListener("click", () => {
     location.reload(); // Էջը թարմացվում է ամբողջությամբ
