@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>About Us & FAQ - Hyperrverse</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #000000;
+      color: #f2f2f2;
+      line-height: 1.6;
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    h1, h2 {
+      color: #00d0ff;
+    }
+
+    .section {
+      margin-bottom: 40px;
+    }
+
+    .faq-item {
+      margin-bottom: 20px;
+    }
+
+    .faq-question {
+      font-weight: bold;
+      color: #ffd700;
+    }
+
+    .faq-answer {
+      margin-top: 5px;
+    }
+    .custom-button {
+    padding: 14px 22px;
+    font-size: 40px;
+    color: rgb(0, 0, 0);
+    background-color: #00d0ff;
+    border: none;
+    border-radius: 22px;
+    transition: background-color 0.3s ease;
+    position: absolute;
+    top: 1%;
+    right: 1%;
+    font-weight: bold;
+}
+canvas {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+}
+  </style>
+  
+</head>
+<body>
+    <canvas id="starCanvas"></canvas>
+
+    <body>
+
+        <div>
+          <button class="custom-button" onclick="window.location.href='index.html'">
+            ← Back to Game
+          </button>
+        </div>
+      
+        <!-- Մնացած About Us և FAQ բովանդակությունը այստեղ -->
+      
+  <div class="section" id="about">
+    <h1>About Us</h1>
+    <p>Welcome to <strong>Hyperrverse</strong>!</p>
+    <p>Hyperrverse is a fun and fast-paced Telegram Mini Game where players can compete, collect points, and climb the leaderboard. Built with passion by a solo developer, our goal is to bring a high-quality gaming experience right into your Telegram app.</p>
+    <p>We believe in transparency, fair play, and rewarding our most active players. Every score matters, and every player counts. Whether you're here to have fun or aim for the top, Hyperrverse is your new digital arena.</p>
+  </div>
+
+  <div class="section" id="faq">
+    <h2>FAQ (Frequently Asked Questions)</h2>
+
+    <div class="faq-item">
+      <div class="faq-question">1. What is Hyperrverse?</div>
+      <div class="faq-answer">Hyperrverse is a Telegram Mini App game where players catch items, earn points, and try to reach the top of the leaderboard.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">2. How do I start playing?</div>
+      <div class="faq-answer">Just open the bot <strong>@hyperrverse_bot</strong>, tap “Play”, and the game will launch instantly inside Telegram.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">3. Is it free to play?</div>
+      <div class="faq-answer">Yes! Hyperrverse is completely free to play. There are no required payments to participate or climb the leaderboard.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">4. Do I need to register?</div>
+      <div class="faq-answer">No registration is needed. However, you'll be asked to enter your TON Wallet address to receive any rewards or participate in special events.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">5. How are scores stored?</div>
+      <div class="faq-answer">Your score is automatically saved and connected to your Telegram account. We also store wallet and score data securely via our backend and Google Sheets integration.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">6. Is my data safe?</div>
+      <div class="faq-answer">Yes. We only collect what’s necessary: your Telegram ID, score, and TON Wallet address. We never share your data with third parties.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">7. How can I win rewards?</div>
+      <div class="faq-answer">Keep an eye on announcements in the bot. Top players on the leaderboard may be eligible for crypto rewards or exclusive in-game perks!</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">8. Who created Hyperrverse?</div>
+      <div class="faq-answer">Hyperrverse is created and maintained by <strong>Hayk</strong>, a developer passionate about blending gaming with Web3 technologies.</div>
+    </div>
+  </div>
+<script>    const canvas = document.getElementById("starCanvas");
+    const ctx = canvas.getContext("2d");
+    
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    const stars = [];
+    const numStars = 180;
+    
+    for (let i = 0; i < numStars; i++) {
+        stars.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: Math.random() * 2,
+            speed: Math.random() * 0.1 + 0.1,
+        });
+    }
+    
+    function drawStars() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "white";
+    
+        stars.forEach((star) => {
+            ctx.beginPath();
+            ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+            ctx.fill();
+    
+            star.y += star.speed;
+            if (star.y > canvas.height) {
+                star.y = 0;
+                star.x = Math.random() * canvas.width;
+            }
+        });
+    
+        requestAnimationFrame(drawStars);
+    }
+    
+    drawStars();
+    
+    window.addEventListener("resize", () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+    
+    </script>
+</body>
+</html>
