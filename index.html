@@ -524,7 +524,7 @@ renderTasks();
 <button class="tg-btn" onclick="window.open('https://t.me/HyperrVersee', '_blank')">Telegram Channel📢</button>
 <button class="x-btn" onclick="window.open('', '_blank')">X Channel📢</button>
 
-<button class="sp-btn" onclick="window.open('ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=10000000')">Support the project💵
+<button class="sp-btn"onclick="window.location.href='paymentsup.html'">Support the project💵
 </button>
 </a>
 </button>
@@ -680,13 +680,16 @@ renderTasks();
                 });
             });
         });
-  
+
+
+
         const canvas = document.getElementById("starCanvas");
 const ctx = canvas.getContext("2d");
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+// Աստղեր
 const stars = [];
 const numStars = 222;
 
@@ -699,10 +702,53 @@ for (let i = 0; i < numStars; i++) {
     });
 }
 
-function drawStars() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "gray";
+// 🔥 Մետեորների զանգված
+const meteors = [];
 
+const numMeteors = 2; // Կարող ես ավելացնել
+
+for (let i = 0; i < numMeteors; i++) {
+    meteors.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * -canvas.height, // տարբեր բարձրությունից
+        speedX: 1 + Math.random() * 1,
+        speedY: 1 + Math.random() * 1,
+        length: 50 + Math.random() * 30,
+        color: "white"
+    });
+}
+
+function drawMeteor(meteor) {
+    // Պոչը՝ gradient
+    ctx.beginPath();
+    let gradient = ctx.createLinearGradient(
+        meteor.x, meteor.y,
+        meteor.x - meteor.length, meteor.y - meteor.length
+    );
+    gradient.addColorStop(0, meteor.color);
+    gradient.addColorStop(1, "transparent");
+    ctx.strokeStyle = gradient;
+    ctx.lineWidth = 3;
+    ctx.moveTo(meteor.x, meteor.y);
+    ctx.lineTo(meteor.x - meteor.length, meteor.y - meteor.length);
+    ctx.stroke();
+
+    // Թարմացնում ենք դիրքը
+    meteor.x += meteor.speedX;
+    meteor.y += meteor.speedY;
+
+    // Եթե դուրս է գալիս էկրանից՝ վերադասցնել վերև
+    if (meteor.x > canvas.width || meteor.y > canvas.height) {
+        meteor.x = Math.random() * canvas.width;
+        meteor.y = -50;
+    }
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Աստղեր
+    ctx.fillStyle = "gray";
     stars.forEach((star) => {
         ctx.beginPath();
         ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
@@ -715,10 +761,13 @@ function drawStars() {
         }
     });
 
-    requestAnimationFrame(drawStars);
+    // Մետեորներ
+    meteors.forEach(drawMeteor);
+
+    requestAnimationFrame(draw);
 }
 
-drawStars();
+draw();
 
 window.addEventListener("resize", () => {
     canvas.width = window.innerWidth;

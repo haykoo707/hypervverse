@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="hy">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Պատուհան կոճակներ</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #000000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(2, 150px);
+      grid-gap: 20px;
+      justify-items: center;
+    }
+
+    .window-button {
+      width: 150px;
+      height: 150px;
+      background-color: #ffffff;
+      border: 2px solid #ccc;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .window-button:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+      background-color: #3dd8ff;
+    }
+
+    .supporttxt {
+      position: absolute;
+      top: 1%;
+      left: 50%;
+      transform: translateX(-50%);
+      color: white;
+      font-size: 24px;
+    }
+
+    @media screen and (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr 1fr;
+        width: 100%;
+        padding: 0 10px;
+      }
+
+      .window-button {
+        width: 100px;
+        height: 100px;
+        font-size: 14px;
+      }
+
+      .supporttxt {
+        font-size: 18px;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      .container {
+        grid-template-columns: 1fr;
+        padding: 0 5px;
+      }
+
+      .window-button {
+        width: 80px;
+        height: 80px;
+        font-size: 12px;
+      }
+
+      .supporttxt {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h2 class="supporttxt">Support HyperVerse</h2>
+  <div class="container">
+    <a href="ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=10000000" class="window-button" target="_blank">0․01 TON</a>
+    <a href="ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=100000000" class="window-button" target="_blank">0.1 TON</a>
+    <a href="ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=1000000000" class="window-button" target="_blank">1 TON</a>
+    <a href="ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=5000000000" class="window-button" target="_blank">5 TON</a>
+  </div>
+</body>
+</html>
