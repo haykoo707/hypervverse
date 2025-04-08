@@ -7,10 +7,32 @@
     <link rel="stylesheet" href="styles.css">
     <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/telegram-web-app/1.0.0/telegram-web-app.min.js"></script>
     <title>HyperVerse</title>
 <script>
-  const tg = window.Telegram.WebApp;
-  tg.expand(); // full screen
+const tg = window.Telegram.WebApp;
+
+// Վճռել, երբ WebApp-ը պատրաստ է
+tg.ready();
+
+// Ստանալ օգտատիրոջ տվյալները
+const user = tg.getUser();
+
+// Եթե տվյալները հասանելի են, ապա դրանք ցուցադրել
+if (user) {
+    document.getElementById("user-name").textContent = user.first_name || "Անուն չկա";
+    document.getElementById("user-id").textContent = user.id;
+    document.getElementById("user-username").textContent = user.username || "Չկա";
+    document.getElementById("user-language").textContent = user.language_code;
+    
+    if (user.photo_url) {
+        document.getElementById("user-photo").src = user.photo_url;
+    } else {
+        document.getElementById("user-photo").style.display = "none"; // Եթե նկարը չկա
+    }
+} else {
+    document.getElementById("user-info").textContent = "Օգտատիրոջ տվյալները չեն հասանելի";
+}
 </script>
 
 </head>
@@ -86,6 +108,12 @@
       <div id="profile" class="tab-content">
         <div class="profile-section">
           <div class="profile-info" id="profileInfo"></div>
+          <div id="user-info">
+            <p>Ձեր ID-ն: <span id="user-id">...</span></p>
+            <p>Ձեր Telegram անունը: <span id="user-username">...</span></p>
+            <p>Լեզու: <span id="user-language">...</span></p>
+            <p><img id="user-photo" src="" alt="User Photo" width="100" height="100"></p>
+        </div>
           <div id="connect" style="
           margin-top: 70px;  
         padding: 8px;
