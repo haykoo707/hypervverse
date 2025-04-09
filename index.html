@@ -9,16 +9,8 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <title>HyperVerse</title>
 <script>
-const tg = window.Telegram.WebApp;
-
-// Կոչում ենք setNavigationBarButtonText ֆունկցիան, որպեսզի կոճակի տեքստը դառնա "Վերադառնալ"
-tg.setNavigationBarButtonText("Վերադառնալ");
-
-// Մեկ այլ գործառույթ՝ օրինակ, կոճակը կտանի գլխավոր էկրանի վրա
-tg.onEvent('backPressed', function() {
-    console.log("Back button pressed, go back to main screen");
-});
-
+  const tg = window.Telegram.WebApp;
+  tg.expand(); // full screen
 </script>
 
 </head>
@@ -94,8 +86,6 @@ tg.onEvent('backPressed', function() {
       <div id="profile" class="tab-content">
         <div class="profile-section">
           <div class="profile-info" id="profileInfo"></div>
-          <div id="user-info">
-        </div>
           <div id="connect" style="
           margin-top: 70px;  
         padding: 8px;
@@ -134,6 +124,7 @@ tg.onEvent('backPressed', function() {
       <button id="popup-close">OK</button>
   </div>
 </div>
+
 <script>
     // Ստուգել, արդյոք կայքը բացված է Telegram-ի մեջ
     function checkTelegramContext() {
@@ -189,38 +180,6 @@ tg.onEvent('backPressed', function() {
 
   <script>
   
-  document.addEventListener("DOMContentLoaded", function () {
-    const tabs = document.querySelector(".tabs");
-    const playBtn = document.querySelector(".play-btn");
-    const closeBtn = document.querySelector(".close-btn");
-    const popupBtn = document.querySelector(".popup-btn");
-
-    // Խաղի մեկնարկի ժամանակ թաքցնում ենք tabs
-    if (playBtn) {
-        playBtn.addEventListener("click", function () {
-            tabs.classList.add("hidden");
-            tabs.classList.remove("visible"); // Չեզոքացնում ենք
-        });
-    }
-
-    function showTabs() {
-        if (tabs) {
-            tabs.classList.remove("hidden"); // Ցույց ենք տալիս
-            tabs.classList.add("visible");
-        }
-    }
-
-    if (closeBtn) {
-        closeBtn.addEventListener("click", showTabs);
-    }
-
-    if (popupBtn) {
-        popupBtn.addEventListener("click", showTabs);
-    }
-});
-
-
-
     // Օգտատիրոջ միավորները (հեռելով սկզբնական արժեքը localStorage-ից, եթե կան)
    
     const playButton = document.querySelector('.play-btn');
@@ -245,14 +204,14 @@ let userScore = localStorage.getItem('userScore') ? parseInt(localStorage.getIte
         
       const TASKS_VERSION = "v13"; // Նոր task ավելացնելիս փոխիր այս տարբերակը
 
-let tasks = [
+let  tasks = [
     {
         id: 1,
         title: 'Join HyperVerse Community',
         link: 'https://t.me/HyperrVersee',
         reward: 3500,
         status: 'pending',
-        claimAvailable: false,
+        claimAvailable: true,
         timerId: null,
         icon: '📢'
     },
@@ -294,6 +253,9 @@ let tasks = [
   
     
 ];
+
+
+
 // Պահպանում ենք `localStorage`-ում
 function saveState() {
     localStorage.setItem('userScore', userScore);
@@ -866,7 +828,9 @@ const tabImages = {
     // Օրինակ՝ playerLevel++ կամ skin բացվի
     console.log("Player upgraded!");
   }
+  
 </script>
-
 </body>
 </html>
+
+ <script src="phoneweb.js"></script>
