@@ -423,13 +423,12 @@ width: 100%;
         justify-content: center;
         align-items: center;
         transition: opacity 0.5s ease-out;        
-        background-image: url('Picsart_25-03-29_22-21-13-396.jpg');
+        background-image: url('Photos/Picsart_25-03-29_22-21-13-396.jpg');
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
                 
         
-
     }
     
 
@@ -851,17 +850,26 @@ strong {
 }
 
 
-.faq{
-   display: flex;
+
+.faq {
+  background-color: #ffffff;
+  display: flex;
   position: absolute;
   left: 50%; 
   transform: translateX(-50%);
   padding: 7px;
-  margin-top: 140px;
+  margin-top: 200px;
   font-size: 14px;
-  color: rgb(0, 0, 0);
-  background-color: #e2faff;
-  border: 3px solid #00d0ff;
+  padding: 10px 20px;
   border-radius: 14px;
-  font-size: bold;
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  display: inline-block;
+  transition: background 0.3s ease;
 }
+
+.faq:hover {
+  background-color: #ddd;
+}
+
