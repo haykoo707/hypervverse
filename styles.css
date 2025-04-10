@@ -423,7 +423,7 @@ width: 100%;
         justify-content: center;
         align-items: center;
         transition: opacity 0.5s ease-out;        
-        background-image: url('Photos/Picsart_25-03-29_22-21-13-396.jpg');
+        background-image: url('Picsart_25-03-29_22-21-13-396.jpg');
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
@@ -871,5 +871,56 @@ strong {
 
 .faq:hover {
   background-color: #ddd;
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translate(-50%, -100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  0% {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -100%);
+    opacity: 0;
+  }
+}
+
+.notification {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: fixed;
+  top: 30px;
+  left: 50%;
+  transform: translate(-50%, 0); /* Կենտրոնում հորիզոնական, 30px վերևից */
+  background-color: #2c2c2c;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  box-shadow: 0 6px 16px rgba(41, 41, 41, 0.4);
+  z-index: 9999;
+}
+
+.notification.hidden {
+  display: none;
+}
+
+.notification.animate-in {
+  animation: slideIn 0.5s ease forwards;
+}
+
+.notification.animate-out {
+  animation: slideOut 0.5s ease forwards;
 }
 

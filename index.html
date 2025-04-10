@@ -8,7 +8,7 @@
     <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3QW0MCBKEC"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -39,15 +39,15 @@
     <div class="tabs">
     </button>
     <button class="tab-button active" data-tab="play">
-<img src="Photos/Picsart_25-03-28_20-51-07-122.jpg" alt="play-xax" class="play-icon">
+<img src="Picsart_25-03-28_20-51-07-122.jpg" alt="play-xax" class="play-icon">
 </button>
       <button class="tab-button" data-tab="home">
-        <img src="Photos/Picsart_25-03-28_20-52-07-873.jpg" alt="Tasks" class="tasks-icon">
+        <img src="Picsart_25-03-28_20-52-07-873.jpg" alt="Tasks" class="tasks-icon">
         <button class="tab-button" data-tab="daily-reward">
-          <img src="Photos/Picsart_25-03-28_20-51-28-628.jpg" alt="Reward" class="reward-icon">
+          <img src="Picsart_25-03-28_20-51-28-628.jpg" alt="Reward" class="reward-icon">
 
       <button class="tab-button" data-tab="profile">
-        <img src="Photos/Picsart_25-03-28_20-52-49-352.jpg" alt="Profile" class="profile-icon">
+        <img src="Picsart_25-03-28_20-52-49-352.jpg" alt="Profile" class="profile-icon">
       </button>
     </div>
     <!-- Բովանդակության կոնտեյներ -->
@@ -109,7 +109,7 @@
      <!-- Play Tab -->
 <div id="play" class="tab-content active">
   <h2 class="glow">HyperVerse🛸</h2>
-  <a href="2rdakan/game.html">
+  <a href="game.html">
     <button class="play-btn">▶</button>
   </a>
     </div>
@@ -134,6 +134,14 @@
       <button id="popup-close">OK</button>
   </div>
 </div>
+<!-- Դրա համար տեղադրիր սա քո body-ի վերջում -->
+<div id="notification" class="notification hidden">
+  <span class="check">✔️</span>
+  <span>You got +100🌟</span>
+</div>
+
+<div id="notification" class="notification hidden"></div>
+<div id="notification" class="notification hidden"></div>
 
 <script>
     // Ստուգել, արդյոք կայքը բացված է Telegram-ի մեջ
@@ -212,7 +220,7 @@ let score = 0;
 let userScore = localStorage.getItem('userScore') ? parseInt(localStorage.getItem('userScore')) : 0;
 
         
-      const TASKS_VERSION = "v13"; // Նոր task ավելացնելիս փոխիր այս տարբերակը
+      const TASKS_VERSION = "v14"; // Նոր task ավելացնելիս փոխիր այս տարբերակը
 
 let  tasks = [
     {
@@ -246,22 +254,12 @@ let  tasks = [
         timerId: null,
         icon: '💬'
     },
-    {
-        id: 4,
-        title: 'Support the project',
-        link: 'payment.html',
-        reward: 1500,
-        status: 'pending',
-        claimAvailable: false,
-        timerId: null,
-        icon: '💸'
-    },
-
+ 
 
 
 
   
-    
+  
 ];
 
 
@@ -438,13 +436,14 @@ function handleClaim(taskId) {
         clearTimeout(task.timerId);
         task.timerId = null;
     }
+
+    // ✅ Ցուցադրում ենք նոտիֆիկացիան
+    showNotification(`You got +${task.reward}🌟`);
+
     renderTasks();
     saveState();
 }
 
-// Բեռնում ենք տվյալները
-loadState();
-renderTasks();
 
 
 
@@ -506,7 +505,7 @@ renderTasks();
 <button class="tg-btn" onclick="window.open('https://t.me/HyperrVersee', '_blank')">Telegram Channel📢</button>
 <button class="x-btn" onclick="window.open('', '_blank')">X Channel📢</button>
 
-<button class="sp-btn"onclick="window.location.href='2rdakan/paymentsup.html'">Support the project💵
+<button class="sp-btn"onclick="window.location.href='paymentsup.html'">Support the project💵
 </button>
 </a>
 </button>
@@ -524,7 +523,7 @@ renderTasks();
     <div class="circle"></div>
   </div>
 </button>
-<a href="2rdakan/faq.html" class="faq">❓ FAQ / About Us</a>
+<a href="faq.html" class="faq">❓ FAQ / About Us</a>
 
       `;
     }
@@ -617,13 +616,17 @@ renderTasks();
 
     // Claim-ի մշակում
     function handleDailyClaim() {
-      lastClaimTime = Date.now();
-      localStorage.setItem('lastClaimTime', lastClaimTime);
-      
-      userScore += 5000;
-      updateScore();
-      renderDailyReward();
-    }
+  lastClaimTime = Date.now();
+  localStorage.setItem('lastClaimTime', lastClaimTime);
+  
+  userScore += 5000;
+  updateScore();
+  renderDailyReward();
+
+  // Նոր ավելացված մաս
+  showNotification('+5000🌟 Claimed!');
+}
+
 
     // Ինիցիալիզացիա
     function initApp() {
@@ -664,7 +667,6 @@ renderTasks();
         });
 
 
-
         const canvas = document.getElementById("starCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -673,7 +675,7 @@ canvas.height = window.innerHeight;
 
 // Աստղեր
 const stars = [];
-const numStars = 222;
+const numStars = 242;
 
 for (let i = 0; i < numStars; i++) {
     stars.push({
@@ -681,22 +683,28 @@ for (let i = 0; i < numStars; i++) {
         y: Math.random() * canvas.height,
         radius: Math.random() * 2,
         speed: Math.random() * 0.2 + 0.1,
+        alpha: Math.random(),
+        alphaDirection: Math.random() < 0.5 ? -1 : 1
     });
 }
 
 // 🔥 Մետեորների զանգված
 const meteors = [];
 
-const numMeteors = 2; // Կարող ես ավելացնել
+const numMeteors = 3; // Կարող ես ավելացնել
+
+const colors = ["white","lightyellow"];
 
 for (let i = 0; i < numMeteors; i++) {
+    let speedScale = Math.random() < 0.2 ? 0.2 : 1; // դանդաղ կամ արագ մետեոր
+
     meteors.push({
         x: Math.random() * canvas.width,
         y: Math.random() * -canvas.height, // տարբեր բարձրությունից
-        speedX: 1 + Math.random() * 1,
-        speedY: 1 + Math.random() * 1,
+        speedX: (1 + Math.random()) * speedScale,
+        speedY: (1 + Math.random()) * speedScale,
         length: 50 + Math.random() * 30,
-        color: "white"
+        color: colors[Math.floor(Math.random() * colors.length)]
     });
 }
 
@@ -722,7 +730,7 @@ function drawMeteor(meteor) {
     // Եթե դուրս է գալիս էկրանից՝ վերադասցնել վերև
     if (meteor.x > canvas.width || meteor.y > canvas.height) {
         meteor.x = Math.random() * canvas.width;
-        meteor.y = -50;
+        meteor.y = -50, -40 , -10 ;
     }
 }
 
@@ -730,16 +738,24 @@ function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Աստղեր
-    ctx.fillStyle = "gray";
+    ctx.fillStyle = "gray", "white";
     stars.forEach((star) => {
         ctx.beginPath();
         ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
         ctx.fill();
 
+        // Փայլել
+        ctx.fillStyle = `rgba(200, 200, 200, ${star.alpha})`; // փայլը կախված alpha-ից
         star.y += star.speed;
         if (star.y > canvas.height) {
             star.y = 0;
             star.x = Math.random() * canvas.width;
+        }
+
+        // Փոփոխել alpha-ն
+        star.alpha += star.alphaDirection * 0.01;
+        if (star.alpha <= 0 || star.alpha >= 1) {
+            star.alphaDirection *= -1;
         }
     });
 
@@ -757,45 +773,49 @@ window.addEventListener("resize", () => {
 });
 
 function handleDailyQuest() {
-        const lastClaimTime = localStorage.getItem(questCooldownKey);
-        const now = new Date().getTime();
-        const cooldownTime = 24 * 60 * 60 * 1000; // 24 ժամ
+    const lastClaimTime = localStorage.getItem(questCooldownKey);
+    const now = new Date().getTime();
+    const cooldownTime = 24 * 60 * 60 * 1000; // 24 ժամ
 
-        if (lastClaimTime && now - lastClaimTime < cooldownTime) {
-            document.getElementById("questMessage").innerText = "❌ You can enter the code again in 24 hours!";
-            return;
-        }
-
-        const userCode = document.getElementById("dailyCodeInput").value;
-        if (userCode === dailyCode) {
-            document.getElementById("questMessage").innerText = "✅ Correct code! You earned +1500🌟!";
-            localStorage.setItem(questCooldownKey, now);
-
-            // Ավելացնել +1500 score
-            let currentScore = parseInt(localStorage.getItem(userScoreKey)) || 0;
-            currentScore += 1500;
-            localStorage.setItem(userScoreKey, currentScore);
-        } else {
-            document.getElementById("questMessage").innerText = "❌ Incorrect code! Try again.";
-        }
+    if (lastClaimTime && now - lastClaimTime < cooldownTime) {
+        document.getElementById("questMessage").innerText = "❌ You can enter the code again in 24 hours!";
+        return;
     }
+
+    const userCode = document.getElementById("dailyCodeInput").value;
+    if (userCode === dailyCode) {
+        document.getElementById("questMessage").innerText = "✅ Correct code! You earned +1500🌟!";
+        localStorage.setItem(questCooldownKey, now);
+
+        // Ավելացնել +1500 score
+        let currentScore = parseInt(localStorage.getItem(userScoreKey)) || 0;
+        currentScore += 1500;
+        localStorage.setItem(userScoreKey, currentScore);
+
+        // ✅ Ցուցադրել notification
+        showNotification('+1500🌟 Claimed!');
+    } else {
+        document.getElementById("questMessage").innerText = "❌ Incorrect code! Try again.";
+    }
+}
+
 // Պահպանենք սկզբնական նկարները և սեղմելուց հետո փոփոխվող նկարները
 const tabImages = {
         play: {
-            default: "Photos/Picsart_25-03-28_20-51-07-122.jpg",
-            active: "Photos/ChatGPT Image Mar 30, 2025, 03_34_08 PM.png"
+            default: "Picsart_25-03-28_20-51-07-122.jpg",
+            active: "ChatGPT Image Mar 30, 2025, 03_34_08 PM.png"
         },
         home: {
-            default: "Photos/Picsart_25-03-28_20-52-07-873.jpg",
-            active: "Photos/ChatGPT Image Mar 30, 2025, 03_34_12 PM.png"
+            default: "Picsart_25-03-28_20-52-07-873.jpg",
+            active: "ChatGPT Image Mar 30, 2025, 03_34_12 PM.png"
         },
         "daily-reward": {
-            default: "Photos/Picsart_25-03-28_20-51-28-628.jpg",
-            active: "Photos/ChatGPT Image Mar 30, 2025, 11_21_31 PM.png"
+            default: "Picsart_25-03-28_20-51-28-628.jpg",
+            active: "ChatGPT Image Mar 30, 2025, 11_21_31 PM.png"
         },
         profile: {
-            default: "Photos/Picsart_25-03-28_20-52-49-352.jpg",
-            active: "Photos/ChatGPT Image Mar 30, 2025, 03_34_04 PM.png"
+            default: "Picsart_25-03-28_20-52-49-352.jpg",
+            active: "ChatGPT Image Mar 30, 2025, 03_34_04 PM.png"
         },
       
 
@@ -838,9 +858,25 @@ const tabImages = {
     // Օրինակ՝ playerLevel++ կամ skin բացվի
     console.log("Player upgraded!");
   }
-  
+  function showNotification(message) {
+  const notification = document.getElementById('notification');
+  notification.textContent = message;
+  notification.classList.remove('hidden', 'animate-out');
+  notification.classList.add('animate-in');
+
+  setTimeout(() => {
+    notification.classList.remove('animate-in');
+    notification.classList.add('animate-out');
+    setTimeout(() => {
+      notification.classList.add('hidden');
+    }, 500);
+  }, 2000);
+}
+
+
+
 </script>
 </body>
 </html>
 
- <script src="phoneweb.js"></script>
+<!-- <script src="phoneweb.js"></script>
