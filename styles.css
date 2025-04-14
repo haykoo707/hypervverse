@@ -1,4 +1,7 @@
 
+@media only screen and (max-width: 768px) {}
+  /* Սա կաշխատի միայն հեռախոսների վրա */
+  
 
 .container {
 display: flex;
@@ -68,9 +71,13 @@ transform: translateX(-50%);
 /* Tabs կոնտեյներ */
 .tabs {
   display: flex;
-  justify-content: space-around;
+  align-items: center;
+  justify-content: center;
   background: #000000;
-  border-bottom: 1px solid #000000;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
 }
 
 /* Tab Button */
@@ -100,12 +107,15 @@ transform: translateX(-50%);
 
 /* Բովանդակության կոնտեյներ */
 .content {
-flex: 1;
-overflow-y: auto;
-background-color: #000;
-padding: 11px;
-border-radius: 10px;
-margin-top: 5px;}
+  flex: 1;
+  overflow-y: auto;
+  background-color: #000;
+  padding: 11px;
+  padding-bottom: 50px; /* Ավելացնում ենք տեղ tab-երի համար */
+  border-radius: 10px;
+  margin-top: 5px;
+}
+
 /* Թաքցնելու կարգավորում */
 .hidden {
   display: none !important;
