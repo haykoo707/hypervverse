@@ -949,3 +949,7 @@ strong {
 .tasks-icon:hover {
   transform: scale(1.1);
 }
+.task-icon img {
+  border-radius: 50%;
+  object-fit: cover;
+}

@@ -227,16 +227,17 @@ let userScore = localStorage.getItem('userScore') ? parseInt(localStorage.getIte
 
 // Սկզբնական tasks-երը
 const defaultTasks = [
-    {
-        id: 1,
-        title: 'Join HyperVerse Community',
-        link: 'https://t.me/HyperrVersee',
-        reward: 3500,
-        status: 'pending',
-        claimAvailable: true,
-        timerId: null,
-        icon: '📢'
-    },
+{
+    id: 1,
+    title: 'Join Telegram Channel',
+    icon: 'https://cdn-icons-png.flaticon.com/512/4926/4926616.png', // Օրինակ պատկերակի հասցե
+    link: 'https://t.me/yourchannel',
+    reward: 2500,
+    status: 'pending',
+    claimAvailable: false,
+    timerId: null
+},
+
     {
         id: 2,
         title: 'Join HyperVerse X Community',
@@ -245,49 +246,40 @@ const defaultTasks = [
         status: 'pending',
         claimAvailable: false,
         timerId: null,
-        icon: '📢'
+        icon: 'https://cdn-icons-png.flaticon.com/512/733/733579.png'
     },
     {
         id: 3,
-        title: 'Join Another Channel',
+        title: 'Follow Instagram',
         link: 'https://t.me/someOtherChannel',
         reward: 2000,
         status: 'pending',
         claimAvailable: false,
         timerId: null,
-        icon: '💬'
+        icon: 'https://cdn-icons-png.flaticon.com/512/1384/1384063.png'
     },
-    // 👉 Նոր ավելացված task-ը այստեղ
+
     {
         id: 4,
-        title: 'Follow us on Twitter',
-        link: 'https://twitter.com/hyperrverse',
-        reward: 2500,
+        title: 'Follow TikTok',
+        link: 'https://t.me/someOtherChannel',
+        reward: 2000,
         status: 'pending',
         claimAvailable: false,
         timerId: null,
-        icon: '🐦'
+        icon: 'https://cdn-icons-png.flaticon.com/512/3046/3046122.png'
     },
     {
-        id: 5,
-        title: 'Follous on Twitter',
-        link: 'ht://twitter.com/hyperrverse',
-        reward: 2500,
-        status: 'pending',
-        claimAvailable: false,
-        timerId: null,
-        icon: '🐦'
-    },
-    {
-        id: 6,
-        title: 'Follous on Twitter',
-        link: 'ht://twitter.com/hyperrverse',
-        reward: 2500,
-        status: 'pending',
-        claimAvailable: false,
-        timerId: null,
-        icon: '🐦'
-    }
+    id: 5,
+    title: 'Subscribe on YouTube',
+    icon: 'https://cdn-icons-png.flaticon.com/512/1384/1384060.png', // YouTube logo
+    link: 'https://youtube.com/@hyperverse',
+    reward: 3000,
+    status: 'pending',
+    claimAvailable: false,
+    timerId: null
+},
+
 ];
 
 let tasks = [];
@@ -308,23 +300,46 @@ function loadState() {
     }
 
     if (savedTasks !== null && savedVersion === TASKS_VERSION) {
-        tasks = JSON.parse(savedTasks);
+        let loadedTasks = JSON.parse(savedTasks);
 
-        // ✅ Ավելացնում ենք նոր task-երը, եթե ID-ով չկան
+        // ✅ Հանում ենք այն tasks-երը, որոնք այլևս չկան defaultTasks-ում
+        loadedTasks = loadedTasks.filter(savedTask => {
+            return defaultTasks.some(defaultTask => defaultTask.id === savedTask.id);
+        });
+
+        // ✅ Ավելացնում ենք նորերը (եթե կան defaultTasks-ում, բայց չկան loaded-ում)
         defaultTasks.forEach(defaultTask => {
-            const exists = tasks.some(t => t.id === defaultTask.id);
+            const exists = loadedTasks.some(t => t.id === defaultTask.id);
             if (!exists) {
-                tasks.push(defaultTask);
+                loadedTasks.push(defaultTask);
             }
         });
 
+        tasks = loadedTasks;
     } else {
-        // Առաջին բացման դեպքում կամ version չհամընկնելու դեպքում
         tasks = [...defaultTasks];
+    }
+   // Եթե տարբերակը չի համընկնում, վերագրում ենք նոր tasks
+   if (savedVersion !== TASKS_VERSION) {
+        // Պահում ենք նորը առանց ձեռքով localStorage մաքրելու
+        saveState();
+        return;
+    }
+
+
+
+        // Եթե որևէ task նախկինում մնացել էր "started", բերում ենք "pending"
+        tasks.forEach(task => {
+            if (task.status === 'started') {
+                task.status = 'pending';
+                task.claimAvailable = false;
+                task.timerId = null;
+            }
+        });
     }
 
     saveState();
-}
+
 
 
 // Tasks ցուցադրումը (Home Tab)
@@ -339,10 +354,20 @@ function renderTasks() {
         // Ձախ մաս: Icon, Title, Reward
         const taskLeft = document.createElement('div');
         taskLeft.classList.add('task-left');
-
         const iconDiv = document.createElement('div');
-        iconDiv.classList.add('task-icon');
-        iconDiv.textContent = task.icon || '';
+iconDiv.classList.add('task-icon');
+
+if (task.icon && task.icon.startsWith('http')) {
+    const img = document.createElement('img');
+    img.src = task.icon;
+    img.alt = 'icon';
+    img.style.width = '24px';
+    img.style.height = '24px';
+    iconDiv.appendChild(img);
+} else {
+    iconDiv.textContent = task.icon || '';
+}
+
 
         const taskInfo = document.createElement('div');
         taskInfo.classList.add('task-info');
