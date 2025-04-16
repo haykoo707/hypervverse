@@ -311,7 +311,7 @@ background: #22c5f2;
 .reward-card {
   background: #111;
   border: 1px solid #333;
-  border-radius: 12px;
+  border-radius: 16px;
   padding: 20px;
   text-align: center;
   margin-bottom: 15px;
@@ -433,7 +433,6 @@ width: 100%;
         justify-content: center;
         align-items: center;
         transition: opacity 0.5s ease-out;        
-        background-image: url('Picsart_25-03-29_22-21-13-396.jpg');
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
@@ -450,12 +449,20 @@ position: absolute;
 top: 11%;
 left: 50%;
 transform: translate(-50%, -50%);
-text-shadow: 0 0 10px #00d0ff, 0 0 20px #00d0ff;
-text-shadow: 0 0 10px #00d0ff, 0 0 20px #00d0ff;
+text-shadow: 0 0 30px #00d0ff, 0 0 30px #00d0ff;
+text-shadow: 0 0 30px #00d0ff, 0 0 30px #00d0ff;
 font-size: 2.5em;
 
 }
+.loadingh5 {
+  color: rgb(100, 100, 100);
+  position: absolute;
+  top: 96%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 
+  
+  }
 
 .tab-buttons {
         display: flex;
@@ -934,3 +941,11 @@ strong {
   animation: slideOut 0.5s ease forwards;
 }
 
+.tasks-icon {
+  width: 50px;
+  height: 50px;
+  transition: transform 0.2s;
+}
+.tasks-icon:hover {
+  transform: scale(1.1);
+}

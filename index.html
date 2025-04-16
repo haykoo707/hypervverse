@@ -125,7 +125,8 @@
       
 <h1 class="loadingh1">ʜʏᴘᴇʀᴠᴇʀꜱᴇ
 </h1>
-  </div>
+<h5 class="loadingh5">v1
+</h5>  </div>
  
 <!-- Popup-ի կոնտեյներ -->
 <div id="popup" class="popup-container hidden">
@@ -193,7 +194,7 @@
           setTimeout(() => {
               document.getElementById("loadingScreen").style.display = "none";
           }, 3000);
-      }, 3000);
+      }, 1500);
   </script>
 
   <script>
@@ -222,7 +223,10 @@ let userScore = localStorage.getItem('userScore') ? parseInt(localStorage.getIte
         
       const TASKS_VERSION = "v14"; // Նոր task ավելացնելիս փոխիր այս տարբերակը
 
-let  tasks = [
+
+
+// Սկզբնական tasks-երը
+const defaultTasks = [
     {
         id: 1,
         title: 'Join HyperVerse Community',
@@ -233,7 +237,6 @@ let  tasks = [
         timerId: null,
         icon: '📢'
     },
-
     {
         id: 2,
         title: 'Join HyperVerse X Community',
@@ -254,81 +257,75 @@ let  tasks = [
         timerId: null,
         icon: '💬'
     },
- 
-
-
-
-  
-  
+    // 👉 Նոր ավելացված task-ը այստեղ
+    {
+        id: 4,
+        title: 'Follow us on Twitter',
+        link: 'https://twitter.com/hyperrverse',
+        reward: 2500,
+        status: 'pending',
+        claimAvailable: false,
+        timerId: null,
+        icon: '🐦'
+    },
+    {
+        id: 5,
+        title: 'Follous on Twitter',
+        link: 'ht://twitter.com/hyperrverse',
+        reward: 2500,
+        status: 'pending',
+        claimAvailable: false,
+        timerId: null,
+        icon: '🐦'
+    },
+    {
+        id: 6,
+        title: 'Follous on Twitter',
+        link: 'ht://twitter.com/hyperrverse',
+        reward: 2500,
+        status: 'pending',
+        claimAvailable: false,
+        timerId: null,
+        icon: '🐦'
+    }
 ];
 
+let tasks = [];
 
-
-// Պահպանում ենք `localStorage`-ում
 function saveState() {
     localStorage.setItem('userScore', userScore);
     localStorage.setItem('tasks', JSON.stringify(tasks));
     localStorage.setItem('tasksVersion', TASKS_VERSION);
 }
 
-// Բեռնավորում ենք `localStorage`-ից
 function loadState() {
     const savedVersion = localStorage.getItem('tasksVersion');
-    
-    // Եթե տարբերակը չի համընկնում, մաքրում ենք հին տվյալները
-    if (savedVersion !== TASKS_VERSION) {
-        localStorage.removeItem('tasks');
-        localStorage.removeItem('userScore');
-        tasks = []; // Հնարավոր է նոր tasks ավելացնել այստեղ
-        saveState(); // Պահպանում ենք նոր տվյալները
-        return;
-    }
-
     const savedScore = localStorage.getItem('userScore');
+    const savedTasks = localStorage.getItem('tasks');
+
     if (savedScore !== null) {
         userScore = parseInt(savedScore, 10);
     }
-
-    const savedTasks = localStorage.getItem('tasks');
-    if (savedTasks !== null) {
-        tasks = JSON.parse(savedTasks);
-    }
-}
-
-// Բեռնում ենք տվյալները
-loadState();
-renderTasks();
-
-// Պահպանում ենք `localStorage`-ում
-function saveState() {
-    localStorage.setItem('userScore', userScore);
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-    localStorage.setItem('tasksVersion', TASKS_VERSION);
-}
-
-// Բեռնավորում ենք `localStorage`-ից
-function loadState() {
-    const savedScore = localStorage.getItem('userScore');
-    if (savedScore !== null) {
-        userScore = parseInt(savedScore, 10);
-    }
-
-    const savedVersion = localStorage.getItem('tasksVersion');
-    const savedTasks = localStorage.getItem('tasks');
 
     if (savedTasks !== null && savedVersion === TASKS_VERSION) {
         tasks = JSON.parse(savedTasks);
-        tasks.forEach(task => {
-            if (task.status === 'started') {
-                task.status = 'pending';
-                task.claimAvailable = false;
-                task.timerId = null;
+
+        // ✅ Ավելացնում ենք նոր task-երը, եթե ID-ով չկան
+        defaultTasks.forEach(defaultTask => {
+            const exists = tasks.some(t => t.id === defaultTask.id);
+            if (!exists) {
+                tasks.push(defaultTask);
             }
         });
+
     } else {
-        saveState(); // Եթե տարբերակները չեն համապատասխանում, վերագրում ենք նոր tasks-երը
+        // Առաջին բացման դեպքում կամ version չհամընկնելու դեպքում
+        tasks = [...defaultTasks];
     }
+
+    saveState();
 }
+
 
 // Tasks ցուցադրումը (Home Tab)
 function renderTasks() {
