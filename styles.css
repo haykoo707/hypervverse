@@ -55,11 +55,11 @@ background-color: black;
 
 
 .top-bar .title {
-  font-size: 10px;
+  font-size: 15px;
   font-weight: bold;
 }
 .top-bar .score {
-font-size: 14px;
+font-size: 15px;
 position: absolute;
 left: 50%;
 transform: translateX(-50%);
@@ -514,7 +514,7 @@ height: 48px;
   border: 3px solid #00d0ff;
   color: white;
   font-size: 2rem;
-  padding: 60px 70px;
+  padding: 55px 65px;
   border-radius: 50%;
   transition: 0.4s;
   box-shadow: 0 0 80px #00d0ff;
@@ -707,8 +707,8 @@ height: 48px;
     linear-gradient(
       137.48deg,
       #00d0ff 10%,
-      #f021ff 45%,
-      #a300ae 67%,
+      #64e3ff 45%,
+      #bee6ef 67%,
       #00d0ff 87%
     );
   background-origin: border-box;
@@ -759,11 +759,11 @@ strong {
 
 .btn:hover #container-stars {
   z-index: 1;
-  background-color: #212121;
+  background-color: #4eb8d0;
 }
 
 .btn:active {
-  border: double 4px #ffa1d9;
+  border: double 4px #00c3ff;
   background-origin: border-box;
   background-clip: content-box, border-box;
   animation: none;
@@ -846,29 +846,6 @@ strong {
   }
 }
 
-
-
-.faq {
-  background-color: #ffffff;
-  display: flex;
-  position: absolute;
-  left: 50%; 
-  transform: translateX(-50%);
-  padding: 7px;
-  margin-top: 200px;
-  font-size: 14px;
-  padding: 10px 20px;
-  border-radius: 14px;
-  text-decoration: none;
-  color: #333;
-  font-weight: bold;
-  display: inline-block;
-  transition: background 0.3s ease;
-}
-
-.faq:hover {
-  background-color: #ddd;
-}
 
 @keyframes slideIn {
   0% {
@@ -953,4 +930,162 @@ strong {
   100% {
     transform: scale(1) translateY(0);
   }
+}
+  .social-icons {
+      display: flex;
+      justify-content: center; /* icon-ները տեղադրում է հորիզոնական կենտրոնում */
+      gap: 20px; /* տարածությունը icon-ների միջև */
+      margin-top: 280px;
+    }
+
+    .social-icons a {
+      color: #ffffff;
+      font-size: 28px;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .social-icons a:hover {
+      color: #ffffff;
+    }
+
+    .play-btn-img {
+      width: 60px;
+      height: 60px;
+      background-image: url('ChatGPT Image Apr 20, 2025, 10_26_54 PM.png');
+      background-size: cover;
+      background-position: center;
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0, 217, 255, 0.6);
+      animation: glow 2s infinite ease-in-out;
+      transition: transform 0.3s ease;
+      transform: translate(460%, 850%);
+    }
+    
+    .play-btn-img:hover {
+      transform: scale(1.1);
+      transform: translate(460%, 850%);
+
+    }
+    
+    @keyframes glow {
+      0% {
+        box-shadow: 0 0 5px rgba(32, 207, 255, 0.4);
+      }
+      50% {
+        box-shadow: 0 0 15px rgb(0, 229, 255);
+      }
+      100% {
+        box-shadow: 0 0 5px rgba(0, 157, 181, 0.4);
+      }
+    }
+    /* Popup overlay */
+/* Popup overlay */
+.popup-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.popup-content {
+  background: #000000;
+  border-radius: 16px;
+  padding: 20px;
+  width: 90%;
+  max-width: 400px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+}
+
+.popup-content h2 {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+/* Card styles */
+.card {
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 20px;
+  color: #111;
+}
+
+.card h3 {
+  margin-bottom: 10px;
+}
+
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.card ul li {
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+/* GOLD card */
+.card.gold {
+  background: linear-gradient(to bottom right, gold, #ffecb3);
+}
+
+/* PLATINUM card */
+.card.platinum {
+  background: linear-gradient(to bottom right, #dfefff, #a8cfff);
+}
+
+.price {
+  margin-top: 10px;
+  background: #007bff;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Close button */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  font-size: 28px;
+  color: #e0e0e0;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+/* Show popup with animation */
+.popup-overlay.active {
+  display: flex;
+  opacity: 1;
+}
+
+.popup-overlay.active .popup-content {
+  transform: scale(1);
+}
+
+/* Fade out (for JS-controlled animation) */
+.popup-overlay.closing {
+  opacity: 0;
+}
+
+.popup-overlay.closing .popup-content {
+  transform: scale(0.9);
 }
