@@ -514,7 +514,7 @@ height: 48px;
   border: 3px solid #00d0ff;
   color: white;
   font-size: 2rem;
-  padding: 55px 65px;
+  padding: 50px 60px;
   border-radius: 50%;
   transition: 0.4s;
   box-shadow: 0 0 80px #00d0ff;
@@ -960,12 +960,16 @@ strong {
       box-shadow: 0 0 10px rgba(0, 217, 255, 0.6);
       animation: glow 2s infinite ease-in-out;
       transition: transform 0.3s ease;
-      transform: translate(460%, 850%);
+      position: absolute;
+      right: 1%;
+      top: 1%;
+      transform: translate(1%, 880%);
+
     }
     
     .play-btn-img:hover {
       transform: scale(1.1);
-      transform: translate(460%, 850%);
+      transform: translate(1%, 880%);
 
     }
     
