@@ -70,36 +70,54 @@
           </div>
         </div>
       </div>
-       <!-- Daily Reward Tab (Նոր բաժին) -->
-       <div id="daily-reward" class="tab-content">
-        <div class="daily-reward-section">
-            <div class="reward-card">
-                <h2>🎁 Daily Reward</h2>
-                <div class="reward-timer" id="rewardTimer">Available now</div>
-                <button class="reward-btn" id="claimRewardBtn" onclick="handleDailyClaim()">
-                    Claim 5000🌟
-                </button>
-            </div>
-            <p style="color: #666; text-align: center;">
-                Claim your reward every 24 hours!
-            </p>
-        </div>
-    
-        <!-- Daily Quest Section -->
-        <div class="daily-quest-section">
-            <div class="reward-card">
-                <h2>📝 Daily Quest</h2>
-                <input class="" type="text" id="dailyCodeInput" placeholder="Enter today's code" />
-                <button class="reward-btn" id="submitQuestBtn" onclick="handleDailyQuest()">
-                    Submit Code
-                </button>
-                <div id="questMessage" style="color: #666; text-align: center; margin-top: 10px;"></div>
-            </div>
-            <p style="color: #666; text-align: center;">
-                Enter the correct code once every 24 hours!
-            </p>
-        </div>
-    </div>
+ <!-- Daily Reward Tab (Նոր բաժին) -->
+<div id="daily-reward" class="tab-content">
+  <div class="daily-reward-section">
+      <div class="reward-card">
+          <h2>🎁 Daily Reward</h2>
+          <div class="reward-timer" id="rewardTimer">Available now</div>
+          <button class="reward-btn" id="claimRewardBtn" onclick="handleDailyClaim()">
+              Claim 5000🌟
+          </button>
+      </div>
+      <p style="color: #666; text-align: center;">
+          Claim your reward every 24 hours!
+      </p>
+  </div>
+
+  <!-- Daily Quest Section -->
+  <div class="daily-quest-section">
+      <div class="reward-card">
+          <h2>📝 Daily Quest</h2>
+          <input class="" type="text" id="dailyCodeInput" placeholder="Enter today's code" />
+          <button class="reward-btn" id="submitQuestBtn" onclick="handleDailyQuest()">
+              Submit Code
+          </button>
+          <div id="questMessage" style="color: #666; text-align: center; margin-top: 10px;"></div>
+      </div>
+      <p style="color: #666; text-align: center;">
+          Enter the correct code once every 24 hours!
+      </p>
+  </div>
+
+  <!-- Mystery Box Section -->
+  <div class="mystery-box-section">
+      <button id="mysteryBtn" class="open-btn">🎁 Open Mystery Box</button>
+  </div>
+
+  <!-- Mystery Box Popup -->
+  <div id="mysteryPopup" class="popup">
+      <div class="popup-content">
+          <span class="close">&times;</span>
+          <h2>🎉 Mystery Boxes 🎉</h2>
+          <div class="boxes">
+              <div class="box gold" data-cost="5000">Gold Box<br><small>-5000 userScore</small></div>
+              <div class="box platinum" data-cost="10000">Platinum Box<br><small>-10000 userScore</small></div>
+              <div class="box diamond" data-cost="15000">Diamond Box<br><small>-15000 userScore</small></div>
+          </div>
+      </div>
+  </div>
+</div>
     
       <!-- profile Tab -->
       <div id="profile" class="tab-content">
@@ -218,66 +236,8 @@
 <div id="notification" class="notification hidden"></div>
 <div id="notification" class="notification hidden"></div>
 
-<script>
-function createParticles() {
-  const btn = document.querySelector('.play-btn');
-  const rect = btn.getBoundingClientRect();
-  const centerX = rect.left + rect.width/2;
-  const centerY = rect.top + rect.height/2;
 
-  // Ստեղծել 20 մասնիկ ամեն անգամ
-  for(let i = 0; i < 20; i++) {
-    const particle = document.createElement('div');
-    particle.className = 'particle';
-    
-    // Պատահական դիրքավորում էկրանի եզրերից
-    const side = Math.floor(Math.random() * 4);
-    let startX, startY;
-    
-    switch(side) {
-      case 0: // վերև
-        startX = Math.random() * window.innerWidth;
-        startY = 0;
-        break;
-      case 1: // աջ
-        startX = window.innerWidth;
-        startY = Math.random() * window.innerHeight;
-        break;
-      case 2: // ներքև
-        startX = Math.random() * window.innerWidth;
-        startY = window.innerHeight;
-        break;
-      case 3: // ձախ
-        startX = 0;
-        startY = Math.random() * window.innerHeight;
-        break;
-    }
 
-    // Հաշվել թիրախի դիրքը
-    const targetX = centerX - startX;
-    const targetY = centerY - startY;
-
-    // Սահմանել CSS փոփոխականներ
-    particle.style.setProperty('--targetX', `${targetX}px`);
-    particle.style.setProperty('--targetY', `${targetY}px`);
-    
-    // Պատահական անիմացիայի տևողություն
-    particle.style.left = startX + 'px';
-    particle.style.top = startY + 'px';
-    particle.style.animationDuration = `${Math.random() * 0.5 + 0.5}s`;
-    
-    document.body.appendChild(particle);
-    
-    // Հեռացնել մասնիկը անիմացիայից հետո
-    particle.addEventListener('animationend', () => {
-      particle.remove();
-    });
-  }
-}
-
-// Մասնիկներ ավելացնել ամեն 200 միլիվայրկյանում
-setInterval(createParticles, 200);
-</script>
 <script>
     // Ստուգել, արդյոք կայքը բացված է Telegram-ի մեջ
     function checkTelegramContext() {
@@ -1025,8 +985,63 @@ function openPopup() {
     }, 300); // համապատասխան CSS transition ժամանակը (0.3s)
   }
 
-</script>
 
+</script>
+<script>
+  
+// Mystery Box Logic
+document.getElementById("mysteryBtn").onclick = () => {
+    document.getElementById("mysteryPopup").style.display = "block";
+};
+
+document.querySelector(".close").onclick = () => {
+    document.getElementById("mysteryPopup").style.display = "none";
+};
+
+document.querySelectorAll(".box").forEach(box => {
+    box.onclick = () => {
+        const cost = parseInt(box.dataset.cost);
+        if (userScore >= cost) {
+            const reward = Math.floor(Math.random() * 5000 + 2000); // 2000-7000
+            userScore -= cost;
+            userScore += reward;
+            localStorage.setItem("userScore", userScore);
+            
+            Swal.fire({
+                icon: 'success',
+                title: '🎉 Congratulations!',
+                html: `You won ${reward} 🌟<br>
+                       <small>Total 🌟: ${userScore}🌟</small>`,
+                confirmButtonText: 'OK',
+                customClass: {
+                    popup: 'reward-popup'
+                }
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: '🚫 Error',
+                html: `You need ${cost} 🌟<br>
+                       <small>Current 🌟: ${userScore}🌟</small>`,
+                confirmButtonText: 'OK',
+                customClass: {
+                    popup: 'error-popup'
+                }
+            });
+        }
+    };
+});
+  </script>
+  <!-- Add this in your HTML head -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Add this CSS -->
+<style>
+.swal2-popup {
+    font-size: 0,5rem !important;
+    border-radius: 22px !important;
+}
+</style>
 </body>
 </html>
 
