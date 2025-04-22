@@ -136,27 +136,64 @@
     <div class="card gold">
       <h3>GOLD PLAN</h3>
       <ul>
-        <li>✅ Airdrop Priority Transactions</li>
+        <li>✅ Airdrop Priority Transactions 1</li>
         <li>✅ Fast-Track Access HyperVerse</li>
         <li>✅ Bonuses in game</li>
         <li>✅ +2% Airdrop bonus</li>
       </ul>
-      <div class="price">💎 1.197</div>
-    </div>
+      <button class="price-button" onclick="handlePurchas()">💎 1.997</button>
+
+      <script>
+        function handlePurchas() {
+          const tonLink = "ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=10000000&text=✅ Airdrop Priority Transactions 1";
+          const tgWalletLink = "https://t.me/wallet/start?startapp=transfer_UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK_10000000_✅ Airdrop Priority Transactions 1";
+      
+          // Try opening ton://
+          const iframe = document.createElement("iframe");
+          iframe.style.display = "none";
+          iframe.src = tonLink;
+          document.body.appendChild(iframe);
+      
+          // Fallback to Telegram Wallet after 2 seconds
+          setTimeout(() => {
+            window.open(tgWalletLink, "_blank");
+          }, 2000);
+        }
+      </script>
+      
+          </div>
 
     <!-- PLATINUM -->
     <div class="card platinum">
       <h3>PREMIUM PLAN</h3>
       <ul>
-        <li>✅ Airdrop Priority Transactions</li>
-        <li>✅ Fast-Track Access HyperVerse</li>
+        <li>✅ Airdrop Priority Transactions 2</li>
+        <li>✅ Fast-Track Access HyperVerse</li> 
         <li>✅ Bonuses in game</li>
         <li>✅ +6% Airdrop bonus</li>
         <li>✅ Premium medal</li>
         <li>✅ Loyal User Badge</li>
       </ul>
-      <div class="price">💎 2.997</div>
-    </div>
+      <button class="price-button" onclick="handlePurchase()">💎 1.997</button>
+
+      <script>
+        function handlePurchase() {
+          const tonLink = "ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=10000000&text=✅ Loyal User Badge";
+          const tgWalletLink = "https://t.me/wallet/start?startapp=transfer_UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK_10000000_✅ Loyal User Badge";
+      
+          // Try opening ton://
+          const iframe = document.createElement("iframe");
+          iframe.style.display = "none";
+          iframe.src = tonLink;
+          document.body.appendChild(iframe);
+      
+          // Fallback to Telegram Wallet after 2 seconds
+          setTimeout(() => {
+            window.open(tgWalletLink, "_blank");
+          }, 2000);
+        }
+      </script>
+          </div>
 
   </div>
 </div>
@@ -940,6 +977,7 @@ function openPopup() {
   }
 
 </script>
+
 </body>
 </html>
 

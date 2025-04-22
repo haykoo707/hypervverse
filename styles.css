@@ -1100,3 +1100,14 @@ strong {
   top: 1.8%;
 padding: 2px;
 }
+.price-button {
+  background-color: #00c3ff;
+  color: white;
+  font-size: 18px;
+  padding: 8px 40px;
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
