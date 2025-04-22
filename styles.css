@@ -514,43 +514,41 @@ height: 48px;
   border: 3px solid #00d0ff;
   color: white;
   font-size: 2rem;
-  padding: 50px 60px;
+  padding: 45px 55px;
   border-radius: 50%;
   transition: 0.4s;
-  box-shadow: 0 0 80px #00d0ff;
-  
   position: absolute;
   left: 50%;
   top: 185px;
   transform: translate(-50%, -30%);
-
-  animation: glow 4s infinite linear;
+  animation: glow 2s infinite ease-in-out;
+  box-shadow: 0 0 80px #00d0ff,
 }
 
-
+/* Շարժվող փայլ բոլոր կողմերից */
 @keyframes glow {
   0% {
-    box-shadow: -10px -10px 30px #00d0ff, 10px 10px 0px transparent;
-  }
-  25% {
-    box-shadow: 10px -10px 30px #00d0ff, -10px 10px 0px transparent;
+    box-shadow: 0 0 20px #00d0ff,
+                0 0 40px #00d0ff,
+                0 0 60px #00d0ff;
   }
   50% {
-    box-shadow: 10px 10px 30px #00d0ff, -10px -10px 0px transparent;
-  }
-  75% {
-    box-shadow: -10px 10px 30px #00d0ff, 10px -10px 0px transparent;
+    box-shadow: 0 0 30px #00d0ff,
+                0 0 70px #00d0ff,
+                0 0 100px #00d0ff;
   }
   100% {
-    box-shadow: -10px -10px 30px #00d0ff, 10px 10px 0px transparent;
+    box-shadow: 0 0 20px #00d0ff,
+                0 0 40px #00d0ff,
+                0 0 60px #00d0ff;
   }
-  
 }
+
 
 .play-btn:hover {
   background: #00d0ff;
   color: black;
-  box-shadow: 0 0 120px #00d0ff;
+  box-shadow: 0 0 20px #00d0ff;
   
 }
 
@@ -935,14 +933,12 @@ strong {
       display: flex;
       justify-content: center; /* icon-ները տեղադրում է հորիզոնական կենտրոնում */
       gap: 20px; /* տարածությունը icon-ների միջև */
-      margin-top: 280px;
     }
 
     .social-icons a {
       color: #ffffff;
-      font-size: 28px;
+      font-size: 20px;
       text-decoration: none;
-      transition: color 0.3s;
     }
 
     .social-icons a:hover {
@@ -950,8 +946,8 @@ strong {
     }
 
     .play-btn-img {
-      width: 60px;
-      height: 60px;
+      width: 55px;
+      height: 55px;
       background-image: url('ChatGPT Image Apr 20, 2025, 10_26_54 PM.png');
       background-size: cover;
       background-position: center;
@@ -960,16 +956,21 @@ strong {
       box-shadow: 0 0 10px rgba(0, 217, 255, 0.6);
       animation: glow 2s infinite ease-in-out;
       transition: transform 0.3s ease;
-      position: absolute;
-      right: 1%;
-      top: 1%;
-      transform: translate(1%, 880%);
-
+      position: fixed;
+      right: 0;
+      bottom: -130px;
+      transform: translate(0, 0);
+      z-index: 9999;
     }
+    
     
     .play-btn-img:hover {
       transform: scale(1.1);
-      transform: translate(1%, 880%);
+      position: fixed;
+      right: 0;
+      bottom: -130px;
+      transform: translate(0, 0);
+      z-index: 9999;
 
     }
     
@@ -1092,4 +1093,10 @@ strong {
 
 .popup-overlay.closing .popup-content {
   transform: scale(0.9);
+}
+.small-text {
+  font-size: 12px;
+  position: fixed;
+  top: 1.8%;
+padding: 2px;
 }
