@@ -139,14 +139,13 @@
         <li>✅ Airdrop Priority Transactions 1</li>
         <li>✅ Fast-Track Access HyperVerse</li>
         <li>✅ Bonuses in game</li>
-        <li>✅ +2% Airdrop bonus</li>
+        <li>✅ +4% Airdrop bonus</li>
       </ul>
-      <button class="price-button" onclick="handlePurchas()">💎 1.997</button>
+      <button class="price-button" onclick="handlePurchas()">💎 1.997 TON</button>
 
       <script>
         function handlePurchas() {
           const tonLink = "ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=10000000&text=✅ Airdrop Priority Transactions 1";
-          const tgWalletLink = "https://t.me/wallet/start?startapp=transfer_UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK_10000000_✅ Airdrop Priority Transactions 1";
       
           // Try opening ton://
           const iframe = document.createElement("iframe");
@@ -154,10 +153,6 @@
           iframe.src = tonLink;
           document.body.appendChild(iframe);
       
-          // Fallback to Telegram Wallet after 2 seconds
-          setTimeout(() => {
-            window.open(tgWalletLink, "_blank");
-          }, 2000);
         }
       </script>
       
@@ -170,16 +165,15 @@
         <li>✅ Airdrop Priority Transactions 2</li>
         <li>✅ Fast-Track Access HyperVerse</li> 
         <li>✅ Bonuses in game</li>
-        <li>✅ +6% Airdrop bonus</li>
+        <li>✅ +10% Airdrop bonus</li>
         <li>✅ Premium medal</li>
         <li>✅ Loyal User Badge</li>
       </ul>
-      <button class="price-button" onclick="handlePurchase()">💎 1.997</button>
+      <button class="price-button" onclick="handlePurchase()">💎 2.997 TON</button>
 
       <script>
         function handlePurchase() {
           const tonLink = "ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=10000000&text=✅ Loyal User Badge";
-          const tgWalletLink = "https://t.me/wallet/start?startapp=transfer_UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK_10000000_✅ Loyal User Badge";
       
           // Try opening ton://
           const iframe = document.createElement("iframe");
@@ -187,10 +181,7 @@
           iframe.src = tonLink;
           document.body.appendChild(iframe);
       
-          // Fallback to Telegram Wallet after 2 seconds
-          setTimeout(() => {
-            window.open(tgWalletLink, "_blank");
-          }, 2000);
+  
         }
       </script>
           </div>
@@ -227,8 +218,66 @@
 <div id="notification" class="notification hidden"></div>
 <div id="notification" class="notification hidden"></div>
 
+<script>
+function createParticles() {
+  const btn = document.querySelector('.play-btn');
+  const rect = btn.getBoundingClientRect();
+  const centerX = rect.left + rect.width/2;
+  const centerY = rect.top + rect.height/2;
 
+  // Ստեղծել 20 մասնիկ ամեն անգամ
+  for(let i = 0; i < 20; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    
+    // Պատահական դիրքավորում էկրանի եզրերից
+    const side = Math.floor(Math.random() * 4);
+    let startX, startY;
+    
+    switch(side) {
+      case 0: // վերև
+        startX = Math.random() * window.innerWidth;
+        startY = 0;
+        break;
+      case 1: // աջ
+        startX = window.innerWidth;
+        startY = Math.random() * window.innerHeight;
+        break;
+      case 2: // ներքև
+        startX = Math.random() * window.innerWidth;
+        startY = window.innerHeight;
+        break;
+      case 3: // ձախ
+        startX = 0;
+        startY = Math.random() * window.innerHeight;
+        break;
+    }
 
+    // Հաշվել թիրախի դիրքը
+    const targetX = centerX - startX;
+    const targetY = centerY - startY;
+
+    // Սահմանել CSS փոփոխականներ
+    particle.style.setProperty('--targetX', `${targetX}px`);
+    particle.style.setProperty('--targetY', `${targetY}px`);
+    
+    // Պատահական անիմացիայի տևողություն
+    particle.style.left = startX + 'px';
+    particle.style.top = startY + 'px';
+    particle.style.animationDuration = `${Math.random() * 0.5 + 0.5}s`;
+    
+    document.body.appendChild(particle);
+    
+    // Հեռացնել մասնիկը անիմացիայից հետո
+    particle.addEventListener('animationend', () => {
+      particle.remove();
+    });
+  }
+}
+
+// Մասնիկներ ավելացնել ամեն 200 միլիվայրկյանում
+setInterval(createParticles, 200);
+</script>
 <script>
     // Ստուգել, արդյոք կայքը բացված է Telegram-ի մեջ
     function checkTelegramContext() {
@@ -250,7 +299,7 @@
   <script>
     
     const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-            manifestUrl: 'https://haykoo707.github.io/hyperversee/tonconnect-manifest.json',
+            manifestUrl: 'https://haykoo707.github.io/hypervverse/tonconnect-manifest.json',
             buttonRootId: 'connect'
             
         });

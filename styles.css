@@ -524,6 +524,22 @@ height: 48px;
   animation: glow 2s infinite ease-in-out;
   box-shadow: 0 0 80px #00d0ff,
 }
+@keyframes particles {
+  to {
+    transform: translate(var(--targetX), var(--targetY));
+    opacity: 0;
+  }
+}
+
+.particle {
+  position: fixed;
+  width: 3px;
+  height: 3px;
+  background: white;
+  border-radius: 50%;
+  animation: particles 1.5s linear forwards;
+  pointer-events: none;
+}
 
 /* Շարժվող փայլ բոլոր կողմերից */
 @keyframes glow {
@@ -951,7 +967,7 @@ strong {
       background-image: url('ChatGPT Image Apr 20, 2025, 10_26_54 PM.png');
       background-size: cover;
       background-position: center;
-      border: none;
+      border: solid 1px #00c8ff;
       border-radius: 12px;
       box-shadow: 0 0 10px rgba(0, 217, 255, 0.6);
       animation: glow 2s infinite ease-in-out;
@@ -1108,6 +1124,5 @@ padding: 2px;
   width: 100%;
   border: none;
   border-radius: 10px;
-  cursor: pointer;
   transition: background-color 0.3s ease;
 }
