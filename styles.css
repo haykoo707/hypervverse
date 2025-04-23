@@ -1240,10 +1240,9 @@ body {
 
 .profile-item {
   display: flex;
-  align-items: center;
   gap: 16px;
   padding: 12px;
-  background: #f5f5f5;
+  background: #000000;
   border-radius: 12px;
 }
 
