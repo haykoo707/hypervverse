@@ -90,9 +90,7 @@
       <div class="reward-card">
           <h2>📝 Daily Quest</h2>
           <input class="" type="text" id="dailyCodeInput" placeholder="Enter today's code" />
-          <button class="reward-btn" id="submitQuestBtn" onclick="handleDailyQuest()">
-              Submit Code
-          </button>
+          <button class="reward-btn" id="submitQuestBtn" onclick="handleDailyQuest()">Submit Code</button>
           <div id="questMessage" style="color: #666; text-align: center; margin-top: 10px;"></div>
       </div>
       <p style="color: #666; text-align: center;">
@@ -100,10 +98,13 @@
       </p>
   </div>
 
-  <!-- Mystery Box Section -->
   <div class="mystery-box-section">
-      <button id="mysteryBtn" class="open-btn">🎁 Open Mystery Box</button>
-  </div>
+    <button id="mysteryBtn" class="open-btn">
+        <i class="fas fa-box-open fa-2x"></i>
+        <span></span>
+    </button>
+</div>
+
 
   <!-- Mystery Box Popup -->
   <div id="mysteryPopup" class="popup">
@@ -111,13 +112,21 @@
           <span class="close">&times;</span>
           <h2>🎉 Mystery Boxes 🎉</h2>
           <div class="boxes">
-              <div class="box gold" data-cost="5000">Gold Box<br><small>-5000 userScore</small></div>
-              <div class="box platinum" data-cost="10000">Platinum Box<br><small>-10000 userScore</small></div>
-              <div class="box diamond" data-cost="15000">Diamond Box<br><small>-15000 userScore</small></div>
+            <div class="box gold" data-cost="5000">
+              <i class="fas fa-coins fa-lg" style="color: #464439;"></i>
+              Gold Box<br>
+              <small>-5000 🌟</small>
           </div>
+          
+          <div class="box diamond" data-cost="15000">
+              <i class="fas fa-gem fa-lg" style="color: #00d0ff;"></i>
+              Diamond Box<br>
+              <small>-15000 🌟</small>
+          </div>          </div>
       </div>
   </div>
 </div>
+
     
       <!-- profile Tab -->
       <div id="profile" class="tab-content">
@@ -135,7 +144,7 @@
 
      <!-- Play Tab -->
 <div id="play" class="tab-content active">
-  <h2 class="glow">HyperVerse🛸</h2>
+  <h2 class="glow">ʜʏᴘᴇʀᴠᴇʀꜱᴇ</h2>
   <a href="game.html">
     <button class="play-btn">▶</button>
   </a>
@@ -147,8 +156,15 @@
 <div id="popup" class="popup-overlay">
   <div class="popup-content">
     <span class="close-btn" onclick="closePopup()">&times;</span>
+    <p style="font-weight: 500;">
+      <img src="toncoin-ton-logo.png" 
+           width="20" 
+           height="20" 
+           style="vertical-align: middle; margin-right: 6px;">
+      Only Tonkeeper
+    </p>
+        <h2 style="color: rgb(255, 255, 255);">Upgrade Plan</h2>
     
-    <h2 style="color: rgb(255, 255, 255);">Upgrade Plan</h2>
 
     <!-- GOLD -->
     <div class="card gold">
@@ -159,11 +175,17 @@
         <li>✅ Bonuses in game</li>
         <li>✅ +4% Airdrop bonus</li>
       </ul>
-      <button class="price-button" onclick="handlePurchas()">💎 1.997 TON</button>
-
+      <button class="price-button" onclick="handlePurchase()">
+        <img src="toncoin-ton-logo.png" 
+             class="ton-icon" 
+             width="20" 
+             height="20" 
+             alt="TON Icon">
+        1.997
+      </button>
       <script>
         function handlePurchas() {
-          const tonLink = "ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=10000000&text=✅ Airdrop Priority Transactions 1";
+          const tonLink = "ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=10000000&text=✅ GOLD PLAN";
       
           // Try opening ton://
           const iframe = document.createElement("iframe");
@@ -187,11 +209,17 @@
         <li>✅ Premium medal</li>
         <li>✅ Loyal User Badge</li>
       </ul>
-      <button class="price-button" onclick="handlePurchase()">💎 2.997 TON</button>
-
+      <button class="price-button" onclick="handlePurchase()">
+        <img src="toncoin-ton-logo.png" 
+             class="ton-icon" 
+             width="20" 
+             height="20" 
+             alt="TON Icon">
+        2.997 TON
+      </button>
       <script>
         function handlePurchase() {
-          const tonLink = "ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=10000000&text=✅ Loyal User Badge";
+          const tonLink = "ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=10000000&text=✅ PREMIUM PLAN";
       
           // Try opening ton://
           const iframe = document.createElement("iframe");
@@ -217,7 +245,7 @@
       
 <h1 class="loadingh1">ʜʏᴘᴇʀᴠᴇʀꜱᴇ
 </h1>
-<h5 class="loadingh5">v1
+<h5 class="loadingh5">5.1.x
 </h5>  </div>
  
 <!-- Popup-ի կոնտեյներ -->
@@ -604,10 +632,16 @@ function handleClaim(taskId) {
       const profileInfo = document.getElementById('profileInfo');
       profileInfo.innerHTML = `
         <h2>                                            </h2>
-        <div class="profile-item">
-          <span>Your total 🌟</span>
-          <span class="profile-score">${userProfile.score}🌟</span>
-        </div>
+       <div class="profile-item">
+    <img 
+        src="${Telegram.WebApp.initDataUnsafe.user.photo_url}" 
+        class="profile-photo"
+        alt="Profile photo"
+    >
+    <span class="username">
+        @${Telegram.WebApp.initDataUnsafe.user.username}
+    </span>
+</div>
         <button class="withdraw-btn" onclick="withdraw()">Withdraw🔒</button>
 
 
@@ -989,7 +1023,7 @@ function openPopup() {
 </script>
 <script>
   
-// Mystery Box Logic
+// Mystery Box Logic - Customizable Rewards
 document.getElementById("mysteryBtn").onclick = () => {
     document.getElementById("mysteryPopup").style.display = "block";
 };
@@ -998,11 +1032,59 @@ document.querySelector(".close").onclick = () => {
     document.getElementById("mysteryPopup").style.display = "none";
 };
 
+// Կարգավորելի reward-ների տվյալներ
+const REWARD_SETTINGS = {
+    tiers: [
+        { 
+            name: "Common", 
+            chance: 0.6, // 60% հավանականություն
+            min: 2500, 
+            max: 6500 
+        },
+        { 
+            name: "Uncommon", 
+            chance: 0.3, // 30% հավանականություն
+            min: 4000, 
+            max: 8000 
+        },
+        { 
+            name: "Rare", 
+            chance: 0.1, // 10% հավանականություն
+            min: 15000, 
+            max: 20000 
+        },
+
+         {
+            name: "Legendary",
+            chance: 0.05,
+            min: 25000,
+            max: 40000
+          }
+    ]
+};
+
 document.querySelectorAll(".box").forEach(box => {
     box.onclick = () => {
         const cost = parseInt(box.dataset.cost);
         if (userScore >= cost) {
-            const reward = Math.floor(Math.random() * 5000 + 2000); // 2000-7000
+            // Reward-ի հաշվարկը նոր տրամաբանությամբ
+            let random = Math.random();
+            let cumulativeChance = 0;
+            let selectedTier = REWARD_SETTINGS.tiers[0]; // Default
+            
+            for (const tier of REWARD_SETTINGS.tiers) {
+                cumulativeChance += tier.chance;
+                if (random <= cumulativeChance) {
+                    selectedTier = tier;
+                    break;
+                }
+            }
+            
+            const reward = Math.floor(
+                Math.random() * (selectedTier.max - selectedTier.min + 1) 
+                + selectedTier.min
+            );
+
             userScore -= cost;
             userScore += reward;
             localStorage.setItem("userScore", userScore);
@@ -1010,7 +1092,7 @@ document.querySelectorAll(".box").forEach(box => {
             Swal.fire({
                 icon: 'success',
                 title: '🎉 Congratulations!',
-                html: `You won ${reward} 🌟<br>
+                html: `You won ${reward} 🌟 (${selectedTier.name} Reward)<br>
                        <small>Total 🌟: ${userScore}🌟</small>`,
                 confirmButtonText: 'OK',
                 customClass: {
@@ -1035,7 +1117,6 @@ document.querySelectorAll(".box").forEach(box => {
   <!-- Add this in your HTML head -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<!-- Add this CSS -->
 <style>
 .swal2-popup {
     font-size: 0,5rem !important;

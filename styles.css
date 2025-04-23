@@ -253,17 +253,7 @@ background: #22c5f2;
 .profile-section {
   padding: 15px;
 }
-.profile-item {
-  background: #000000;
-  border: 1px solid #22c5f2;
-  box-shadow: 0 0 22px #00d0ff;
-  border-radius: 8px;
-  padding: 15px;
-  margin-bottom: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+
 .profile-score {
   color: #22c5f2;
   font-weight: bold;
@@ -1165,15 +1155,13 @@ padding: 2px;
 }
 
 .open-btn {
-  padding: 15px 30px;
+  padding: 12px 20px;
   margin-top: 35px;
-  font-size: 18px;
-  background: linear-gradient(to right, #ffcc00, #ffaa00);
+  font-size: 14px;
+  background: linear-gradient(to right, #22e5ff, #05bcd4);
   border: none;
-  border-radius: 12px;
-  box-shadow: 0 0 15px rgba(255, 204, 0, 0.6);
-  cursor: pointer;
-  animation: pulse 2s infinite;
+  border-radius: 14px;
+  font-weight: bold;
 }
 
 .popup {
@@ -1193,7 +1181,7 @@ padding: 2px;
   width: 90%;
   max-width: 450px;
   border-radius: 20px;
-  box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+  box-shadow: 0 0 20px rgba(51, 51, 51, 0.3);
   animation: slideIn 0.4s ease;
 }
 
@@ -1222,28 +1210,12 @@ padding: 2px;
 
 .box:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
 }
 
-.gold { background: linear-gradient(to right, #ffd700, #ffbf00); color: #000; }
-.platinum { background: linear-gradient(to right, #d9d9d9, #a6a6a6); color: #000; }
-.diamond { background: linear-gradient(to right, #00f0ff, #0099cc); }
+.gold { background: linear-gradient(to right, #daba00, #b78b07); color: #000; }
+.diamond { background: linear-gradient(to right, #00b8c5, #0784ae); }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
 
-@keyframes slideIn {
-  from { transform: translateY(-50px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-@keyframes pulse {
-  0% { box-shadow: 0 0 10px rgba(255, 204, 0, 0.6); }
-  50% { box-shadow: 0 0 25px rgba(255, 204, 0, 1); }
-  100% { box-shadow: 0 0 10px rgba(255, 204, 0, 0.6); }
-}
 body {
   font-family: 'Segoe UI', sans-serif;
   background: #111;
@@ -1251,7 +1223,7 @@ body {
   text-align: center;
 }
 .reward-popup {
-  background: linear-gradient(145deg, #2ecc71, #27ae60) !important;
+  background: linear-gradient(145deg, #2ecc71, #22c465) !important;
   color: white !important;
 }
 
@@ -1264,4 +1236,21 @@ body {
   font-size: 1.8rem !important;
   padding: 1rem 3rem !important;
   border-radius: 10px !important;
+}
+
+.profile-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.profile-photo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.username {
+  font-weight: 500;
+  color: #2b2b2b;
 }
