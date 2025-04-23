@@ -632,22 +632,24 @@ function handleClaim(taskId) {
       const profileInfo = document.getElementById('profileInfo');
       profileInfo.innerHTML = `
         <h2>                                            </h2>
-       <div class="profile-item">
+ <div class="profile-item">
     <img 
         src="${Telegram.WebApp.initDataUnsafe.user.photo_url}" 
         class="profile-photo"
         alt="Profile photo"
     >
-    <span class="username">
-        @${Telegram.WebApp.initDataUnsafe.user.username}
-    </span>
+    <div class="profile-info">
+        <span class="username">
+            @${Telegram.WebApp.initDataUnsafe.user.username}
+        </span>
+        <span class="total-score">
+            Total 🌟 ${userProfile.score}🌟
+        </span>
+    </div>
 </div>
-        <button class="withdraw-btn" onclick="withdraw()">Withdraw🔒</button>
 
-
+<button class="withdraw-btn" onclick="withdraw()">Withdraw🔒</button>
 <button class="sp-btn"onclick="window.location.href='paymentsup.html'">Support the project💵
-</button>
-</a>
 </button>
 
 
