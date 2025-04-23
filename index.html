@@ -175,7 +175,7 @@
         <li>✅ Bonuses in game</li>
         <li>✅ +4% Airdrop bonus</li>
       </ul>
-      <button class="price-button" onclick="handlePurchase()">
+      <button class="price-button" onclick="handlePurchase1()">
         <img src="toncoin-ton-logo.png" 
              class="ton-icon" 
              width="20" 
@@ -184,8 +184,8 @@
         1.997
       </button>
       <script>
-        function handlePurchas() {
-          const tonLink = "ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=10000000&text=✅ GOLD PLAN";
+        function handlePurchase1() {
+          const tonLink = "ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=199700000&text=✅ GOLD PLAN";
       
           // Try opening ton://
           const iframe = document.createElement("iframe");
@@ -209,7 +209,7 @@
         <li>✅ Premium medal</li>
         <li>✅ Loyal User Badge</li>
       </ul>
-      <button class="price-button" onclick="handlePurchase()">
+      <button class="price-button" onclick="handlePurchase2()">
         <img src="toncoin-ton-logo.png" 
              class="ton-icon" 
              width="20" 
@@ -218,8 +218,8 @@
         2.997 TON
       </button>
       <script>
-        function handlePurchase() {
-          const tonLink = "ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=10000000&text=✅ PREMIUM PLAN";
+        function handlePurchase2() {
+          const tonLink = "ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=299700000&text=✅ PREMIUM PLAN";
       
           // Try opening ton://
           const iframe = document.createElement("iframe");
@@ -666,25 +666,7 @@ function handleClaim(taskId) {
       score: localStorage.getItem("userScore") ? parseInt(localStorage.getItem("userScore")) : 0
     };
 
-    // Profile բաժնի ցուցադրում
-    function renderairdrop() {
-      const airdropInfo = document.getElementById('airdropInfo');
-      airdropInfo.innerHTML = `
-        <h2>Airdrop</h2>
-        <div class="airdrop-item">
-          <span>Airdrop Score:</span>
-          <span class="airdrop-score">${userairdrop.score} Score</span>
-        </div>
-        <button class="withdraw-btn" onclick="withdraw()">Withdraw🔒</button>
-
-
-
-
-
-
-      `;
-    }
-
+  
 
     // Ինիցիալիզացիա
     function initApp() {
