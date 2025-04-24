@@ -217,12 +217,12 @@ height: 100%;
 }
 .start-btn {
 color: #ffffff;
-background: #22c5f2;
+background: #4b4b4b;
 
 }
 
 .waiting-btn {
-  background: #555;
+  background: #4b4b4b;
   cursor: default;
   border-radius: 12px;
 
@@ -236,7 +236,6 @@ background: #22c5f2;
 }
 .claimed-btn {
   background: #006f8e;
-  opacity: 0.5;
   cursor: default;
   border-radius: 8px;
   
@@ -1240,7 +1239,7 @@ body {
 
 .profile-item {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   padding: 12px;
   background: #000000;
   border-radius: 12px;
@@ -1272,3 +1271,49 @@ body {
   color: #7c7c7c;
   font-weight: 500;
 }
+
+/* Մեդալը նկատվելու է էկրանի ներքևում */
+.medals-container {
+  position: fixed;
+  bottom: -115%;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(to top, rgba(77, 77, 77, 0.95), rgba(70, 70, 70, 0.7));
+  backdrop-filter: blur(5px);
+  border-top: 2px solid #31ddff;
+  padding: 10px 0;
+  text-align: center;
+  z-index: 999;
+  border-radius: 14px;
+}
+
+.medals-container h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: #ffffff;
+}
+
+.medal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background-color: #000000;
+  border: 2px solid #31ddff;
+  border-radius: 30px;
+  padding: 6px 14px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+  margin-top: 5px;
+}
+
+.medal-emoji {
+  font-size: 1.4rem;
+}
+
+.medal-label {
+  font-size: 1rem;
+}
+

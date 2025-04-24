@@ -9,6 +9,7 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-3QW0MCBKEC"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
 <script>
@@ -217,6 +218,7 @@
              alt="TON Icon">
         2.997 TON
       </button>
+
       <script>
         function handlePurchase2() {
           const tonLink = "ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=299700000&text=✅ PREMIUM PLAN";
@@ -627,37 +629,58 @@ function handleClaim(taskId) {
       score: localStorage.getItem("userScore") ? parseInt(localStorage.getItem("userScore")) : 0
     };
 
-    // Profile բաժնի ցուցադրում
     function renderProfile() {
-      const profileInfo = document.getElementById('profileInfo');
-      profileInfo.innerHTML = `
-        <h2>                                            </h2>
- <div class="profile-item">
-    <img 
+  const profileInfo = document.getElementById('profileInfo');
+
+  const medals = [
+    { score: 100, emoji: '🥉', label: 'Bronze Medal' },
+    { score: 10000, emoji: '🥈', label: 'Silver Medal' },
+    { score: 50000, emoji: '🥇', label: 'Gold Medal' },
+    { score: 150000, emoji: '🏅', label: 'Platinum Medal' },
+    { score: 500000, emoji: '🎖️', label: 'Diamond Medal' },
+    { score: 1000000, emoji: '🏆', label: 'Millionaire Medal' },
+    { score: 5000000, emoji: '👑', label: 'Legend Medal' },
+    { score: 10000000, emoji: '🌌', label: 'God Mode Medal' },
+  ];
+
+  const currentMedal = medals
+    .reverse()
+    .find(medal => userProfile.score >= medal.score);
+
+  profileInfo.innerHTML = `
+    <h2>Profile</h2>
+    <div class="profile-item">
+      <img 
         src="${Telegram.WebApp.initDataUnsafe.user.photo_url}" 
         class="profile-photo"
         alt="Profile photo"
-    >
-    <div class="profile-info">
+      >
+      <div class="profile-info">
         <span class="username">
-            @${Telegram.WebApp.initDataUnsafe.user.username}
+          @${Telegram.WebApp.initDataUnsafe.user.username}
         </span>
         <span class="total-score">
-            Total ${userProfile.score}🌟
+          Total ${userProfile.score}🌟
         </span>
+      </div>
     </div>
-</div>
 
-<button class="withdraw-btn" onclick="withdraw()">Withdraw🔒</button>
-<button class="sp-btn"onclick="window.location.href='paymentsup.html'">Support the project💵
-</button>
+    <div class="medals-container">
+      <h3>🎖️ Current Title</h3>
+      ${currentMedal 
+        ? `<div class="medal">
+            <span class="medal-emoji">${currentMedal.emoji}</span>
+            <span class="medal-label">${currentMedal.label}</span>
+          </div>` 
+        : '<p>No title earned yet.</p>'
+      }
+    </div>
 
+    <button class="withdraw-btn" onclick="withdraw()">Withdraw🔒</button>
+    <button class="sp-btn" onclick="window.location.href='paymentsup.html'">Support the project💵</button>
+  `;
+}
 
-
- 
-
-`;
-    }
 
 
 
@@ -1023,26 +1046,32 @@ const REWARD_SETTINGS = {
             name: "Common", 
             chance: 0.6, // 60% հավանականություն
             min: 2500, 
-            max: 6500 
+            max: 6000 
         },
         { 
             name: "Uncommon", 
             chance: 0.3, // 30% հավանականություն
-            min: 4000, 
-            max: 8000 
+            min: 3000, 
+            max: 7000 
         },
         { 
             name: "Rare", 
             chance: 0.1, // 10% հավանականություն
-            min: 15000, 
-            max: 20000 
+            min: 10000, 
+            max: 14000 
         },
 
          {
             name: "Legendary",
             chance: 0.05,
-            min: 25000,
-            max: 40000
+            min: 18000,
+            max: 20000
+          },
+          {
+            name: "imposibe",
+            chance: 0.0005,
+            min: 35000,
+            max: 50000
           }
     ]
 };
@@ -1098,8 +1127,6 @@ document.querySelectorAll(".box").forEach(box => {
     };
 });
   </script>
-  <!-- Add this in your HTML head -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
 .swal2-popup {
