@@ -35,9 +35,68 @@
     <!-- Վերևի տող -->
     <div class="top-bar">
       <div class="social-icons">
-        <a href="https://t.me/HyperrVersee" target="_blank">
-          <i class="fab fa-telegram"></i><span class="small-text">@HyperrVersee</span>
+          <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+
         </a>
+        
+        <script>
+// Create the menu on page load
+window.addEventListener('DOMContentLoaded', () => {
+  const topBar = document.querySelector('.top-bar');
+
+  // Create menu container
+  const menu = document.createElement('div');
+  menu.id = 'mobile-menu';
+  menu.className = 'menu-dropdown hidden';
+
+  // Menu items
+  const items = [
+    { text: 'Telegram', href: 'https://t.me/HyperrVersee' },
+    { text: 'Website', href: 'https://hyper070.github.io/UNIVERSE/' },
+    { text: 'About Us', href: '#' },
+    { text: 'Settings', href: '#' },
+  ];
+
+  items.forEach(item => {
+    const a = document.createElement('a');
+    a.href = item.href;
+    a.textContent = item.text;
+    a.target = '_blank'; // 👉 բացի նոր tab-ում
+    a.rel = 'noopener noreferrer'; // 🔐 անվտանգություն
+    menu.appendChild(a);
+  });
+
+  // Append menu to top-bar
+  topBar.appendChild(menu);
+});
+
+        
+          // Toggle menu visibility
+          function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            if (menu) {
+              menu.classList.toggle('hidden');
+            }
+          }
+        
+          // Optional: Click outside to close
+          document.addEventListener('click', (e) => {
+            const button = document.querySelector('.mobile-menu-btn');
+            const menu = document.getElementById('mobile-menu');
+        
+            if (menu && !button.contains(e.target) && !menu.contains(e.target)) {
+              menu.classList.add('hidden');
+            }
+          });
+          function toggleMenu() {
+  const menu = document.getElementById('mobile-menu');
+  if (menu) {
+    menu.classList.toggle('show');
+    menu.classList.remove('hidden');
+  }
+}
+
+        </script>
         
             </div>
       <div class="title"></div>
@@ -239,17 +298,11 @@
 
 
 <div class="loading-screen" id="loadingScreen">
-  <section class="dots-container">
-    <div class="dot"></div>
-    <div class="dot"></div>
-    <div class="dot"></div>
-    <div class="dot"></div>
-      
-<h1 class="loadingh1">ʜʏᴘᴇʀᴠᴇʀꜱᴇ
-</h1>
-<h5 class="loadingh5">5.1.x
-</h5>  </div>
- 
+  <img src="photo_2025-04-25_23-12-33.jpg" alt="Loading..." class="loading-image animate-loading">
+  <h5 class="loadingh5">5.1.x
+  </h5>  
+</div>
+
 <!-- Popup-ի կոնտեյներ -->
 <div id="popup" class="popup-container hidden">
   <div class="popup-content">
@@ -318,7 +371,7 @@
           setTimeout(() => {
               document.getElementById("loadingScreen").style.display = "none";
           }, 3000);
-      }, 1500);
+      }, 1800);
   </script>
 
   <script>
@@ -401,14 +454,25 @@ let tasks = [];
 
 function saveState() {
     localStorage.setItem('userScore', userScore);
-    localStorage.setItem('tasks', JSON.stringify(tasks));
+    localStorage.setItem('defaultTasks', JSON.stringify(tasks));
+    const claimedIds = tasks
+        .filter(t => t.status === 'claimed')
+        .map(t => t.id);
+    localStorage.setItem('claimedTaskIds', JSON.stringify(claimedIds));
     localStorage.setItem('tasksVersion', TASKS_VERSION);
 }
+
 
 function loadState() {
     const savedVersion = localStorage.getItem('tasksVersion');
     const savedScore = localStorage.getItem('userScore');
     const savedTasks = localStorage.getItem('tasks');
+    const savedClaimedIds = localStorage.getItem('claimedTaskIds');
+
+    let claimedIds = [];
+    if (savedClaimedIds) {
+        claimedIds = JSON.parse(savedClaimedIds);
+    }
 
     if (savedScore !== null) {
         userScore = parseInt(savedScore, 10);
@@ -417,41 +481,49 @@ function loadState() {
     if (savedTasks !== null && savedVersion === TASKS_VERSION) {
         let loadedTasks = JSON.parse(savedTasks);
 
-        // ✅ Հանում ենք այն tasks-երը, որոնք այլևս չկան defaultTasks-ում
-        loadedTasks = loadedTasks.filter(savedTask => {
-            return defaultTasks.some(defaultTask => defaultTask.id === savedTask.id);
-        });
+        // Հանում ենք այն task-երը որոնք այլևս չկան կամ արդեն Claimed են
+        loadedTasks = loadedTasks.filter(savedTask =>
+            defaultTasks.some(defaultTask => defaultTask.id === savedTask.id) &&
+            !claimedIds.includes(savedTask.id)
+        );
 
-        // ✅ Ավելացնում ենք նորերը (եթե կան defaultTasks-ում, բայց չկան loaded-ում)
+        // Ավելացնում ենք նորերը, եթե չեն Claimed
         defaultTasks.forEach(defaultTask => {
             const exists = loadedTasks.some(t => t.id === defaultTask.id);
-            if (!exists) {
-                loadedTasks.push(defaultTask);
+            if (!exists && !claimedIds.includes(defaultTask.id)) {
+                loadedTasks.push({ ...defaultTask });
             }
         });
 
         tasks = loadedTasks;
     } else {
-        tasks = [...defaultTasks];
+        // First load կամ version mismatch – մաքրում ենք claimed-ները
+        tasks = defaultTasks.filter(t => !claimedIds.includes(t.id));
     }
-   // Եթե տարբերակը չի համընկնում, վերագրում ենք նոր tasks
-   if (savedVersion !== TASKS_VERSION) {
-        // Պահում ենք նորը առանց ձեռքով localStorage մաքրելու
-        saveState();
-        return;
-    }
+
+    tasks.filter(task => task.status !== 'claimed').forEach(task => {
+        if (task.status === 'started') {
+            task.status = 'pending';
+            task.claimAvailable = false;
+            task.timerId = null;
+        }
+    });
+
+    saveState();
+}
+
 
 
 
         // Եթե որևէ task նախկինում մնացել էր "started", բերում ենք "pending"
-        tasks.forEach(task => {
+        tasks.filter(task => task.status !== 'claimed').forEach(task => {
             if (task.status === 'started') {
                 task.status = 'pending';
                 task.claimAvailable = false;
                 task.timerId = null;
             }
         });
-    }
+   
 
     saveState();
 
@@ -462,7 +534,7 @@ function renderTasks() {
     const taskList = document.getElementById('taskList');
     taskList.innerHTML = '';
 
-    tasks.forEach(task => {
+    tasks.filter(task => task.status !== 'claimed').forEach(task => {
         const taskItem = document.createElement('div');
         taskItem.classList.add('task-item');
 
@@ -562,24 +634,24 @@ function handleClaim(taskId) {
     if (taskIndex === -1) return;
     const task = tasks[taskIndex];
 
-    // Հավաքում ենք միավորները
     userScore += task.reward;
     updateScore();
+    showNotification(`You got +${task.reward}🌟`);
 
-    // Փոխում ենք վիճակը՝ Claim կատարված
+    // Փոխում ենք վիճակը
     task.status = 'claimed';
     task.claimAvailable = false;
+
+    // Հեռացնում ենք հին թայմերը
     if (task.timerId) {
         clearTimeout(task.timerId);
         task.timerId = null;
     }
 
-    // ✅ Ցուցադրում ենք նոտիֆիկացիան
-    showNotification(`You got +${task.reward}🌟`);
-
-    renderTasks();
     saveState();
+    renderTasks();
 }
+
 
 
 

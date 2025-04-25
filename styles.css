@@ -1317,3 +1317,101 @@ body {
   font-size: 1rem;
 }
 
+
+
+.mobile-menu-btn {
+  position: fixed;
+  right: 1%;
+  top: 1%;
+  background-color: #232323;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 18px;
+}
+
+.menu-dropdown {
+  position: absolute;
+  top: 50px;
+  right: 10px;
+  background-color: rgb(0, 0, 0);
+  border: 1px solid #3c3c3c;
+  border-radius: 6px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  min-width: 150px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.menu-dropdown a {
+  padding: 10px;
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: 450;
+}
+
+.menu-dropdown a:hover {
+  background-color: #383838;
+}
+
+/* Երբ տեսանելի է՝ ցուցադրում ենք */
+.menu-dropdown.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.menu-dropdown.hidden {
+  display: block; /* պահում ենք block, որ transition աշխատի */
+}
+/* Font Awesome իկոնների ստիլեր */
+.menu-item i {
+  font-size: 1.2rem; /* Չափը */
+  width: 25px; /* Հաստատուն լայնություն */
+  color: white; /* Գույնը */
+  transition: 0.3s;
+}
+
+.menu-item:hover i {
+  transform: scale(1.1);
+  color: #00ff88; /* Hover գույն */
+}
+@keyframes fadeZoomIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000000; /* կարող ես փոխել */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loading-image {
+  width: 150px;
+  height: auto;
+}
+
+.animate-loading {
+  animation: fadeZoomIn 1s ease-out forwards;
+}
