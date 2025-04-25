@@ -371,7 +371,7 @@ window.addEventListener('DOMContentLoaded', () => {
           setTimeout(() => {
               document.getElementById("loadingScreen").style.display = "none";
           }, 3000);
-      }, 1800);
+      }, 1900);
   </script>
 
   <script>
@@ -454,7 +454,7 @@ let tasks = [];
 
 function saveState() {
     localStorage.setItem('userScore', userScore);
-    localStorage.setItem('defaultTasks', JSON.stringify(tasks));
+    localStorage.setItem('tasks', JSON.stringify(tasks));
     const claimedIds = tasks
         .filter(t => t.status === 'claimed')
         .map(t => t.id);
