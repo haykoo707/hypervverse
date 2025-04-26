@@ -289,20 +289,16 @@ window.addEventListener('DOMContentLoaded', () => {
         <li>✅ Bonuses in game</li>
         <li>✅ +4% Airdrop bonus</li>
       </ul>
-      <button class="price-button" onclick="handlePurchase1()">
-        <img src="toncoin-ton-logo.png" 
-             class="ton-icon" 
-             width="20" 
-             height="20" 
-             alt="TON Icon">
-        1.997
-      </button>
-      <script>
-        function handlePurchase1() {
-          const tonLink = "ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=199700000&text=✅ GOLD PLAN";
-    
-        }
-        </script>
+      <form action="ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=199700000&text=✅ GOLD PLAN" method="get">
+        <button class="price-button" type="submit">
+          <img src="toncoin-ton-logo.png" 
+               class="ton-icon" 
+               width="20" 
+               height="20" 
+               alt="TON Icon">
+          1.997 TON
+        </button>
+      </form>
         
       </script>
       
@@ -319,21 +315,19 @@ window.addEventListener('DOMContentLoaded', () => {
         <li>✅ Premium medal</li>
         <li>✅ Loyal User Badge</li>
       </ul>
-      <button class="price-button" onclick="handlePurchase2()">
-        <img src="toncoin-ton-logo.png" 
-             class="ton-icon" 
-             width="20" 
-             height="20" 
-             alt="TON Icon">
-        2.997 TON
-      </button>
+      <form action="ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=299700000&text=✅ PREMIUM PLAN" method="get">
+        <button class="price-button" type="submit">
+          <img src="toncoin-ton-logo.png" 
+               class="ton-icon" 
+               width="20" 
+               height="20" 
+               alt="TON Icon">
+          2.997 TON
+        </button>
+      </form>
+      
 
-      <script>
-        function handlePurchase2() {
-          const tonLink = "ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=299700000&text=✅ PREMIUM PLAN";
-        
-        }
-        </script>
+
         
           </div>
 
