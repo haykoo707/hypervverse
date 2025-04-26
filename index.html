@@ -36,10 +36,60 @@
     <div class="top-bar">
       <div class="social-icons">
           <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+          <button id="inviteButton1" class="invite-button1">
+            <i class="fas fa-user-friends"></i></button>
 
-        </a>
-        
+
+
+          <!-- Popup -->
+<div id="popupOverlay1" class="popup-overlay1">
+  <div class="popup-content1">
+    <h2>Invite your frens!</h2>
+    <p>Share your referral link so we can become famous❤️</p>
+    <div class="referral-section">
+      <input type="text" id="referralLink" value="https://t.me/hyperrverse_bot" readonly />
+      <button id="copyButton" class="copy-button">Copy</button>
+    </div>
+
+    <a id="shareTelegram" class="share-telegram" href="#" target="_blank">
+      <i class="fab fa-telegram-plane"></i>
+      Share on Telegram
+    </a>
+    <button id="closePopup1" class="close-button1">Close</button>
+  </div>
+</div>
+                  
         <script>
+const inviteButton = document.getElementById('inviteButton1');
+const popupOverlay = document.getElementById('popupOverlay1');
+const closePopup = document.getElementById('closePopup1');
+const copyButton = document.getElementById('copyButton');
+const referralLink = document.getElementById('referralLink');
+const shareTelegram = document.getElementById('shareTelegram');
+
+inviteButton.addEventListener('click', () => {
+  popupOverlay.style.display = 'flex';
+  
+  // Update Telegram share link
+  const link = referralLink.value;
+  const message = encodeURIComponent(``);
+  shareTelegram.href = `https://t.me/share/url?url=${link}&text=${message}`;
+});
+
+closePopup.addEventListener('click', () => {
+  popupOverlay.style.display = 'none';
+});
+
+copyButton.addEventListener('click', () => {
+  referralLink.select();
+  document.execCommand('copy');
+  copyButton.innerText = 'Copied!';
+  setTimeout(() => {
+    copyButton.innerText = 'Copy';
+  }, 1500);
+});
+
+
 // Create the menu on page load
 window.addEventListener('DOMContentLoaded', () => {
   const topBar = document.querySelector('.top-bar');
@@ -54,7 +104,6 @@ window.addEventListener('DOMContentLoaded', () => {
     { text: 'Telegram', href: 'https://t.me/HyperrVersee' },
     { text: 'Website', href: 'https://hyper070.github.io/UNIVERSE/' },
     { text: 'About Us', href: '#' },
-    { text: 'Settings', href: '#' },
   ];
 
   items.forEach(item => {
@@ -287,7 +336,7 @@ window.addEventListener('DOMContentLoaded', () => {
        function handlePurchase2() {
         const tonLink = "ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=299700000&text=✅ PREMIUM PLAN";
 
-        window.location.href = tonLink;
+      window.location.href = tonLink;
 
       
           // Try opening ton://
@@ -728,23 +777,21 @@ function handleClaim(taskId) {
 
     profileInfo.innerHTML = `
   <h2 style="color: #fff; margin-bottom: 12px;"></h2>
- <div class="profile-item">
-  <img 
-    src="${Telegram.WebApp.initDataUnsafe.user.photo_url}" 
-    class="profile-photo"
-    alt="Profile photo"
-  >
-  <div class="profile-info">
-    <span class="username">
-      @${Telegram.WebApp.initDataUnsafe.user.username}
-    </span>
-    <span class="total-score">
-      Total ${userProfile.score} 🌟
-    </span>
+  <div class="profile-item">
+    <img 
+      src="${Telegram.WebApp.initDataUnsafe.user.photo_url}" 
+      class="profile-photo"
+      alt="Profile photo"
+    >
+    <div class="profile-info">
+      <span class="username">
+        @${Telegram.WebApp.initDataUnsafe.user.username}
+      </span>
+      <span class="total-score">
+        Total ${userProfile.score} 🌟
+      </span>
+    </div>
   </div>
-  <button id="verifyButton">Verify Stock</button>
-</div>
-
 
 
 
@@ -764,32 +811,6 @@ function handleClaim(taskId) {
   `;
 }
 
-document.getElementById('verifyButton').addEventListener('click', function() {
-  // Ստուգեք, թե բավականաչափ score կա
-  if (userProfile.score >= 1000) {
-    // Վճարում ենք 150000 score
-    userProfile.score -= 1000;
-
-    // Ավելացնում ենք "verify stock" profileInfo-ում
-    const usernameSpan = document.querySelector('.username');
-    const verifyText = document.createElement('span');
-    verifyText.textContent = ' | verify stock';
-    usernameSpan.appendChild(verifyText);
-
-    // Արխիվացնում նոր կետերի քանակը localStorage-ում
-    localStorage.setItem('userProfile', JSON.stringify(userProfile));
-
-    // Արդիականացնում profile-ի score-ն
-    const scoreSpan = document.querySelector('.total-score');
-    scoreSpan.textContent = `Total ${userProfile.score} 🌟`;
-
-    // Արդեն 150000-ի վճարում իրականացվել է
-    alert('Payment of 150,000 score completed. Verify stock added.');
-  } else {
-    // Եթե չկան բավարար կետեր
-    alert('Not enough score to complete the payment.');
-  }
-});
 
 
 

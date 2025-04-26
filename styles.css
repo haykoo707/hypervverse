@@ -1168,7 +1168,7 @@ padding: 2px;
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.8);
+  background: black;
   animation: fadeIn 0.4s;
   z-index: 9999;
 }
@@ -1180,7 +1180,6 @@ padding: 2px;
   width: 90%;
   max-width: 450px;
   border-radius: 20px;
-  box-shadow: 0 0 20px rgba(51, 51, 51, 0.3);
   animation: slideIn 0.4s ease;
 }
 
@@ -1279,7 +1278,7 @@ body {
 /* Մեդալը նկատվելու է էկրանի ներքևում */
 .medals-container {
   position: fixed;
-  bottom: -50%;
+  bottom: -60%;
   left: 0;
   width: 100%;
   background: linear-gradient(to top, rgba(77, 77, 77, 0.95), rgba(70, 70, 70, 0.7));
@@ -1332,7 +1331,7 @@ body {
   border: none;
   padding: 8px 12px;
   border-radius: 8px;
-  font-size: 18px;
+  font-size: 15px;
 }
 
 .menu-dropdown {
@@ -1341,13 +1340,12 @@ body {
   right: 10px;
   background-color: rgb(0, 0, 0);
   border: 1px solid #3c3c3c;
-  border-radius: 6px;
+  border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   min-width: 150px;
   z-index: 100;
   display: flex;
   flex-direction: column;
-
   opacity: 0;
   transform: translateY(-10px);
   pointer-events: none;
@@ -1419,3 +1417,98 @@ body {
 .animate-loading {
   animation: fadeZoomIn 1s ease-out forwards;
 }
+/* Popup overlay */
+.popup-overlay1 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Popup content */
+.popup-content1 {
+  background: #1a1a1a;
+  color: white;
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+/* Referral section */
+.referral-section {
+  margin: 20px 0;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Referral link input */
+#referralLink {
+  background: #333;
+  border: none;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  width: 70%;
+  font-size: 14px;
+}
+
+/* Copy button */
+.copy-button {
+  background: #555;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* Invite button */
+.invite-button1 {
+  position: fixed;
+  right: 11.5%;
+  top: 1.3%;
+  background-color: #000000;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+/* Close button */
+.close-button1 {
+  background: #333;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-top: 20px;
+  border-radius: 8px;
+}
+/* Share Telegram button */
+.share-telegram {
+  display: inline-block;
+  margin-top: 10px;
+  background: #000000;
+  color: white;
+  padding: 10px 10px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 16px;
+  border: 1.5px solid #00d0ff;
+}
+
+
+
