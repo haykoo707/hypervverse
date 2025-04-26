@@ -44,8 +44,8 @@
           <!-- Popup -->
 <div id="popupOverlay1" class="popup-overlay1">
   <div class="popup-content1">
-    <h2>Invite your frens!</h2>
-    <p>Share your referral link so we can become famous❤️</p>
+    <h2 style=" margin-bottom: 15px; ">Invite your frens!</h2>
+    <p style=" margin-bottom: 15px; ">Share your referral link so we can become famous❤️</p>
     <div class="referral-section">
       <input type="text" id="referralLink" value="https://t.me/hyperrverse_bot" readonly />
       <button id="copyButton" class="copy-button">Copy</button>
@@ -59,7 +59,10 @@
   </div>
 </div>
                   
-        <script>
+        
+
+<script>
+
 const inviteButton = document.getElementById('inviteButton1');
 const popupOverlay = document.getElementById('popupOverlay1');
 const closePopup = document.getElementById('closePopup1');
@@ -68,16 +71,16 @@ const referralLink = document.getElementById('referralLink');
 const shareTelegram = document.getElementById('shareTelegram');
 
 inviteButton.addEventListener('click', () => {
-  popupOverlay.style.display = 'flex';
+  popupOverlay.classList.add('active');
   
   // Update Telegram share link
   const link = referralLink.value;
-  const message = encodeURIComponent(``);
+  const message = encodeURIComponent(`Hey! Join me here: ${link}`);
   shareTelegram.href = `https://t.me/share/url?url=${link}&text=${message}`;
 });
 
 closePopup.addEventListener('click', () => {
-  popupOverlay.style.display = 'none';
+  popupOverlay.classList.remove('active');
 });
 
 copyButton.addEventListener('click', () => {
@@ -88,7 +91,6 @@ copyButton.addEventListener('click', () => {
     copyButton.innerText = 'Copy';
   }, 1500);
 });
-
 
 // Create the menu on page load
 window.addEventListener('DOMContentLoaded', () => {
@@ -451,7 +453,8 @@ const userScoreKey = "userScore"; // 🔥 Պահում ենք score Local Storag
 
 
 let score = 0;
-let userScore = localStorage.getItem('userScore') ? parseInt(localStorage.getItem('userScore')) : 0;
+let userScore = parseInt(localStorage.getItem('userScore')) || 5000;
+localStorage.setItem('userScore', userScore);
 
         
       const TASKS_VERSION = "v14"; // Նոր task ավելացնելիս փոխիր այս տարբերակը
