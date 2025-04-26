@@ -298,18 +298,18 @@ window.addEventListener('DOMContentLoaded', () => {
         1.997
       </button>
       <script>
-       function handlePurchase1() {
-      const tonLink = "ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=199700000&text=✅ GOLD PLAN";
-
-      window.location.href = tonLink;
-
-          // Try opening ton://
-          const iframe = document.createElement("iframe");
-          iframe.style.display = "none";
-          iframe.src = tonLink;
-          document.body.appendChild(iframe);
-      
+        function handlePurchase1() {
+          const tonLink = "ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=199700000&text=✅ GOLD PLAN";
+        
+          const a = document.createElement('a');
+          a.href = tonLink;
+          a.style.display = 'none';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
         }
+        </script>
+        
       </script>
       
           </div>
@@ -335,21 +335,18 @@ window.addEventListener('DOMContentLoaded', () => {
       </button>
 
       <script>
-       function handlePurchase2() {
-        const tonLink = "ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=299700000&text=✅ PREMIUM PLAN";
-
-      window.location.href = tonLink;
-
-      
-          // Try opening ton://
-          const iframe = document.createElement("iframe");
-          iframe.style.display = "none";
-          iframe.src = tonLink;
-          document.body.appendChild(iframe);
-      
-  
+        function handlePurchase2() {
+          const tonLink = "ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=299700000&text=✅ PREMIUM PLAN";
+        
+          const a = document.createElement('a');
+          a.href = tonLink;
+          a.style.display = 'none';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
         }
-      </script>
+        </script>
+        
           </div>
 
   </div>
