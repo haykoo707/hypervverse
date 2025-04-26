@@ -1239,38 +1239,42 @@ body {
 
 .profile-item {
   display: flex;
-  gap: 12px;
-  padding: 5px;
-  background: #000000;
+  align-items: center; /* Լավագույն հորիզոնական հավասարեցում */
+  gap: 10px; /* Ավելի փոքր gap, որ մոտ լինեն */
+  padding: 10px;
+  background: #000;
   border-radius: 12px;
 }
 
 .profile-photo {
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #fff;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3); /* Մի փոքր ավելի մուգ շողք */
 }
 
 .profile-info {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px; /* Ավելի փոքր vertical տարածություն username-ի ու score-ի միջև */
 }
 
 .username {
   font-weight: 600;
-  color: #ffffff;
+  color: #fff;
   font-size: 16px;
+  margin: 0; /* Հեռացնենք լռակյաց margin-ը */
 }
 
 .total-score {
   font-size: 14px;
-  color: #7c7c7c;
+  color: #aaa; /* Մի քիչ ավելի բաց գույն, ավելի նուրբ տեսք */
   font-weight: 500;
+  margin: 0; /* Հեռացնենք լռակյաց margin-ը */
 }
+
 
 /* Մեդալը նկատվելու է էկրանի ներքևում */
 .medals-container {
@@ -1323,7 +1327,7 @@ body {
   position: fixed;
   right: 1%;
   top: 1%;
-  background-color: #232323;
+  background-color: #000000;
   color: white;
   border: none;
   padding: 8px 12px;

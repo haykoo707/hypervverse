@@ -299,8 +299,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 <div class="loading-screen" id="loadingScreen">
   <img src="photo_2025-04-25_23-12-33.jpg" alt="Loading..." class="loading-image animate-loading">
-  <h5 class="loadingh5">5.1.x
-  </h5>  
+  <h5 class="loadingh5">5.1.x</h5> 
 </div>
 
 <!-- Popup-ի կոնտեյներ -->
@@ -719,23 +718,25 @@ function handleClaim(taskId) {
     .reverse()
     .find(medal => userProfile.score >= medal.score);
 
-  profileInfo.innerHTML = `
-    <h2>Profile</h2>
-    <div class="profile-item">
-      <img 
-        src="${Telegram.WebApp.initDataUnsafe.user.photo_url}" 
-        class="profile-photo"
-        alt="Profile photo"
-      >
-      <div class="profile-info">
-        <span class="username">
-          @${Telegram.WebApp.initDataUnsafe.user.username}
-        </span>
-        <span class="total-score">
-          Total ${userProfile.score}🌟
-        </span>
-      </div>
+    profileInfo.innerHTML = `
+  <h2 style="color: #fff; margin-bottom: 12px;">Profile</h2>
+  <div class="profile-item">
+    <img 
+      src="${Telegram.WebApp.initDataUnsafe.user.photo_url}" 
+      class="profile-photo"
+      alt="Profile photo"
+    >
+    <div class="profile-info">
+      <span class="username">
+        @${Telegram.WebApp.initDataUnsafe.user.username}
+      </span>
+      <span class="total-score">
+        Total ${userProfile.score} 🌟
+      </span>
     </div>
+  </div>
+
+
 
     <div class="medals-container">
       <h3>🎖️ Current Title</h3>
