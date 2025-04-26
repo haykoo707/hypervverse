@@ -1239,7 +1239,7 @@ body {
 
 .profile-item {
   display: flex;
-  gap: 12px;
+  gap: 5px;
   padding: 12px;
   background: #000000;
   border-radius: 12px;
