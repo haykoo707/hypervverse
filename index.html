@@ -35,8 +35,9 @@
     <!-- Վերևի տող -->
     <div class="top-bar">
       <div class="social-icons">
-          <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
-          <button id="inviteButton1" class="invite-button1">
+        <button class="mobile-menu-btn" onclick="toggleMenu()" aria-label="Menu">
+          <i class="fas fa-bars"></i></button>
+         <button id="inviteButton1" class="invite-button1">
             <i class="fas fa-user-friends"></i></button>
 
 
@@ -45,7 +46,7 @@
 <div id="popupOverlay1" class="popup-overlay1">
   <div class="popup-content1">
     <h2 style=" margin-bottom: 15px; ">Invite your frens!</h2>
-    <p style=" margin-bottom: 15px; ">Share your referral link so we can become famous❤️</p>
+    <p style=" margin-bottom: 15px;">Share your referral link so we can become famous❤️</p>
     <div class="referral-section">
       <input type="text" id="referralLink" value="https://t.me/hyperrverse_bot" readonly />
       <button id="copyButton" class="copy-button">Copy</button>
@@ -75,7 +76,7 @@ inviteButton.addEventListener('click', () => {
   
   // Update Telegram share link
   const link = referralLink.value;
-  const message = encodeURIComponent(`Hey! Join me here: ${link}`);
+  const message = encodeURIComponent(`Hey! Join here: ${link}`);
   shareTelegram.href = `https://t.me/share/url?url=${link}&text=${message}`;
 });
 
@@ -105,7 +106,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const items = [
     { text: 'Telegram', href: 'https://t.me/HyperrVersee' },
     { text: 'Website', href: 'https://hyper070.github.io/UNIVERSE/' },
-    { text: 'About Us', href: '#' },
+    { text: 'About Us', href: '    ' },
   ];
 
   items.forEach(item => {
@@ -260,93 +261,20 @@ window.addEventListener('DOMContentLoaded', () => {
 <div id="play" class="tab-content active">
   <h2 class="glow">ʜʏᴘᴇʀᴠᴇʀꜱᴇ</h2>
   <a href="game.html">
-    <button class="play-btn">▶</button>
+    <button class="play-btn"><span>▶</span></button>
   </a>
-  <button class="play-btn-img" onclick="openPopup()"></button>
 
     </div>
 </div>
-<!-- Popup պատուհան -->
-<div id="popup" class="popup-overlay">
-  <div class="popup-content">
-    <span class="close-btn" onclick="closePopup()">&times;</span>
-    <p style="font-weight: 500;">
-      <img src="toncoin-ton-logo.png" 
-           width="20" 
-           height="20" 
-           style="vertical-align: middle; margin-right: 6px;">
-      Only Tonkeeper
-    </p>
-        <h2 style="color: rgb(255, 255, 255);">Upgrade Plan</h2>
-    
 
-    <!-- GOLD -->
-    <div class="card gold">
-      <h3>GOLD PLAN</h3>
-      <ul>
-        <li>✅ Airdrop Priority Transactions 1</li>
-        <li>✅ Fast-Track Access HyperVerse</li>
-        <li>✅ Bonuses in game</li>
-        <li>✅ +4% Airdrop bonus</li>
-      </ul>
-      <form action="ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=199700000&text=✅ GOLD PLAN" method="get">
-        <button class="price-button" type="submit">
-          <img src="toncoin-ton-logo.png" 
-               class="ton-icon" 
-               width="20" 
-               height="20" 
-               alt="TON Icon">
-          1.997 TON
-        </button>
-      </form>
-        
-      </script>
-      
-          </div>
-
-    <!-- PLATINUM -->
-    <div class="card platinum">
-      <h3>PREMIUM PLAN</h3>
-      <ul>
-        <li>✅ Airdrop Priority Transactions 2</li>
-        <li>✅ Fast-Track Access HyperVerse</li> 
-        <li>✅ Bonuses in game</li>
-        <li>✅ +10% Airdrop bonus</li>
-        <li>✅ Premium medal</li>
-        <li>✅ Loyal User Badge</li>
-      </ul>
-      <form action="ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=299700000&text=✅ PREMIUM PLAN" method="get">
-        <button class="price-button" type="submit">
-          <img src="toncoin-ton-logo.png" 
-               class="ton-icon" 
-               width="20" 
-               height="20" 
-               alt="TON Icon">
-          2.997 TON
-        </button>
-      </form>
-      
-
-
-        
-          </div>
-
-  </div>
-</div>
-
+  
 
 <div class="loading-screen" id="loadingScreen">
   <img src="photo_2025-04-25_23-12-33.jpg" alt="Loading..." class="loading-image animate-loading">
   <h5 class="loadingh5">5.1.x</h5> 
 </div>
 
-<!-- Popup-ի կոնտեյներ -->
-<div id="popup" class="popup-container hidden">
-  <div class="popup-content">
-      <p>SOON!</p>
-      <button id="popup-close">OK</button>
-  </div>
-</div>
+
 <!-- Դրա համար տեղադրիր սա քո body-ի վերջում -->
 <div id="notification" class="notification hidden">
   <span class="check">✔️</span>

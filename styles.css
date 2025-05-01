@@ -288,14 +288,7 @@ background: #4b4b4b;
 
 }
 
-.play-card {
-  background: #111;
-  border: 1px solid #333;
-  border-radius: 12px;
-  padding: 20px;
-  text-align: center;
-  margin-bottom: 15px;
-}
+
 .reward-timer {
   color: #22c5f2;
   font-size: 14px;
@@ -328,16 +321,6 @@ background: #4b4b4b;
   background: #00bbff;
 }
 
-.x-btn{
-  width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 8px;
-  color: white;
-  font-weight: bold;
-  margin-top: 20px;
-  background: #00bbff;
-}
 
 
 .sp-btn{
@@ -350,22 +333,9 @@ background: #4b4b4b;
   margin-top: 20px;
   background: #00bbff;
 }
-.hpsup-btn{
-width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 8px;
-  color: white;
-  font-weight: bold;
-  margin-top: 20px;
-  background: #00bbff;
-}
 
-/* Նոր ավելացված ոճեր Airdrop-ի համար */
-.airdrop-container {
-  text-align: center;
-  padding: 20px;
-}
+
+
 .total-score {
   font-size: 28px;
   color: #22c5f2;
@@ -379,14 +349,7 @@ width: 100%;
 }
 
     
-    .loader {
-        width: 50px;
-        height: 50px;
-        border: 5px solid rgb(100, 121, 124);
-        border-top: 5px solid #00c8ff;
-        border-radius: 50%;
-        animation: spin 0.8s linear infinite;
-    }
+ 
     @keyframes spin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
@@ -412,17 +375,7 @@ width: 100%;
 
     
     
-    .loadingh1 {
-color: rgb(0, 0, 0);
-position: absolute;
-top: 11%;
-left: 50%;
-transform: translate(-50%, -50%);
-text-shadow: 0 0 30px #00d0ff, 0 0 30px #00d0ff;
-text-shadow: 0 0 30px #00d0ff, 0 0 30px #00d0ff;
-font-size: 2.5em;
 
-}
 .loadingh5 {
   color: rgb(100, 100, 100);
   position: absolute;
@@ -511,7 +464,7 @@ height: 48px;
   top: 185px;
   transform: translate(-50%, -30%);
   animation: glow 2s infinite ease-in-out;
-  box-shadow: 0 0 80px #00d0ff,
+  box-shadow: 0 0 40px #00d0ff,
 }
 @keyframes particles {
   to {
@@ -520,34 +473,6 @@ height: 48px;
   }
 }
 
-.particle {
-  position: fixed;
-  width: 3px;
-  height: 3px;
-  background: white;
-  border-radius: 50%;
-  animation: particles 1.5s linear forwards;
-  pointer-events: none;
-}
-
-/* Շարժվող փայլ բոլոր կողմերից */
-@keyframes glow {
-  0% {
-    box-shadow: 0 0 20px #00d0ff,
-                0 0 40px #00d0ff,
-                0 0 60px #00d0ff;
-  }
-  50% {
-    box-shadow: 0 0 30px #00d0ff,
-                0 0 70px #00d0ff,
-                0 0 100px #00d0ff;
-  }
-  100% {
-    box-shadow: 0 0 20px #00d0ff,
-                0 0 40px #00d0ff,
-                0 0 60px #00d0ff;
-  }
-}
 
 
 .play-btn:hover {
@@ -557,89 +482,24 @@ height: 48px;
   
 }
 
-.particles {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-}
-
-
-@keyframes shake {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  50% { transform: translateX(5px); }
-  75% { transform: translateX(-5px); }
-  100% { transform: translateX(0); }
-}
 
 .glow {
-  animation: shake 2.8s ease infinite;
-  
+  animation: shake 3s ease infinite;
   text-align: center;
   font-size: 1.7em;
   text-shadow: 0 0 10px #00d0ff, 0 0 25px #00d0ff;
+}
 
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(0px); }
+  75% { transform: translateX(5px); }
 }
 
 
 
 
-
-.dots-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  width: 100%;
-}
-
-.dot {
-  height: 15px;
-  width: 15px;
-  margin-right: 10px;
-  border-radius: 10px;
-  background-color: #7bb6ff;
-  animation: pulse 1.5s infinite ease-in-out;
-}
-
-.dot:last-child {
-  margin-right: 0;
-}
-
-.dot:nth-child(1) {
-  animation-delay: -0.3s;
-}
-
-.dot:nth-child(2) {
-  animation-delay: -0.1s;
-}
-
-.dot:nth-child(3) {
-  animation-delay: 0.1s;
-}
-
-@keyframes pulse {
-  0% {
-    transform: scale(0.8);
-    background-color: #7bb6ff;
-    box-shadow: 0 0 0 0 rgba(178, 212, 252, 0.7);
-  }
-
-  50% {
-    transform: scale(1.2);
-    background-color: #7bb6ff;
-    box-shadow: 0 0 0 10px rgba(178, 212, 252, 0);
-  }
-
-  100% {
-    transform: scale(0.8);
-    background-color: #7bb6ff;
-    box-shadow: 0 0 0 0 rgba(178, 212, 252, 0.7);
-  }
-}
 /* Popup Container */
 .popup-container {
   position: fixed;
@@ -656,21 +516,6 @@ height: 48px;
   display: none; /* Initially hidden */
 }
 
-/* Popup Button */
-.popup-btn {
-  margin-top: 15px;
-  padding: 10px 20px;
-  background: #00d0ff;
-  border: none;
-  color: white;
-  font-size: 16px;
-  border-radius: 5px;
-  transition: 0.3s;
-}
-
-.popup-btn:hover {
-  background: #0099cc;
-}
 #dailyCodeInput {
   width: 80%;
   padding: 10px;
@@ -687,143 +532,8 @@ height: 48px;
   border-color: #00d0ff;
   outline: none;
 }
-/* From Uiverse.io by StealthWorm */ 
-.btn {
-  display: flex;
-  position: absolute;
-  left: 50%; 
-  transform: translateX(-50%);
-  padding: 8px;
-  margin-top: 12px;
-  justify-content: center;
-  align-items: center;
-  width: 50%;
-  overflow: hidden;
-  height: 14%;
-  background-size: 300% 300%;
-  backdrop-filter: blur(1rem);
-  border-radius: 5rem;
-  transition: 0.5s;
-  animation: gradient_301 5s ease infinite;
-  border: double 4px transparent;
-  background-image: linear-gradient(#212121, #212121),
-    linear-gradient(
-      137.48deg,
-      #00d0ff 10%,
-      #64e3ff 45%,
-      #bee6ef 67%,
-      #00d0ff 87%
-    );
-  background-origin: border-box;
-  background-clip: content-box, border-box;
-}
 
-#container-stars {
-  position: absolute;
-  z-index: -1;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  transition: 0.5s;
-  backdrop-filter: blur(1rem);
-  border-radius: 5rem;
-}
 
-strong {
-  z-index: 2;
-  font-family: "Avalors Personal Use";
-  font-size: 13px;
-  letter-spacing: 5px;
-  color: #ffffff;
-  text-shadow: 0 0 4px white;
-}
-
-#glow {
-  position: absolute;
-  display: flex;
-  width: 12rem;
-}
-
-.circle {
-  width: 100%;
-  height: 30px;
-  filter: blur(2rem);
-  animation: pulse_3011 4s infinite;
-  z-index: -1;
-}
-
-.circle:nth-of-type(1) {
-  background: rgba(28, 218, 248, 0.636);
-}
-
-.circle:nth-of-type(2) {
-  background: rgba(184, 141, 249, 0.704);
-}
-
-.btn:hover #container-stars {
-  z-index: 1;
-  background-color: #4eb8d0;
-}
-
-.btn:active {
-  border: double 4px #00c3ff;
-  background-origin: border-box;
-  background-clip: content-box, border-box;
-  animation: none;
-  
-}
-
-.btn:active .circle {
-  background: #ff9fd9;
-}
-
-#stars {
-  position: relative;
-  background: transparent;
-  width: 200rem;
-  height: 200rem;
-}
-
-#stars::after {
-  content: "";
-  position: absolute;
-  top: -10rem;
-  left: -100rem;
-  width: 100%;
-  height: 100%;
-  animation: animStarRotate 90s linear infinite;
-}
-
-#stars::after {
-  background-image: radial-gradient(#ffffff 1px, transparent 1%);
-  background-size: 50px 50px;
-}
-
-#stars::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -50%;
-  width: 170%;
-  height: 500%;
-  animation: animStar 60s linear infinite;
-}
-
-#stars::before {
-  background-image: radial-gradient(#ffffff 1px, transparent 1%);
-  background-size: 50px 50px;
-  opacity: 0.5;
-}
-
-@keyframes animStar {
-  from {
-    transform: translateY(0);
-  }
-
-  to {
-    transform: translateY(-135rem);
-  }
-}
 
 @keyframes animStarRotate {
   from {
@@ -950,80 +660,7 @@ strong {
       color: #ffffff;
     }
 
-    .play-btn-img {
-      width: 55px;
-      height: 55px;
-      background-image: url('ChatGPT Image Apr 20, 2025, 10_26_54 PM.png');
-      background-size: cover;
-      background-position: center;
-      border: solid 1px #00c8ff;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0, 217, 255, 0.6);
-      animation: glow 2s infinite ease-in-out;
-      transition: transform 0.3s ease;
-      position: fixed;
-      right: 0;
-      bottom: -130px;
-      transform: translate(0, 0);
-      z-index: 9999;
-    }
     
-    
-    .play-btn-img:hover {
-      transform: scale(1.1);
-      position: fixed;
-      right: 0;
-      bottom: -130px;
-      transform: translate(0, 0);
-      z-index: 9999;
-
-    }
-    
-    @keyframes glow {
-      0% {
-        box-shadow: 0 0 5px rgba(32, 207, 255, 0.4);
-      }
-      50% {
-        box-shadow: 0 0 15px rgb(0, 229, 255);
-      }
-      100% {
-        box-shadow: 0 0 5px rgba(0, 157, 181, 0.4);
-      }
-    }
-    /* Popup overlay */
-/* Popup overlay */
-.popup-overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.7);
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.popup-content {
-  background: #000000;
-  border-radius: 16px;
-  padding: 20px;
-  width: 90%;
-  max-width: 400px;
-  max-height: 90vh;
-  overflow-y: auto;
-  position: relative;
-  transform: scale(0.9);
-  transition: transform 0.3s ease;
-}
-
-.popup-content h2 {
-  text-align: center;
-  margin-bottom: 16px;
-}
 
 /* Card styles */
 .card {
@@ -1099,22 +736,7 @@ strong {
 .popup-overlay.closing .popup-content {
   transform: scale(0.9);
 }
-.small-text {
-  font-size: 12px;
-  position: fixed;
-  top: 1.8%;
-padding: 2px;
-}
-.price-button {
-  background-color: #00c3ff;
-  color: white;
-  font-size: 18px;
-  padding: 8px 40px;
-  width: 100%;
-  border: none;
-  border-radius: 10px;
-  transition: background-color 0.3s ease;
-}
+
 .popup {
   display: none;
   position: fixed;
@@ -1157,11 +779,13 @@ padding: 2px;
   padding: 12px 20px;
   margin-top: 35px;
   font-size: 14px;
-  background: linear-gradient(to right, #22e5ff, #05bcd4);
-  border: none;
+  background: linear-gradient(270deg, #00d0ff, #00aac0, #00d0ff);
+  background-size: 600% 600%;
+  animation: gradientMove 6s ease infinite;  border: none;
   border-radius: 14px;
   font-weight: bold;
 }
+
 
 .popup {
   display: none;
@@ -1278,12 +902,12 @@ body {
 /* Մեդալը նկատվելու է էկրանի ներքևում */
 .medals-container {
   position: fixed;
-  bottom: -60%;
+  bottom: -70%;
   left: 0;
   width: 100%;
   background: linear-gradient(to top, rgba(77, 77, 77, 0.95), rgba(70, 70, 70, 0.7));
   backdrop-filter: blur(5px);
-  border-top: 2px solid #31ddff;
+  border-top: 2px solid #00d0ff;
   padding: 10px 0;
   text-align: center;
   z-index: 999;
@@ -1302,7 +926,7 @@ body {
   justify-content: center;
   gap: 10px;
   background-color: #000000;
-  border: 2px solid #31ddff;
+  border: 2px solid #00d0ff;
   border-radius: 30px;
   padding: 6px 14px;
   font-size: 1rem;
@@ -1332,6 +956,7 @@ body {
   padding: 8px 12px;
   border-radius: 8px;
   font-size: 15px;
+  border: #00d0ff solid 2px;
 }
 
 .menu-dropdown {
@@ -1429,7 +1054,6 @@ body {
   align-items: center;
   justify-content: center;
   z-index: 1000;
-
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.4s ease, visibility 0.4s ease;
@@ -1487,7 +1111,7 @@ body {
   color: rgb(0, 0, 0);
   border: none;
   padding: 10px 16px;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
   font-size: 14px;
 }
@@ -1495,15 +1119,15 @@ body {
 /* Invite button */
 .invite-button1 {
   position: fixed;
-  right: 11.5%;
-  top: 1.3%;
+  right: 13.5%;
+  top: 1.1%;
   background-color: #000000;
   color: white;
   border: none;
-  padding: 8px 12px;
+  padding: 8px 11px;
   border-radius: 8px;
-  font-size: 13px;
-}
+  font-size: 15px;
+border: #00bbff solid 2px;}
 
 /* Close button */
 .close-button1 {
@@ -1512,7 +1136,7 @@ body {
   border: none;
   padding: 10px 20px;
   margin-top: 20px;
-  border-radius: 8px;
+  border-radius: 10px;
 }
 /* Share Telegram button */
 .share-telegram {
@@ -1525,8 +1149,18 @@ body {
   text-decoration: none;
   font-weight: 500;
   font-size: 14px;
-  border: 1.5px solid #00d0ff;
+  border: 2px solid #00d0ff;
+}
+#popup.closing {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+.fa-box-open{
+height: 20px;
+width: 100px;
 }
 
-
-
+.fa-telegram-plane{
+  color: #00d0ff;
+}
