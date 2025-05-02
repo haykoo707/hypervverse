@@ -953,7 +953,7 @@ body {
   background-color: #000000;
   color: white;
   border: none;
-  padding: 8px 12px;
+  padding: 8px 10px;
   border-radius: 8px;
   font-size: 15px;
   border: #00d0ff solid 2px;
@@ -1119,12 +1119,12 @@ body {
 /* Invite button */
 .invite-button1 {
   position: fixed;
-  right: 13.5%;
-  top: 1.1%;
+  right: 13%;
+  top: 1%;
   background-color: #000000;
   color: white;
   border: none;
-  padding: 8px 11px;
+  padding: 8px 9px;
   border-radius: 8px;
   font-size: 15px;
 border: #00bbff solid 2px;}
@@ -1163,4 +1163,19 @@ width: 100px;
 
 .fa-telegram-plane{
   color: #00d0ff;
+}
+#custom-ton-connect-button {
+  background-color: #007aff;
+  color: white;
+  padding: 12px 24px;
+  font-size: 16px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: 'Arial', sans-serif;
+  transition: background-color 0.3s ease;
+}
+
+#custom-ton-connect-button:hover {
+  background-color: #005bb5;
 }
