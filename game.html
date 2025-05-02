@@ -120,20 +120,21 @@
   <div id="score">🌟</div>
   <div id="gameArea">
     <div id="player" class="player">
-        <div class="username" id="playerName">Player</div>
-      </div>
+      <span class="username" id="playerUsername">@Player</span>
+    </div>
+    
           <div id="joystickWrapper">
       <div id="joystickHandle"></div>
     </div>
   </div>
 <script>// Get Telegram username
-    let telegramUsername = "Player";
-    if (window.Telegram && Telegram.WebApp.initDataUnsafe?.user?.username) {
-      telegramUsername = Telegram.WebApp.initDataUnsafe.user.username;
-    }
-    
-    // Set username above the player
-    document.getElementById("playerName").textContent = telegramUsername;
+  const playerUsernameEl = document.getElementById("playerUsername");
+if (window.Telegram?.WebApp?.initDataUnsafe?.user?.username) {
+  playerUsernameEl.textContent = '@' + Telegram.WebApp.initDataUnsafe.user.username;
+} else {
+  playerUsernameEl.textContent = '@Player';
+}
+e;
     </script>
   <script>
     const player = document.getElementById('player');
