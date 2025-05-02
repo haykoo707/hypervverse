@@ -1,320 +1,266 @@
 <!DOCTYPE html>
 <html lang="hy">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catch the Ball Game</title>
-    <style>
-        body { 
-            display: flex; justify-content: center; align-items: center; 
-            height: 100vh; background: #f0f0f0; margin: 0;
-        }
-        #gameContainer {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            background: rgb(0, 0, 0);
-            overflow: hidden;
-            box-shadow: 0 0 10px rgba(55, 222, 255, 0.3);
-        }
-        #score, #userScore { 
-            position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
-            font-size: 20px; color: rgb(255, 255, 255); font-weight: bold;
-        }
-        #userScore {
-            top: 40px;
-            font-size: 16px;
-        }
-        canvas { display: block; }
-
-
-        .custom-button {
-    padding: 10px 14px;
-    font-size: 14px;
-    color: rgb(0, 0, 0);
-    background-color: #00d0ff;
-    border: none;
-    border-radius: 12px;
-    transition: background-color 0.3s ease;
-    position: absolute;
-    top: 1%;
-    left: 1%;
-    font-weight: bold;
+  <meta charset="UTF-8">
+  <title>game</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: Arial;
+      background-color: #919191;
+    }
+    #gameArea {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+    }
+    .player {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .dot, .trap {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      position: absolute;
+      animation: float 2s infinite ease-in-out;
+    }
+    .trap {
+      background-color: red;
+    }
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+      100% { transform: translateY(0); }
+    }
+    #score {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 20px;
+      background: rgb(255, 255, 255);
+      padding: 6px 12px;
+      border-radius: 12px;
+      z-index: 10;
+    }
+    #joystickWrapper {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 120px;
+      background: rgba(0,0,0,0.1);
+      border-radius: 50%;
+      touch-action: none;
+      z-index: 10;
+    }
+    #joystickHandle {
+      width: 50px;
+      height: 50px;
+      background: #00bbff;
+      border-radius: 50%;
+      position: absolute;
+      top: 35px;
+      left: 35px;
+      transition: 0.1s;
+    }
+    #colorPicker {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 10;
+    }
+    .username {
+  position: absolute;
+  top: -20px;
+  width: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 15px;
+  color: black;
+  text-align: center;
+  white-space: nowrap;
+  font-weight: bold;
+}
+#exitButton {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #000000;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-weight: bold;
+  font-size: 18px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
 }
 
-.custom-button:hover {
-    background-color: #439eff;
-}
-canvas {
-position: fixed;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-}
-#timer {
-    position: absolute;
-    top: 70px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 20px;
-    color: rgb(255, 255, 255);
-    font-weight: bold;
-}
-
-    </style>
+  </style>
 </head>
 <body>
- 
-    <div id="gameContainer">
-        <audio id="beep" src="short-beep-tone-47916.mp3"></audio>
-        <div id="timer">⏱ 30</div>
-        <div id="score">🌟 0</div>
-        <div id="userScore">Total 🌟 0</div>
-        <canvas id="starCanvas" width="100%" height="100%"></canvas>
-        <button class="custom-button" onclick="window.location.href='index.html'">
-            X
-        </button>    
+    <button id="exitButton">×</button>
+
+  <input type="color" id="colorPicker" title="Ընտրիր գույնը" />
+  <div id="score">🌟</div>
+  <div id="gameArea">
+    <div id="player" class="player">
+        <div class="username" id="playerName">Player</div>
+      </div>
+          <div id="joystickWrapper">
+      <div id="joystickHandle"></div>
     </div>
-    <script>
-        const scoreDisplay = document.getElementById("score");
-        const userScoreDisplay = document.getElementById("userScore");
-        const canvas = document.getElementById("starCanvas");
-        const ctx = canvas.getContext("2d");
-        const timerDisplay = document.getElementById("timer");
+  </div>
+<script>// Get Telegram username
+    let telegramUsername = "Player";
+    if (window.Telegram && Telegram.WebApp.initDataUnsafe?.user?.username) {
+      telegramUsername = Telegram.WebApp.initDataUnsafe.user.username;
+    }
+    
+    // Set username above the player
+    document.getElementById("playerName").textContent = telegramUsername;
+    </script>
+  <script>
+    const player = document.getElementById('player');
+    const scoreDisplay = document.getElementById('score');
+    const colorPicker = document.getElementById('colorPicker');
+    const gameArea = document.getElementById('gameArea');
+    const joystickWrapper = document.getElementById('joystickWrapper');
+    const joystickHandle = document.getElementById('joystickHandle');
 
-        let timeLeft = 30;
-        let countdownInterval;
+    let userScore = parseInt(localStorage.getItem('userScore')) || 0;
+    scoreDisplay.textContent = `🌟 ${userScore}`;
 
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        
-        const stars = [];
-        const numStars = 188;
-        
-        for (let i = 0; i < numStars; i++) {
-            stars.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                radius: Math.random() * 2,
-                speed: Math.random() * 0.1 + 0.1,
-            });
-        }
-        
-        function drawStars() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "gray";
-        
-            stars.forEach((star) => {
-                ctx.beginPath();
-                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-                ctx.fill();
-        
-                star.y += star.speed;
-                if (star.y > canvas.height) {
-                    star.y = 0;
-                    star.x = Math.random() * canvas.width;
-                }
-            });
-        
-            requestAnimationFrame(drawStars);
-        }
-        drawStars();
-        
-        window.addEventListener("resize", () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
-        
-        let box, balls, badBalls, score, gameOver, touchX;
-        let userScore = localStorage.getItem("userScore") ? parseInt(localStorage.getItem("userScore")) : 0;
-        userScoreDisplay.innerText = "Total 🌟 " + userScore;
-        
-        let gameTimer;
-        let showPopup = false;
-        
-        function createPopup() {
-    const popup = document.createElement("div");
-    popup.id = "popup";
-    popup.style.position = "fixed";
-    popup.style.top = "50%";
-    popup.style.left = "50%";
-    popup.style.transform = "translate(-50%, -50%) scale(1)";
-    popup.style.background = "linear-gradient(145deg, #1e90ff, #63c2ff)";
-    popup.style.padding = "35px 40px";
-    popup.style.borderRadius = "20px";
-    popup.style.boxShadow = "0 10px 25px rgba(0, 0, 0, 0.3)";
-    popup.style.textAlign = "center";
-    popup.style.color = "white";
-    popup.style.fontFamily = "Arial, sans-serif";
-    popup.style.transition = "transform 0.3s ease";
-    popup.innerHTML = `
-  <h2>⏱ Time is up!</h2>
-  <p>Your 🌟${score}</p>
-  <button id="startBtn" style="padding:10px 20px; font-size:14px; background-color: white; border: none; border-radius: 10px; transition: background-color 0.3s ease;">Start</button>
-`;
+    let x = window.innerWidth / 2;
+    let y = window.innerHeight / 2;
+    const speed = 3;
+    let vx = 0, vy = 0;
 
-                
-            document.body.appendChild(popup);
-document.getElementById("startBtn").addEventListener("click", () => {
-    location.reload(); // Էջը թարմացվում է ամբողջությամբ
-});
-        }
-        
-        function resetGame() {
-            box = { x: 170, y: 650, width: 100, height: 12 };
-            balls = [];
-            badBalls = [];
-            for (let i = 0; i < 3; i++) {
-                balls.push({
-                    x: Math.random() * 380,
-                    y: Math.random() * -500,
-                    radius: 10,
-                    speed: Math.random() * 1 + 4,
-                    type: "good"
-                });
-            }
-            for (let i = 0; i < 2; i++) {
-                badBalls.push({
-                    x: Math.random() * 380,
-                    y: Math.random() * -500,
-                    radius: 10,
-                    speed: Math.random() * 1 + 2,
-                    type: "bad"
-                });
-            }
-        
-            score = 0;
-            gameOver = false;
-            scoreDisplay.innerText = "🌟 0";
-        
-            clearTimeout(gameTimer);
-            gameTimer = setTimeout(() => {
-                gameOver = true;
-                createPopup();
-            }, 30000); // 30 վայրկյան
-        
-            updateGame();
-        }
-        
-        function drawBox() {
-            ctx.fillStyle = "#00d0ff";
-            ctx.fillRect(box.x, box.y, box.width, box.height);
-        }
-        
-        function drawBalls() {
-            ctx.font = "25px Arial";
-            balls.forEach(ball => {
-                ctx.fillText("⭐", ball.x - 10, ball.y + 10);
-            });
-            badBalls.forEach(ball => {
-                ctx.fillText("🪨", ball.x - 10, ball.y + 10);
-            });
-        }
-        
-        function updateGame() {
-            if (gameOver) return;
-        
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawBox();
-            drawBalls();
-        
-            balls.forEach(ball => {
-    ball.y += ball.speed;
+    // Allow color change
+    colorPicker.addEventListener('input', e => {
+      player.style.backgroundColor = e.target.value;
+      localStorage.setItem('playerColor', e.target.value);
+    });
 
-    // Եթե հասնում է ներքև՝ ուղարկում ենք վերևից նորից
-    if (ball.y > 900) {
-        ball.y = 0;
-        ball.x = Math.random() * 380;
+    // Restore saved color
+    const savedColor = localStorage.getItem('playerColor');
+    if (savedColor) {
+      player.style.backgroundColor = savedColor;
+      colorPicker.value = savedColor;
     }
 
-    if (ball.y + ball.radius >= box.y && ball.x > box.x && ball.x < box.x + box.width) {
-    score++;
-    scoreDisplay.innerText = "🌟 " + score;
-    userScore++;
-    localStorage.setItem("userScore", userScore);
-    userScoreDisplay.innerText = "Total 🌟 " + userScore;
-
-
-    ball.y = 0;
-    ball.x = Math.random() * 180;
+    function updatePlayerPosition() {
+      x += vx;
+      y += vy;
+      x = Math.max(0, Math.min(x, window.innerWidth - 40));
+      y = Math.max(0, Math.min(y, window.innerHeight - 40));
+      player.style.left = x + 'px';
+      player.style.top = y + 'px';
+      checkCollision();
     }
+
+    function randomColor() {
+      const colors = ['green', 'blue', 'yellow', 'purple', 'black'];
+      return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    function createDot() {
+      const dot = document.createElement('div');
+      dot.classList.add('dot');
+      dot.style.backgroundColor = randomColor();
+      dot.style.left = Math.random() * (window.innerWidth - 20) + 'px';
+      dot.style.top = Math.random() * (window.innerHeight - 20) + 'px';
+      gameArea.appendChild(dot);
+    }
+
+    function createTrap() {
+      const trap = document.createElement('div');
+      trap.classList.add('trap');
+      trap.style.left = Math.random() * (window.innerWidth - 20) + 'px';
+      trap.style.top = Math.random() * (window.innerHeight - 20) + 'px';
+      gameArea.appendChild(trap);
+    }
+
+    function checkCollision() {
+      const items = document.querySelectorAll('.dot, .trap');
+      const playerRect = player.getBoundingClientRect();
+
+      items.forEach(item => {
+        const rect = item.getBoundingClientRect();
+        const isCollision = !(
+          rect.right < playerRect.left ||
+          rect.left > playerRect.right ||
+          rect.bottom < playerRect.top ||
+          rect.top > playerRect.bottom
+        );
+        if (isCollision) {
+          if (item.classList.contains('trap')) {
+            userScore = Math.max(0, userScore - 100);
+          } else {
+            userScore += 1;
+            createDot(); // spawn another dot
+          }
+          item.remove();
+          localStorage.setItem('userScore', userScore);
+          scoreDisplay.textContent = `🌟 ${userScore}`;
+        }
+      });
+    }
+
+    // Joystick logic
+    let originX, originY;
+    joystickWrapper.addEventListener('touchstart', (e) => {
+      const touch = e.touches[0];
+      originX = touch.clientX;
+      originY = touch.clientY;
+    });
+
+    joystickWrapper.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+      const touch = e.touches[0];
+      const dx = touch.clientX - originX;
+      const dy = touch.clientY - originY;
+      const distance = Math.min(40, Math.sqrt(dx * dx + dy * dy));
+      const angle = Math.atan2(dy, dx);
+
+      const offsetX = Math.cos(angle) * distance;
+      const offsetY = Math.sin(angle) * distance;
+
+      joystickHandle.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+
+      vx = Math.cos(angle) * speed;
+      vy = Math.sin(angle) * speed;
+    });
+
+    joystickWrapper.addEventListener('touchend', () => {
+      vx = 0;
+      vy = 0;
+      joystickHandle.style.transform = 'translate(0,0)';
+    });
+
+    // Initialize game
+    setInterval(updatePlayerPosition, 20);
+    for (let i = 0; i < 15; i++) createDot();
+    for (let i = 0; i < 5; i++) createTrap();
+    document.getElementById('exitButton').addEventListener('click', () => {
+  window.location.href = 'index.html';
 });
 
-        
-            badBalls.forEach(ball => {
-                ball.y += ball.speed;
-                if (ball.y > 900) {
-                    ball.y = 0;
-                    ball.x = Math.random() * 380;
-                }
-        
-                if (ball.y + ball.radius >= box.y && ball.x > box.x && ball.x < box.x + box.width) {
-    score -= 10;
-    if (score < 0) score = 0;
-    scoreDisplay.innerText = "🌟 " + score;
-
-    ball.y = 0;
-    ball.x = Math.random() * 380;
-                }
-            });
-        
-            requestAnimationFrame(updateGame);
-        }
-        
-        canvas.addEventListener("touchstart", (e) => {
-            touchX = e.touches[0].clientX;
-        });
-        canvas.addEventListener("touchmove", (e) => {
-            let moveX = e.touches[0].clientX - touchX;
-            box.x += moveX;
-            touchX = e.touches[0].clientX;
-        
-            if (box.x < 0) box.x = 0;
-            if (box.x + box.width > 400) box.x = 400 - box.width;
-        });
-        document.addEventListener("keydown", (e) => {
-            const speed = 15;
-            if (e.key === "ArrowLeft") box.x -= speed;
-            if (e.key === "ArrowRight") box.x += speed;
-        
-            if (box.x < 0) box.x = 0;
-            if (box.x + box.width > 400) box.x = 400 - box.width;
-        });
-        
-        timeLeft = 30;
-timerDisplay.innerText = "⏱ " + timeLeft;
-
-clearInterval(countdownInterval);
-countdownInterval = setInterval(() => {
-    timeLeft--;
-    timerDisplay.innerText = "⏱ " + timeLeft;
-
-    if (timeLeft <= 0) {
-        clearInterval(countdownInterval);
-    }
-}, 1000);
-const beepSound = document.getElementById("beep");
-timeLeft = 30;
-timerDisplay.innerText = "⏱ " + timeLeft;
-timerDisplay.style.color = "white"; // Սկզբնական գույն
-
-clearInterval(countdownInterval);
-countdownInterval = setInterval(() => {
-    timeLeft--;
-    timerDisplay.innerText = "⏱ " + timeLeft;
-
-    // Վերջին 5 վայրկյանում գույն փոխենք ու հնչեցնենք beep
-    if (timeLeft <= 5) {
-        timerDisplay.style.color = "red";
-        beepSound.play(); // Հնչում է beep
-    }
-
-    if (timeLeft <= 0) {
-        clearInterval(countdownInterval);
-    }
-}, 1000);
-
-resetGame();
-        </script>
-        
+  </script>
+</body>
+</html>
