@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>game</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
   <style>
     * { box-sizing: border-box; }
     body {
@@ -127,15 +129,29 @@
       <div id="joystickHandle"></div>
     </div>
   </div>
-<script>// Get Telegram username
-  const playerUsernameEl = document.getElementById("playerUsername");
-if (window.Telegram?.WebApp?.initDataUnsafe?.user?.username) {
-  playerUsernameEl.textContent = '@' + Telegram.WebApp.initDataUnsafe.user.username;
-} else {
-  playerUsernameEl.textContent = '@Player';
+<script>
+let telegramUsername = "Player";
+
+// Ստուգում ենք որ initDataUnsafe եւ user հասանելի են
+if (
+  typeof Telegram !== "undefined" &&
+  Telegram.WebApp &&
+  Telegram.WebApp.initDataUnsafe &&
+  Telegram.WebApp.initDataUnsafe.user &&
+  Telegram.WebApp.initDataUnsafe.user.username
+) {
+  telegramUsername = "@" + Telegram.WebApp.initDataUnsafe.user.username;
 }
-e;
-    </script>
+
+// Տեղադրում ենք DOM-ի մեջ
+document.getElementById("playerUsername").textContent = telegramUsername;
+Telegram.WebApp.ready(); // սա պարտադիր է
+Telegram.WebApp.expand(); // ցանկալի է լիաէկրան խաղի համար
+console.log(Telegram.WebApp.initDataUnsafe);
+
+
+
+</script>
   <script>
     const player = document.getElementById('player');
     const scoreDisplay = document.getElementById('score');
