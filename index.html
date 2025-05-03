@@ -361,107 +361,165 @@ const userScoreKey = "userScore"; // 🔥 Պահում ենք score Local Storag
 
 let userScore = parseInt(localStorage.getItem('userScore')) || 5000;
 localStorage.setItem('userScore', userScore);
+let score = 0;
 
-        
-
-
-    // Օգտատիրոջ միավորները (հեռելով սկզբնական արժեքը localStorage-ից, եթե կան)
-    // Փոխարինել tasks-ի նախնական արժեքը՝ սահմանելով let, որպեսզի կարողանանք վերագրել, եթե անհրաժեշտ լինի
-    let tasks = [
-    {
-  id: 1,
-  title: 'Join HyperVerse Community', // Նոր վերնագիր
-  link: 'https://t.me/HyperrVersee',
-  reward: 35000,
-  status: 'pending',
-  claimAvailable: false,
-  timerId: null,
-  icon: '📢'
-}
-,
+const TASKS_VERSION = "v14"; // Նոր task ավելացնելիս փոխիր այս տարբերակը
 
 
+
+// Սկզբնական tasks-երը
+const defaultTasks = [
 {
-  id: 2,
-  title: 'Join HyperVerse X Community',
-  link: 'https://t.me/HyperrVersee',
-  reward: 20000,
-  status: 'pending',
-  claimAvailable: false,
-  timerId: null,
-  icon: '📢'
-}
-,
-      {
+    id: 1,
+    title: 'Join Telegram Channel',
+    icon: 'https://cdn-icons-png.flaticon.com/512/4926/4926616.png', // Օրինակ պատկերակի հասցե
+    link: 'https://t.me/yourchannel',
+    reward: 1000,
+    status: 'pending',
+    claimAvailable: false,
+    timerId: null
+},
+
+    {
+        id: 2,
+        title: 'Join HyperVerse X Community',
+        link: 'https://t.me/HyperrVersee',
+        reward: 2000,
+        status: 'pending',
+        claimAvailable: false,
+        timerId: null,
+        icon: 'https://cdn-icons-png.flaticon.com/512/733/733579.png'
+    },
+    {
         id: 3,
-        title: 'Join Another Channel',
+        title: 'Follow Instagram',
         link: 'https://t.me/someOtherChannel',
-        reward: 20000,
+        reward: 2000,
         status: 'pending',
         claimAvailable: false,
         timerId: null,
-        icon: '💬'
-      },
-      
-      {
+        icon: 'https://cdn-icons-png.flaticon.com/512/1384/1384063.png'
+    },
+
+    {
         id: 4,
-        title: 'Support the project',
-        link: 'payment.html',
-        reward: 15000,
+        title: 'Follow TikTok',
+        link: 'https://t.me/someOtherChannel',
+        reward: 2000,
         status: 'pending',
         claimAvailable: false,
         timerId: null,
-        icon: '💸'
-      },
+        icon: 'https://cdn-icons-png.flaticon.com/512/3046/3046122.png'
+    },
+ 
+
+];
+
+let tasks = [];
+
+function saveState() {
+    localStorage.setItem('userScore', userScore);
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    const claimedIds = tasks
+        .filter(t => t.status === 'claimed')
+        .map(t => t.id);
+    localStorage.setItem('claimedTaskIds', JSON.stringify(claimedIds));
+    localStorage.setItem('tasksVersion', TASKS_VERSION);
+}
 
 
+function loadState() {
+    const savedVersion = localStorage.getItem('tasksVersion');
+    const savedScore = localStorage.getItem('userScore');
+    const savedTasks = localStorage.getItem('tasks');
+    const savedClaimedIds = localStorage.getItem('claimedTaskIds');
 
-    ];
-
-  
-    // Local Storage - ի համար պահպանումի երկիրը
-    function saveState() {
-      localStorage.setItem('userScore', userScore);
-      localStorage.setItem('tasks', JSON.stringify(tasks));
+    let claimedIds = [];
+    if (savedClaimedIds) {
+        claimedIds = JSON.parse(savedClaimedIds);
     }
 
-    // Local Storage - ից ներբեռնել ցուցակը; 
-    // եթե որևէ task-ի կարգավիճակը "started" է, վերազգուշացնում ենք, քանի որ setTimeout–ը չի պահպանվում
-    function loadState() {
-      const savedScore = localStorage.getItem('userScore');
-      if (savedScore !== null) {
+    if (savedScore !== null) {
         userScore = parseInt(savedScore, 10);
-      }
-      const savedTasks = localStorage.getItem('tasks');
-      if (savedTasks !== null) {
-        tasks = JSON.parse(savedTasks);
-        // Վերածարարում ենք բոլոր "started" task-ները "pending" մակարդակի, որպեսզի վերանայում:
-        tasks.forEach(task => {
-          if (task.status === 'started') {
+    }
+
+    if (savedTasks !== null && savedVersion === TASKS_VERSION) {
+        let loadedTasks = JSON.parse(savedTasks);
+
+        // Հանում ենք այն task-երը որոնք այլևս չկան կամ արդեն Claimed են
+        loadedTasks = loadedTasks.filter(savedTask =>
+            defaultTasks.some(defaultTask => defaultTask.id === savedTask.id) &&
+            !claimedIds.includes(savedTask.id)
+        );
+
+        // Ավելացնում ենք նորերը, եթե չեն Claimed
+        defaultTasks.forEach(defaultTask => {
+            const exists = loadedTasks.some(t => t.id === defaultTask.id);
+            if (!exists && !claimedIds.includes(defaultTask.id)) {
+                loadedTasks.push({ ...defaultTask });
+            }
+        });
+
+        tasks = loadedTasks;
+    } else {
+        // First load կամ version mismatch – մաքրում ենք claimed-ները
+        tasks = defaultTasks.filter(t => !claimedIds.includes(t.id));
+    }
+
+    tasks.filter(task => task.status !== 'claimed').forEach(task => {
+        if (task.status === 'started') {
             task.status = 'pending';
             task.claimAvailable = false;
             task.timerId = null;
-          }
+        }
+    });
+
+    saveState();
+}
+
+
+
+
+        // Եթե որևէ task նախկինում մնացել էր "started", բերում ենք "pending"
+        tasks.filter(task => task.status !== 'claimed').forEach(task => {
+            if (task.status === 'started') {
+                task.status = 'pending';
+                task.claimAvailable = false;
+                task.timerId = null;
+            }
         });
-      }
-    }
+   
 
-    // Tasks ցուցադրումը (Home Tab)
-    function renderTasks() {
-      const taskList = document.getElementById('taskList');
-      taskList.innerHTML = '';
+    saveState();
 
-      tasks.forEach(task => {
+
+
+// Tasks ցուցադրումը (Home Tab)
+function renderTasks() {
+    const taskList = document.getElementById('taskList');
+    taskList.innerHTML = '';
+
+    tasks.filter(task => task.status !== 'claimed').forEach(task => {
         const taskItem = document.createElement('div');
         taskItem.classList.add('task-item');
 
         // Ձախ մաս: Icon, Title, Reward
         const taskLeft = document.createElement('div');
         taskLeft.classList.add('task-left');
-
         const iconDiv = document.createElement('div');
-        iconDiv.classList.add('task-icon');
-        iconDiv.textContent = task.icon || '🐕';
+iconDiv.classList.add('task-icon');
+
+if (task.icon && task.icon.startsWith('http')) {
+    const img = document.createElement('img');
+    img.src = task.icon;
+    img.alt = 'icon';
+    img.style.width = '24px';
+    img.style.height = '24px';
+    iconDiv.appendChild(img);
+} else {
+    iconDiv.textContent = task.icon || '';
+}
+
 
         const taskInfo = document.createElement('div');
         taskInfo.classList.add('task-info');
@@ -472,7 +530,7 @@ localStorage.setItem('userScore', userScore);
 
         const taskReward = document.createElement('div');
         taskReward.classList.add('task-reward');
-        taskReward.textContent = `+${task.reward} Score`;
+        taskReward.textContent = `+${task.reward} 🌟`;
 
         taskInfo.appendChild(taskTitle);
         taskInfo.appendChild(taskReward);
@@ -485,98 +543,81 @@ localStorage.setItem('userScore', userScore);
         const actionBtn = document.createElement('button');
 
         if (task.status === 'pending') {
-          actionBtn.textContent = 'Start';
-          actionBtn.classList.add('start-btn');
-          actionBtn.addEventListener('click', () => handleStart(task.id));
+            actionBtn.textContent = 'Start';
+            actionBtn.classList.add('start-btn');
+            actionBtn.addEventListener('click', () => handleStart(task.id));
         } else if (task.status === 'started') {
-          if (!task.claimAvailable) {
-            actionBtn.textContent = 'Wait...';
-            actionBtn.classList.add('waiting-btn');
-            actionBtn.disabled = true;
-          } else {
-            actionBtn.textContent = 'Claim';
-            actionBtn.classList.add('claim-btn');
-            actionBtn.addEventListener('click', () => handleClaim(task.id));
-          }
+            if (!task.claimAvailable) {
+                actionBtn.textContent = 'Wait...';
+                actionBtn.classList.add('waiting-btn');
+                actionBtn.disabled = true;
+            } else {
+                actionBtn.textContent = 'Claim';
+                actionBtn.classList.add('claim-btn');
+                actionBtn.addEventListener('click', () => handleClaim(task.id));
+            }
         } else if (task.status === 'claimed') {
-          actionBtn.textContent = 'Claimed';
-          actionBtn.classList.add('claimed-btn');
-          actionBtn.disabled = true;
+            actionBtn.textContent = 'Claimed';
+            actionBtn.classList.add('claimed-btn');
+            actionBtn.disabled = true;
         }
 
         taskRight.appendChild(actionBtn);
         taskItem.appendChild(taskLeft);
         taskItem.appendChild(taskRight);
         taskList.appendChild(taskItem);
-      });
-    }
+    });
+}
 
-    // Leaderboard-ի ցուցադրումը
-    function renderLeaderboard() {
-      const leaderboardList = document.getElementById('leaderboardList');
-      leaderboardList.innerHTML = '';
+// Start կոճակի գործողությունը
+function handleStart(taskId) {
+    const taskIndex = tasks.findIndex(t => t.id === taskId);
+    if (taskIndex === -1) return;
+    const task = tasks[taskIndex];
 
-      leaderboardData.forEach(item => {
-        const row = document.createElement('div');
-        row.classList.add('leaderboard-item');
+    // Բանում ենք հղումը նոր պատուհանում
+    window.open(task.link, '_blank');
 
-        const nameSpan = document.createElement('span');
-        nameSpan.textContent = item.username;
+    // Փոխում ենք իրավիճակը՝ 'started'
+    task.status = 'started';
+    task.claimAvailable = false;
 
-        const scoreSpan = document.createElement('span');
-        scoreSpan.textContent = item.score + ' Score';
-
-        row.appendChild(nameSpan);
-        row.appendChild(scoreSpan);
-        leaderboardList.appendChild(row);
-      });
-    }
-
-
-    // Start կոճակի գործողությունը
-    function handleStart(taskId) {
-      const taskIndex = tasks.findIndex(t => t.id === taskId);
-      if (taskIndex === -1) return;
-      const task = tasks[taskIndex];
-
-      // Բանում ենք հղումը նոր պատուհանում
-      window.open(task.link, '_blank');
-
-      // Փոխում ենք իրավիճակը՝ 'started'
-      task.status = 'started';
-      task.claimAvailable = false;
-
-      // Սկսում ենք 20 վայրկյանանոց թայլմա՝ հետո Claim կոճակը կստացվի
-      task.timerId = setTimeout(() => {
+    // Սկսում ենք 20 վայրկյանանոց թայլմա՝ հետո Claim կոճակը կստացվի
+    task.timerId = setTimeout(() => {
         task.claimAvailable = true;
         renderTasks();
         saveState();
-      }, 20000);
+    }, 20000);
 
-      renderTasks();
-      saveState();
-    }
+    renderTasks();
+    saveState();
+}
 
-    // Claim կոճակի գործողությունը
-    function handleClaim(taskId) {
-      const taskIndex = tasks.findIndex(t => t.id === taskId);
-      if (taskIndex === -1) return;
-      const task = tasks[taskIndex];
+// Claim կոճակի գործողությունը
+function handleClaim(taskId) {
+    const taskIndex = tasks.findIndex(t => t.id === taskId);
+    if (taskIndex === -1) return;
+    const task = tasks[taskIndex];
 
-      // Հավաքում ենք միավորները
-      userScore += task.reward;
-      updateScore();
+    userScore += task.reward;
+    updateScore();
+    showNotification(`You got +${task.reward}🌟`);
 
-      // Փոխում ենք վիճակը՝ Claim կատարված
-      task.status = 'claimed';
-      task.claimAvailable = false;
-      if (task.timerId) {
+    // Փոխում ենք վիճակը
+    task.status = 'claimed';
+    task.claimAvailable = false;
+
+    // Հեռացնում ենք հին թայմերը
+    if (task.timerId) {
         clearTimeout(task.timerId);
         task.timerId = null;
-      }
-      renderTasks();
-      saveState();
     }
+
+    saveState();
+    renderTasks();
+}
+
+
 
 
 
