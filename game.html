@@ -12,7 +12,7 @@
       margin: 0;
       overflow: hidden;
       font-family: Arial;
-      background-color: #919191;
+      background-color: #ededed;
     }
     #gameArea {
       width: 100vw;
@@ -27,6 +27,8 @@
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%);
+      transition: background-color 0.4s ease;
+
     }
     .dot, .trap {
       width: 20px;
@@ -45,18 +47,19 @@
     }
     #score {
       position: absolute;
-      top: 10px;
+      top: 5px;
       left: 50%;
       transform: translateX(-50%);
       font-size: 20px;
-      background: rgb(255, 255, 255);
+      background: rgb(0, 0, 0);
       padding: 6px 12px;
       border-radius: 12px;
       z-index: 10;
+      color: white;
     }
     #joystickWrapper {
       position: absolute;
-      bottom: 20px;
+      bottom: 30px;
       left: 50%;
       transform: translateX(-50%);
       width: 120px;
@@ -76,12 +79,7 @@
       left: 35px;
       transition: 0.1s;
     }
-    #colorPicker {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      z-index: 10;
-    }
+
     .username {
   position: absolute;
   top: -20px;
@@ -96,8 +94,8 @@
 }
 #exitButton {
   position: absolute;
-  top: 10px;
-  left: 10px;
+  top: 5px;
+  left: 5px;
   background: #000000;
   color: white;
   border: none;
@@ -112,13 +110,28 @@
   justify-content: center;
   box-shadow: 0 0 5px rgba(0,0,0,0.2);
 }
+#colorSelect {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  padding: 5px 1px;
+  font-size: 15px;
+  border-radius: 10px;
+  z-index: 10;
+}
 
   </style>
 </head>
 <body>
-    <button id="exitButton">×</button>
+<select id="colorSelect">
+  <option value="#3498db">🔵</option>
+  <option value="#e74c3c">🔴</option>
+  <option value="#2ecc71">🟢</option>
+  <option value="#f1c40f">🟡</option>
+  <option value="#000000">⚫</option>
+</select>
 
-  <input type="color" id="colorPicker" title="Ընտրիր գույնը" />
+    <button id="exitButton">×</button>
   <div id="score">🌟</div>
   <div id="gameArea">
     <div id="player" class="player">
@@ -153,9 +166,7 @@ console.log(Telegram.WebApp.initDataUnsafe);
 
 </script>
   <script>
-    const player = document.getElementById('player');
     const scoreDisplay = document.getElementById('score');
-    const colorPicker = document.getElementById('colorPicker');
     const gameArea = document.getElementById('gameArea');
     const joystickWrapper = document.getElementById('joystickWrapper');
     const joystickHandle = document.getElementById('joystickHandle');
@@ -168,18 +179,24 @@ console.log(Telegram.WebApp.initDataUnsafe);
     const speed = 3;
     let vx = 0, vy = 0;
 
-    // Allow color change
-    colorPicker.addEventListener('input', e => {
-      player.style.backgroundColor = e.target.value;
-      localStorage.setItem('playerColor', e.target.value);
-    });
+    const colorSelect = document.getElementById('colorSelect');
+const player = document.getElementById('player');
 
-    // Restore saved color
-    const savedColor = localStorage.getItem('playerColor');
-    if (savedColor) {
-      player.style.backgroundColor = savedColor;
-      colorPicker.value = savedColor;
-    }
+// Եթե արդեն պահված է գույնը, կիրառենք
+const savedColor = localStorage.getItem('playerColor');
+if (savedColor) {
+  player.style.backgroundColor = savedColor;
+  colorSelect.value = savedColor;
+}
+
+// Երբ փոխում են ընտրած գույնը՝ թարմացնենք գնդակը
+colorSelect.addEventListener('change', () => {
+  const selectedColor = colorSelect.value;
+  player.style.backgroundColor = selectedColor;
+  localStorage.setItem('playerColor', selectedColor);
+});
+
+
 
     function updatePlayerPosition() {
       x += vx;
