@@ -826,13 +826,13 @@ body {
   align-items: center; /* Լավագույն հորիզոնական հավասարեցում */
   gap: 10px; /* Ավելի փոքր gap, որ մոտ լինեն */
   padding: 15px;
-  background: #000;
-  border-radius: 12px;
+  background: linear-gradient(to top, rgba(77, 77, 77, 0.95), rgba(70, 70, 70, 0.7));
+  border-radius: 20px;
 }
 
 .profile-photo {
-  width: 60px;
-  height: 60px;
+  width: 65px;
+  height: 65px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #00d0ff;
@@ -853,9 +853,9 @@ body {
 }
 
 .total-score {
-  font-size: 16px;
+  font-size: 14px;
   color: #aaa; /* Մի քիչ ավելի բաց գույն, ավելի նուրբ տեսք */
-  font-weight: 600;
+  font-weight: 550;
   margin: 0; /* Հեռացնենք լռակյաց margin-ը */
 }
 
@@ -863,7 +863,7 @@ body {
 /* Մեդալը նկատվելու է էկրանի ներքևում */
 .medals-container {
   position: fixed;
-  bottom: -70%;
+  bottom: -65%;
   left: 0;
   width: 100%;
   background: linear-gradient(to top, rgba(77, 77, 77, 0.95), rgba(70, 70, 70, 0.7));
