@@ -865,7 +865,7 @@ body {
 /* Մեդալը նկատվելու է էկրանի ներքևում */
 .medals-container {
   position: fixed;
-  bottom: -60%;
+  bottom: -50%;
   left: 0;
   width: 100%;
   background: linear-gradient(to top, rgb(77, 77, 77), rgba(70, 70, 70, 0.871));
