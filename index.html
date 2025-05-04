@@ -363,7 +363,7 @@ const userScoreKey = "userScore"; // 🔥 Պահում ենք score Local Storag
 
 
 
-let userScore = parseInt(localStorage.getItem('userScore')) || 5000;
+let userScore = parseInt(localStorage.getItem('userScore')) || 0;
 localStorage.setItem('userScore', userScore);
 let score = 0;
 
@@ -738,11 +738,28 @@ function handleClaim(taskId) {
         Total ${userProfile.score} <i class="fas fa-star"></i>
       </span>
       
-      <!-- Նոր ավելացված ջնջման կոճակ -->
-      <button class="delete-btn" onclick="deleteUserData()">
-        <i class="fas fa-trash-alt"></i>
-        Delete Data      
+     <button class="delete-btn" onclick="showDeleteModal()">
+    <i class="fas fa-trash-alt"></i>
+    Delete all data
+  </button>
+
+  <!-- Delete Confirmation Modal -->
+  <div class="delete-modal">
+    <div class="modal-content">
+      <i class="fas fa-exclamation-triangle modal-icon"></i>
+      <h3>Warning!</h3>
+      <p>You are about to delete ALL data.<br>This action cannot be undone!</p>
+      
+      <div class="modal-buttons">
+        <button class="modal-btn cancel-btn" onclick="closeDeleteModal()">
+          <i class="fas fa-times"></i> Cancel
         </button>
+        <button class="modal-btn confirm-btn" onclick="handleDeleteConfirm()">
+          <i class="fas fa-trash"></i> Confirm
+        </button>
+      </div>
+    </div>
+  </div>
     </div>
   </div>
 
@@ -1219,16 +1236,34 @@ Swal.fire({
 }
 </style>
 <script>
-  function deleteUserData() {
-  const isConfirmed = confirm("Warning❗\nYou are about to delete ALL data.\nIf you confirm, you will lose all your achievements and points.");
-  
-  if(isConfirmed) {
-    localStorage.clear();
-    alert("Data deleted successfully!");
-    location.reload(); // Կամ կատարեք ձեր անհրաժեշտ ռեդիրեկտը
+  function showDeleteModal() {
+    document.querySelector('.delete-modal').style.display = 'flex';
   }
-}
-</script>
+  
+  function closeDeleteModal() {
+    document.querySelector('.delete-modal').style.display = 'none';
+  }
+  
+  function handleDeleteConfirm() {
+    localStorage.clear();
+    showSuccessModal();
+    closeDeleteModal();
+  }
+  
+  function showSuccessModal() {
+    const successHtml = `
+      <div class="delete-modal" style="display: flex;">
+        <div class="modal-content">
+          <i class="fas fa-check-circle modal-icon" style="color: #4CAF50;"></i>
+          <h3>Data deleted successfully!</h3>
+          <p>All your information has been removed.</p>
+        </div>
+      </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', successHtml);
+    setTimeout(() => location.reload(), 2000);
+  }
+  </script>
 </body>
 </html>
 
