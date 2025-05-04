@@ -825,14 +825,14 @@ body {
   display: flex;
   align-items: center; /* Լավագույն հորիզոնական հավասարեցում */
   gap: 10px; /* Ավելի փոքր gap, որ մոտ լինեն */
-  padding: 10px;
+  padding: 15px;
   background: #000;
   border-radius: 12px;
 }
 
 .profile-photo {
-  width: 48px;
-  height: 48px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #00d0ff;
@@ -846,16 +846,16 @@ body {
 }
 
 .username {
-  font-weight: 600;
+  font-weight: 700;
   color: #fff;
   font-size: 16px;
   margin: 0; /* Հեռացնենք լռակյաց margin-ը */
 }
 
 .total-score {
-  font-size: 14px;
+  font-size: 16px;
   color: #aaa; /* Մի քիչ ավելի բաց գույն, ավելի նուրբ տեսք */
-  font-weight: 500;
+  font-weight: 600;
   margin: 0; /* Հեռացնենք լռակյաց margin-ը */
 }
 
