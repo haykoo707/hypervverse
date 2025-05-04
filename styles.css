@@ -285,7 +285,7 @@ background: #4b4b4b;
   margin: 10px 0;
 }
 .reward-btn {
-  width: 100%;
+  width: 90%;
   padding: 15px;
   background: linear-gradient(45deg, #5dc9e7, #22c5f2);
   border: none;
@@ -1137,4 +1137,24 @@ width: 100px;
 
 #custom-ton-connect-button:hover {
   background-color: #005bb5;
+}
+.reward-card {
+  background: var(--surface);
+  backdrop-filter: blur(16px);
+  border-radius: 20px;
+  border: 1px solid rgba(0, 208, 255, 0.15);
+  box-shadow: 
+    0 8px 32px rgba(0,0,0,0.1),
+    inset 0 0 12px rgba(0,208,255,0.1);
+  transition: transform 0.3s ease;
+  box-shadow: 0 0 16px #00d0ff;
+
+}
+
+.reward-card:hover {
+  transform: translateY(-4px);
+}
+.fa-star {
+  color: #70e5ff; /* Ոսկեգույն */
+  text-shadow: 0 0 8px rgba(11, 231, 255, 0.641); /* Բացվածքային փայլ */
 }

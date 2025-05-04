@@ -6,6 +6,8 @@
   <title>game</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
   <script>
     const tg = window.Telegram.WebApp;
     tg.expand(); // full screen
@@ -218,6 +220,11 @@
       color: #ecf0f1;
       font-family: 'Verdana', sans-serif;
     }
+    .fa-star {
+  color: #70e5ff; /* Ոսկեգույն */
+  text-shadow: 0 0 8px rgba(11, 231, 255, 0.641); /* Բացվածքային փայլ */
+}
+
   </style>
 </head>
 <body>
@@ -230,8 +237,10 @@
 </select>
 
     <button id="exitButton">×</button>
-  <div id="score">🌟</div>
-  <div id="gameArea">
+    <div id="score">
+      <i class="fas fa-star"></i>
+    </div>
+    <div id="gameArea">
     <div id="player" class="player">
       <span class="username" id="playerUsername">@Player</span>
     </div>
@@ -270,7 +279,7 @@ console.log(Telegram.WebApp.initDataUnsafe);
     const joystickHandle = document.getElementById('joystickHandle');
 
     let userScore = parseInt(localStorage.getItem('userScore')) || 0;
-    scoreDisplay.textContent = `🌟 ${userScore}`;
+    scoreDisplay.innerHTML = `<i class="fas fa-star"></i> ${userScore}`;
 
     let x = window.innerWidth / 2;
     let y = window.innerHeight / 2;
@@ -363,8 +372,7 @@ colorSelect.addEventListener('change', () => {
           }
           item.remove();
           localStorage.setItem('userScore', userScore);
-          scoreDisplay.textContent = `🌟 ${userScore}`;
-        }
+          scoreDisplay.innerHTML = ` <i class="fas fa-star"></i> ${userScore}`;        }
       });
     }
 

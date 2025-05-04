@@ -150,11 +150,14 @@ window.addEventListener('DOMContentLoaded', () => {
 
         </script>
         
-            </div>
+      </div>
       <div class="title"></div>
-      <div class="score">🌟
+      <i class="fas fa-star"></i>
+      <div class="score">
+        <i class="fas fa-star"></i>
          <span id="userScore">𝟬
-        </span></div>
+        </span>
+      </div>
     </div>
     <!-- Tabs բաժին -->
     <div class="tabs">
@@ -189,11 +192,11 @@ window.addEventListener('DOMContentLoaded', () => {
 <div id="daily-reward" class="tab-content">
   <div class="daily-reward-section">
       <div class="reward-card">
-          <h2>🎁 Daily Reward</h2>
-          <div class="reward-timer" id="rewardTimer">Available now</div>
-          <button class="reward-btn" id="claimRewardBtn" onclick="handleDailyClaim()">
-              Claim 5000🌟
-          </button>
+        <h2><i class="fas fa-trophy"></i> Daily Reward</h2>
+        <div class="reward-timer" id="rewardTimer">Available now</div>
+        <button class="reward-btn" id="claimRewardBtn" onclick="handleDailyClaim()">
+          Claim 5000 <i class="fas fa-star"></i>
+      </button>
       </div>
       <p style="color: #666; text-align: center;">
           Claim your reward every 24 hours!
@@ -203,8 +206,8 @@ window.addEventListener('DOMContentLoaded', () => {
   <!-- Daily Quest Section -->
   <div class="daily-quest-section">
       <div class="reward-card">
-          <h2>📝 Daily Quest</h2>
-          <input class="" type="text" id="dailyCodeInput" placeholder="Enter today's code" />
+        <h2><i class="fas fa-scroll"></i> Daily Quest</h2>
+        <input class="" type="text" id="dailyCodeInput" placeholder="Enter today's code" />
           <button class="reward-btn" id="submitQuestBtn" onclick="handleDailyQuest()">Submit Code</button>
           <div id="questMessage" style="color: #666; text-align: center; margin-top: 10px;"></div>
       </div>
@@ -230,14 +233,15 @@ window.addEventListener('DOMContentLoaded', () => {
             <div class="box gold" data-cost="5000">
               <i class="fas fa-coins fa-lg" style="color: #464439;"></i>
               Gold Box<br>
-              <small>-5000 🌟</small>
+              <small>-5000 <i class="fas fa-star"></i></small>
           </div>
           
           <div class="box diamond" data-cost="15000">
               <i class="fas fa-gem fa-lg" style="color: #00d0ff;"></i>
               Diamond Box<br>
-              <small>-15000 🌟</small>
-          </div>          </div>
+              <small>-10000 <i class="fas fa-star"></i></small>          
+            </div>         
+           </div>
       </div>
   </div>
 </div>
@@ -530,8 +534,7 @@ if (task.icon && task.icon.startsWith('http')) {
 
         const taskReward = document.createElement('div');
         taskReward.classList.add('task-reward');
-        taskReward.textContent = `+${task.reward} 🌟`;
-
+        taskReward.innerHTML = `+${task.reward} <i class="fas fa-star"></i>`;
         taskInfo.appendChild(taskTitle);
         taskInfo.appendChild(taskReward);
         taskLeft.appendChild(iconDiv);
@@ -601,8 +604,7 @@ function handleClaim(taskId) {
 
     userScore += task.reward;
     updateScore();
-    showNotification(`You got +${task.reward}🌟`);
-
+    showNotification(`You got +${task.reward} <i class="fas fa-star"></i>`);
     // Փոխում ենք վիճակը
     task.status = 'claimed';
     task.claimAvailable = false;
@@ -698,9 +700,9 @@ function handleClaim(taskId) {
       <span class="username">
         @${Telegram.WebApp.initDataUnsafe.user.username}
       </span>
-      <span class="total-score">
-        Total ${userProfile.score} 🌟
-      </span>
+     <span class="total-score">
+  Total ${userProfile.score} <i class="fas fa-star"></i>
+</span>
     </div>
   </div>
 
@@ -801,8 +803,7 @@ function handleClaim(taskId) {
   renderDailyReward();
 
   // Նոր ավելացված մաս
-  showNotification('+5000🌟 Claimed!');
-}
+  showNotification(`+5000 <i class="fas fa-star"></i> Claimed!`);}
 
 
     // Ինիցիալիզացիա
@@ -961,8 +962,7 @@ function handleDailyQuest() {
 
     const userCode = document.getElementById("dailyCodeInput").value;
     if (userCode === dailyCode) {
-        document.getElementById("questMessage").innerText = "✅ Correct code! You earned +1500🌟!";
-        localStorage.setItem(questCooldownKey, now);
+      document.getElementById("questMessage").innerHTML = "✅ Correct code! You earned +1500<i class='fas fa-star'></i>!";        localStorage.setItem(questCooldownKey, now);
 
         // Ավելացնել +1500 score
         let currentScore = parseInt(localStorage.getItem(userScoreKey)) || 0;
@@ -970,8 +970,8 @@ function handleDailyQuest() {
         localStorage.setItem(userScoreKey, currentScore);
 
         // ✅ Ցուցադրել notification
-        showNotification('+1500🌟 Claimed!');
-    } else {
+        showNotification(`+1500 <i class="fas fa-star"></i> Claimed!`);}
+        else {
         document.getElementById("questMessage").innerText = "❌ Incorrect code! Try again.";
     }
 }
@@ -1144,25 +1144,25 @@ document.querySelectorAll(".box").forEach(box => {
             localStorage.setItem("userScore", userScore);
             
             Swal.fire({
-                icon: 'success',
-                title: '🎉 Congratulations!',
-                html: `You won ${reward} 🌟 (${selectedTier.name} Reward)<br>
-                       <small>Total 🌟: ${userScore}🌟</small>`,
-                confirmButtonText: 'OK',
-                customClass: {
-                    popup: 'reward-popup'
-                }
-            });
-        } else {
-            Swal.fire({
-                icon: 'error',
-                title: '🚫 Error',
-                html: `You need ${cost} 🌟<br>
-                       <small>Current 🌟: ${userScore}🌟</small>`,
-                confirmButtonText: 'OK',
-                customClass: {
-                    popup: 'error-popup'
-                }
+    icon: 'success',
+    title: '🎉 Congratulations!',
+    html: `You won ${reward} <i class="fas fa-star"></i> (${selectedTier.name} Reward)<br>
+           <small>Total <i class="fas fa-star"></i>${userScore}</small>`,
+    confirmButtonText: 'OK',
+    customClass: {
+        popup: 'reward-popup'
+    }
+});
+} else {
+Swal.fire({
+    icon: 'error',
+    title: '🚫 Error',
+    html: `You need ${cost} <i class="fas fa-star"></i><br>
+           <small>Current <i class="fas fa-star"></i>${userScore}</small>`,
+    confirmButtonText: 'OK',
+    customClass: {
+        popup: 'error-popup'
+    }
             });
         }
     };
