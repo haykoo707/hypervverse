@@ -282,7 +282,7 @@ window.addEventListener('DOMContentLoaded', () => {
 <!-- Դրա համար տեղադրիր սա քո body-ի վերջում -->
 <div id="notification" class="notification hidden">
   <span class="check">✔️</span>
-  <span>You got +100🌟</span>
+  <span>You got +100<i class="fas fa-star"></i></span>
 </div>
 
 <div id="notification" class="notification hidden"></div>
@@ -674,19 +674,62 @@ function handleClaim(taskId) {
   const profileInfo = document.getElementById('profileInfo');
 
   const medals = [
-    { score: 100, emoji: '🥉', label: 'Bronze Medal' },
-    { score: 10000, emoji: '🥈', label: 'Silver Medal' },
-    { score: 50000, emoji: '🥇', label: 'Gold Medal' },
-    { score: 150000, emoji: '🏅', label: 'Platinum Medal' },
-    { score: 500000, emoji: '🎖️', label: 'Diamond Medal' },
-    { score: 1000000, emoji: '🏆', label: 'Millionaire Medal' },
-    { score: 5000000, emoji: '👑', label: 'Legend Medal' },
-    { score: 10000000, emoji: '🌌', label: 'God Mode Medal' },
-  ];
+    { 
+        score: 100,
+        emoji: '<i class="fas fa-medal" style="color: #cd7f32;"></i>',
+        label: 'Bronze Medal'
+    },
+    { 
+        score: 10000,
+        emoji: '<i class="fas fa-medal" style="color: #c0c0c0;"></i>',
+        label: 'Silver Medal'
+    },
+    { 
+        score: 50000,
+        emoji: '<i class="fas fa-medal" style="color: #ffd700;"></i>',
+        label: 'Gold Medal'
+    },
+    { 
+        score: 150000,
+        emoji: '<i class="fas fa-trophy" style="color: #e5e4e2;"></i>',
+        label: 'Platinum Medal'
+    },
+    { 
+        score: 500000,
+        emoji: '<i class="fas fa-gem" style="color: #b9f2ff;"></i>',
+        label: 'Diamond Medal'
+    },
+    { 
+        score: 1000000,
+        emoji: '<i class="fas fa-trophy" style="color: #gold;"></i>',
+        label: 'Millionaire Medal'
+    },
+    { 
+        score: 5000000,
+        emoji: '<i class="fas fa-crown" style="color: #ffd700;"></i>',
+        label: 'Legend Medal'
+    },
+    { 
+        score: 10000000,
+        emoji: '<i class="fas fa-infinity" style="color: #4b0082;"></i>',
+        label: 'God Mode Medal'
+    },
+];
 
   const currentMedal = medals
     .reverse()
     .find(medal => userProfile.score >= medal.score);
+
+
+function deleteUserData() {
+  const isConfirmed = confirm("Ուշադրություն❗\nԴուք պատրաստվում եք ջնջել ԲՈԼՈՐ տվյալները:\nՀաստատելու դեպքում կկորցնեք ձեր բոլոր նվաճումներն ու միավորները:");
+  
+  if(isConfirmed) {
+    localStorage.clear();
+    alert("Տվյալները հաջողությամբ ջնջվեցին!");
+    location.reload(); // Կամ կատարեք ձեր անհրաժեշտ ռեդիրեկտը
+  }
+}
 
     profileInfo.innerHTML = `
   <h2 style="color: #fff; margin-bottom: 12px;"></h2>
@@ -700,12 +743,17 @@ function handleClaim(taskId) {
       <span class="username">
         @${Telegram.WebApp.initDataUnsafe.user.username}
       </span>
-     <span class="total-score">
-  Total ${userProfile.score} <i class="fas fa-star"></i>
-</span>
+      <span class="total-score">
+        Total ${userProfile.score} <i class="fas fa-star"></i>
+      </span>
+      
+      <!-- Նոր ավելացված ջնջման կոճակ -->
+      <button class="delete-btn" onclick="deleteUserData()">
+        <i class="fas fa-trash-alt"></i>
+        Ջնջել տվյալները
+      </button>
     </div>
   </div>
-
 
 
     <div class="medals-container">
@@ -719,9 +767,13 @@ function handleClaim(taskId) {
       }
     </div>
 
-    <button class="withdraw-btn" onclick="withdraw()">Withdraw🔒</button>
-    <button class="sp-btn" onclick="window.location.href='paymentsup.html'">Support the project💵</button>
-  `;
+<button class="withdraw-btn" onclick="withdraw()">
+  Withdraw <i class="fas fa-lock"></i>
+</button> 
+
+<button class="sp-btn" onclick="window.location.href='paymentsup.html'">
+  Support the project <i class="fas fa-hand-holding-usd"></i>
+</button>  `;
 }
 
 

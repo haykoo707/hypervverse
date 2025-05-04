@@ -1159,3 +1159,20 @@ width: 100px;
   color: #70e5ff; /* Ոսկեգույն */
   text-shadow: 0 0 8px rgba(11, 231, 255, 0.641); /* Բացվածքային փայլ */
 }
+.delete-btn {
+  background: #ff4444;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.3s ease;
+}
+
+.delete-btn:hover {
+  background: #cc0000;
+}
