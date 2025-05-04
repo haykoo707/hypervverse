@@ -256,7 +256,7 @@ background: #4b4b4b;
   color: white;
   font-weight: bold;
   margin-top: 20px;
-  background: #77777779;
+  background: #7777;
 }
 
 /* Նոր ավելացված Daily Reward ոճեր */
@@ -869,6 +869,7 @@ body {
   left: 0;
   width: 100%;
   background: linear-gradient(to top, rgb(77, 77, 77), rgba(70, 70, 70, 0.871));
+  backdrop-filter: blur(5px);
   border-top: 2px solid #00d0ff;
   padding: 10px 0;
   text-align: center;
@@ -1158,4 +1159,72 @@ width: 100px;
 .fa-star {
   color: #70e5ff; /* Ոսկեգույն */
   text-shadow: 0 0 8px rgba(11, 231, 255, 0.641); /* Բացվածքային փայլ */
+}
+.delete-btn {
+  background: #ff4444;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.3s;
+}
+
+.delete-btn:hover {
+  background: #cc0000;
+}
+
+.delete-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #000000;
+  padding: 2rem;
+  border-radius: 10px;
+  text-align: center;
+  max-width: 400px;
+}
+
+.modal-icon {
+  font-size: 3em;
+  color: #ff4444;
+  margin-bottom: 1rem;
+}
+
+.modal-buttons {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.modal-btn {
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.confirm-btn {
+  background: #ff4444;
+  color: white;
+}
+
+.cancel-btn {
+  background: #eee;
+  color: #333;
 }

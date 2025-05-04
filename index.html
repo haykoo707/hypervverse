@@ -106,7 +106,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const items = [
     { text: 'Telegram', href: 'https://t.me/HyperrVersee' },
     { text: 'Website', href: 'https://hyper070.github.io/UNIVERSE/' },
-    { text: 'About Us', href: '    ' },
+    { text: 'Delate all data', href: '' },
   ];
 
   items.forEach(item => {
@@ -720,6 +720,8 @@ function handleClaim(taskId) {
     .reverse()
     .find(medal => userProfile.score >= medal.score);
 
+    
+
     profileInfo.innerHTML = `
   <h2 style="color: #fff; margin-bottom: 12px;"></h2>
   <div class="profile-item">
@@ -756,7 +758,61 @@ function handleClaim(taskId) {
 
 <button class="sp-btn" onclick="window.location.href='paymentsup.html'">
   Support the project <i class="fas fa-hand-holding-usd"></i>
-</button>  `;
+</button>  
+
+
+
+<button class="delete-btn" onclick="showDeleteModal()">
+  <i class="fas fa-trash-alt"></i>
+  Delete All Data
+</button>
+
+<!-- Delete Confirmation Modal -->
+<div class="delete-modal">
+  <div class="modal-content">
+    <i class="fas fa-exclamation-triangle modal-icon"></i>
+    <h3>⚠️ Warning!</h3>
+    <p>Are you sure you want to delete ALL data?<br>This action cannot be undone!</p>
+    
+    <div class="modal-buttons">
+      <button class="modal-btn cancel-btn" onclick="closeDeleteModal()">
+        <i class="fas fa-times"></i> Cancel
+      </button>
+      <button class="modal-btn confirm-btn" onclick="handleDeleteConfirm()">
+        <i class="fas fa-trash"></i> Delete
+      </button>
+    </div>
+  </div>
+</div>
+`;
+}
+// JavaScript Functions
+function showDeleteModal() {
+  document.querySelector('.delete-modal').style.display = 'flex';
+}
+
+function closeDeleteModal() {
+  document.querySelector('.delete-modal').style.display = 'none';
+}
+
+function handleDeleteConfirm() {
+  try {
+    // Clear all data
+    localStorage.clear();
+    
+    // Show confirmation
+    alert('All data has been successfully deleted!');
+    
+    // Refresh page
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+    
+    // Close modal
+    closeDeleteModal();
+  } catch (error) {
+    alert('Error deleting data: ' + error.message);
+  }
 }
 
 
