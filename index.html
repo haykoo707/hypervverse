@@ -363,7 +363,7 @@ const userScoreKey = "userScore"; // 🔥 Պահում ենք score Local Storag
 
 
 
-let userScore = parseInt(localStorage.getItem('userScore')) || 0;
+let userScore = parseInt(localStorage.getItem('userScore')) || 5000;
 localStorage.setItem('userScore', userScore);
 let score = 0;
 
@@ -720,8 +720,6 @@ function handleClaim(taskId) {
     .reverse()
     .find(medal => userProfile.score >= medal.score);
 
-
-
     profileInfo.innerHTML = `
   <h2 style="color: #fff; margin-bottom: 12px;"></h2>
   <div class="profile-item">
@@ -734,32 +732,9 @@ function handleClaim(taskId) {
       <span class="username">
         @${Telegram.WebApp.initDataUnsafe.user.username}
       </span>
-      <span class="total-score">
-        Total ${userProfile.score} <i class="fas fa-star"></i>
-      </span>
-      
-     <button class="delete-btn" onclick="showDeleteModal()">
-    <i class="fas fa-trash-alt"></i>
-    Delete all data
-  </button>
-
-  <!-- Delete Confirmation Modal -->
-  <div class="delete-modal">
-    <div class="modal-content">
-      <i class="fas fa-exclamation-triangle modal-icon"></i>
-      <h3>Warning!</h3>
-      <p>You are about to delete ALL data.<br>This action cannot be undone!</p>
-      
-      <div class="modal-buttons">
-        <button class="modal-btn cancel-btn" onclick="closeDeleteModal()">
-          <i class="fas fa-times"></i> Cancel
-        </button>
-        <button class="modal-btn confirm-btn" onclick="handleDeleteConfirm()">
-          <i class="fas fa-trash"></i> Confirm
-        </button>
-      </div>
-    </div>
-  </div>
+     <span class="total-score">
+  Total ${userProfile.score} <i class="fas fa-star"></i>
+</span>
     </div>
   </div>
 
@@ -1235,35 +1210,6 @@ Swal.fire({
     border-radius: 22px !important;
 }
 </style>
-<script>
-  function showDeleteModal() {
-    document.querySelector('.delete-modal').style.display = 'flex';
-  }
-  
-  function closeDeleteModal() {
-    document.querySelector('.delete-modal').style.display = 'none';
-  }
-  
-  function handleDeleteConfirm() {
-    localStorage.clear();
-    showSuccessModal();
-    closeDeleteModal();
-  }
-  
-  function showSuccessModal() {
-    const successHtml = `
-      <div class="delete-modal" style="display: flex;">
-        <div class="modal-content">
-          <i class="fas fa-check-circle modal-icon" style="color: #4CAF50;"></i>
-          <h3>Data deleted successfully!</h3>
-          <p>All your information has been removed.</p>
-        </div>
-      </div>
-    `;
-    document.body.insertAdjacentHTML('beforeend', successHtml);
-    setTimeout(() => location.reload(), 2000);
-  }
-  </script>
 </body>
 </html>
 
