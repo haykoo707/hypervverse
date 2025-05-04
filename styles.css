@@ -256,7 +256,7 @@ background: #4b4b4b;
   color: white;
   font-weight: bold;
   margin-top: 20px;
-  background: #555;
+  background: #77777779;
 }
 
 /* Նոր ավելացված Daily Reward ոճեր */
@@ -826,8 +826,10 @@ body {
   align-items: center; /* Լավագույն հորիզոնական հավասարեցում */
   gap: 10px; /* Ավելի փոքր gap, որ մոտ լինեն */
   padding: 15px;
-  background: linear-gradient(to top, rgba(77, 77, 77, 0.95), rgba(70, 70, 70, 0.7));
+  background: linear-gradient(to top, rgb(77, 77, 77), rgba(70, 70, 70, 0.871));
   border-radius: 20px;
+  border-top: 2px solid #00d0ff;
+
 }
 
 .profile-photo {
@@ -863,11 +865,10 @@ body {
 /* Մեդալը նկատվելու է էկրանի ներքևում */
 .medals-container {
   position: fixed;
-  bottom: -65%;
+  bottom: -60%;
   left: 0;
   width: 100%;
-  background: linear-gradient(to top, rgba(77, 77, 77, 0.95), rgba(70, 70, 70, 0.7));
-  backdrop-filter: blur(5px);
+  background: linear-gradient(to top, rgb(77, 77, 77), rgba(70, 70, 70, 0.871));
   border-top: 2px solid #00d0ff;
   padding: 10px 0;
   text-align: center;
