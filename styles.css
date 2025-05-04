@@ -1160,12 +1160,11 @@ width: 100px;
   text-shadow: 0 0 8px rgba(11, 231, 255, 0.641); /* Բացվածքային փայլ */
 }
 .delete-btn {
-  background: #ff4444;
+  background: #ff0000;
   color: white;
   border: none;
-  padding: 8px 15px;
-  border-radius: 5px;
-  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 12px;
   margin-top: 10px;
   display: flex;
   align-items: center;

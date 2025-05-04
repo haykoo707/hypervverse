@@ -721,15 +721,6 @@ function handleClaim(taskId) {
     .find(medal => userProfile.score >= medal.score);
 
 
-function deleteUserData() {
-  const isConfirmed = confirm("Ուշադրություն❗\nԴուք պատրաստվում եք ջնջել ԲՈԼՈՐ տվյալները:\nՀաստատելու դեպքում կկորցնեք ձեր բոլոր նվաճումներն ու միավորները:");
-  
-  if(isConfirmed) {
-    localStorage.clear();
-    alert("Տվյալները հաջողությամբ ջնջվեցին!");
-    location.reload(); // Կամ կատարեք ձեր անհրաժեշտ ռեդիրեկտը
-  }
-}
 
     profileInfo.innerHTML = `
   <h2 style="color: #fff; margin-bottom: 12px;"></h2>
@@ -750,8 +741,8 @@ function deleteUserData() {
       <!-- Նոր ավելացված ջնջման կոճակ -->
       <button class="delete-btn" onclick="deleteUserData()">
         <i class="fas fa-trash-alt"></i>
-        Ջնջել տվյալները
-      </button>
+        Delete Data      
+        </button>
     </div>
   </div>
 
@@ -1227,6 +1218,17 @@ Swal.fire({
     border-radius: 22px !important;
 }
 </style>
+<script>
+  function deleteUserData() {
+  const isConfirmed = confirm("Warning❗\nYou are about to delete ALL data.\nIf you confirm, you will lose all your achievements and points.");
+  
+  if(isConfirmed) {
+    localStorage.clear();
+    alert("Data deleted successfully!");
+    location.reload(); // Կամ կատարեք ձեր անհրաժեշտ ռեդիրեկտը
+  }
+}
+</script>
 </body>
 </html>
 
