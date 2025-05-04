@@ -363,7 +363,7 @@ const userScoreKey = "userScore"; // 🔥 Պահում ենք score Local Storag
 
 
 
-let userScore = parseInt(localStorage.getItem('userScore')) || 5000;
+let userScore = parseInt(localStorage.getItem('userScore')) || 0;
 localStorage.setItem('userScore', userScore);
 let score = 0;
 
@@ -740,7 +740,6 @@ function handleClaim(taskId) {
     </div>
   </div>
 
-
     <div class="medals-container">
       <h3>🎖️ Current Title</h3>
       ${currentMedal 
@@ -763,15 +762,15 @@ function handleClaim(taskId) {
 
 
 <button class="delete-btn" onclick="showDeleteModal()">
-  <i class="fas fa-trash-alt"></i>
-  Delete All Data
+  Delete All Data        <i class="fas fa-trash-alt"></i>
+
 </button>
 
 <!-- Delete Confirmation Modal -->
 <div class="delete-modal">
   <div class="modal-content">
     <i class="fas fa-exclamation-triangle modal-icon"></i>
-    <h3>⚠️ Warning!</h3>
+    <h3>Warning!</h3>
     <p>Are you sure you want to delete ALL data?<br>This action cannot be undone!</p>
     
     <div class="modal-buttons">
@@ -786,7 +785,6 @@ function handleClaim(taskId) {
 </div>
 `;
 }
-// JavaScript Functions
 function showDeleteModal() {
   document.querySelector('.delete-modal').style.display = 'flex';
 }
@@ -795,25 +793,29 @@ function closeDeleteModal() {
   document.querySelector('.delete-modal').style.display = 'none';
 }
 
+function showDeletePopup(message) {
+  const popup = document.querySelector('.delete-popup');
+  popup.textContent = message;
+  popup.style.display = 'block';
+
+  setTimeout(() => {
+    popup.style.display = 'none';
+  }, 3000);
+}
+
 function handleDeleteConfirm() {
   try {
-    // Clear all data
     localStorage.clear();
-    
-    // Show confirmation
-    alert('All data has been successfully deleted!');
-    
-    // Refresh page
+    showDeletePopup('All data has been successfully deleted!');
     setTimeout(() => {
       window.location.reload();
     }, 1000);
-    
-    // Close modal
     closeDeleteModal();
   } catch (error) {
-    alert('Error deleting data: ' + error.message);
+    showDeletePopup('Error deleting data: ' + error.message);
   }
 }
+
 
 
 
@@ -1266,6 +1268,16 @@ Swal.fire({
     border-radius: 22px !important;
 }
 </style>
+<!-- Delete Modal -->
+<div class="delete-modal" style="display:none;">
+  <!-- Քո modal բովանդակությունը այստեղ -->
+  <button onclick="handleDeleteConfirm()">Confirm Delete</button>
+  <button onclick="closeDeleteModal()">Cancel</button>
+</div>
+
+<!-- Delete Popup -->
+<div class="delete-popup" style="display:none;"></div>
+
 </body>
 </html>
 
