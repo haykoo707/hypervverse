@@ -368,29 +368,21 @@ const userScoreKey = "userScore"; // 🔥 Պահում ենք score Local Storag
 
 
 
-
-
-let userScore = parseInt(localStorage.getItem('userScore')) || 0;
-localStorage.setItem('userScore', userScore);
-let score = 0;
-
-const TASKS_VERSION = "v14"; // Նոր task ավելացնելիս փոխիր այս տարբերակը
-
-
+// Constants
+const TASKS_VERSION = '1.0'; // Add version control for potential future updates
 
 // Սկզբնական tasks-երը
 const defaultTasks = [
-{
-    id: 1,
-    title: 'Join Telegram Channel',
-    icon: 'https://cdn-icons-png.flaticon.com/512/4926/4926616.png', // Օրինակ պատկերակի հասցե
-    link: 'https://t.me/yourchannel',
-    reward: 1000,
-    status: 'pending',
-    claimAvailable: false,
-    timerId: null
-},
-
+    {
+        id: 1,
+        title: 'Join Telegram Channel',
+        icon: 'https://cdn-icons-png.flaticon.com/512/4926/4926616.png',
+        link: 'https://t.me/yourchannel',
+        reward: 1000,
+        status: 'pending',
+        claimAvailable: false,
+        timerId: null
+    },
     {
         id: 2,
         title: 'Join HyperVerse X Community',
@@ -411,7 +403,6 @@ const defaultTasks = [
         timerId: null,
         icon: 'https://cdn-icons-png.flaticon.com/512/1384/1384063.png'
     },
-
     {
         id: 4,
         title: 'Follow TikTok',
@@ -422,136 +413,217 @@ const defaultTasks = [
         timerId: null,
         icon: 'https://cdn-icons-png.flaticon.com/512/3046/3046122.png'
     },
- 
 
 ];
 
+// Global variables
 let tasks = [];
+let userScore = 0;
+let taskUpdateListener = null; // Used to detect changes to defaultTasks
 
+/**
+ * Save the current state to localStorage
+ */
 function saveState() {
+    // Save user score
     localStorage.setItem('userScore', userScore);
+    
+    // Save current tasks state
     localStorage.setItem('tasks', JSON.stringify(tasks));
-    const claimedIds = tasks
-        .filter(t => t.status === 'claimed')
-        .map(t => t.id);
-    localStorage.setItem('claimedTaskIds', JSON.stringify(claimedIds));
+    
+    // Save a separate list of permanently claimed task IDs
+    const claimedTaskIds = JSON.parse(localStorage.getItem('claimedTaskIds') || '[]');
+    localStorage.setItem('claimedTaskIds', JSON.stringify(claimedTaskIds));
+    
+    // Save the current version
     localStorage.setItem('tasksVersion', TASKS_VERSION);
 }
 
+/**
+ * Permanently mark a task as claimed
+ */
+function permanentlyClaim(taskId) {
+    // Get current list of claimed tasks
+    const claimedTaskIds = JSON.parse(localStorage.getItem('claimedTaskIds') || '[]');
+    
+    // Add this task ID if not already in the list
+    if (!claimedTaskIds.includes(taskId)) {
+        claimedTaskIds.push(taskId);
+        localStorage.setItem('claimedTaskIds', JSON.stringify(claimedTaskIds));
+    }
+}
 
+/**
+ * Load the state from localStorage
+ */
 function loadState() {
+    // Get saved data
     const savedVersion = localStorage.getItem('tasksVersion');
     const savedScore = localStorage.getItem('userScore');
     const savedTasks = localStorage.getItem('tasks');
-    const savedClaimedIds = localStorage.getItem('claimedTaskIds');
-
-    let claimedIds = [];
-    if (savedClaimedIds) {
-        claimedIds = JSON.parse(savedClaimedIds);
-    }
-
+    const claimedTaskIds = JSON.parse(localStorage.getItem('claimedTaskIds') || '[]');
+    
+    // Restore user score if available
     if (savedScore !== null) {
         userScore = parseInt(savedScore, 10);
     }
-
-    if (savedTasks !== null && savedVersion === TASKS_VERSION) {
-        let loadedTasks = JSON.parse(savedTasks);
-
-        // Հանում ենք այն task-երը որոնք այլևս չկան կամ արդեն Claimed են
-        loadedTasks = loadedTasks.filter(savedTask =>
-            defaultTasks.some(defaultTask => defaultTask.id === savedTask.id) &&
-            !claimedIds.includes(savedTask.id)
-        );
-
-        // Ավելացնում ենք նորերը, եթե չեն Claimed
-        defaultTasks.forEach(defaultTask => {
-            const exists = loadedTasks.some(t => t.id === defaultTask.id);
-            if (!exists && !claimedIds.includes(defaultTask.id)) {
-                loadedTasks.push({ ...defaultTask });
+    
+    // Always start with the current defaultTasks (to catch any changes to it)
+    // but filter out the claimed tasks
+    const currentTasks = defaultTasks
+        .filter(task => !claimedTaskIds.includes(task.id))
+        .map(task => ({...task})); // Create copies to avoid modifying defaults
+    
+    // Then, merge any saved task state for tasks that still exist
+    if (savedTasks !== null) {
+        const savedTasksArray = JSON.parse(savedTasks);
+        
+        // For each saved task that still exists in defaultTasks, preserve its state
+        savedTasksArray.forEach(savedTask => {
+            const matchingTaskIndex = currentTasks.findIndex(t => t.id === savedTask.id);
+            if (matchingTaskIndex >= 0 && !claimedTaskIds.includes(savedTask.id)) {
+                // Preserve the state (status, timers, etc.) but keep any updated properties
+                // from the default tasks (like title, icon, etc.)
+                currentTasks[matchingTaskIndex] = {
+                    ...currentTasks[matchingTaskIndex],
+                    status: savedTask.status,
+                    claimAvailable: savedTask.claimAvailable,
+                    timerId: null // Don't restore timers from localStorage
+                };
             }
         });
-
-        tasks = loadedTasks;
-    } else {
-        // First load կամ version mismatch – մաքրում ենք claimed-ները
-        tasks = defaultTasks.filter(t => !claimedIds.includes(t.id));
     }
-
-    tasks.filter(task => task.status !== 'claimed').forEach(task => {
+    
+    // Use the merged task list
+    tasks = currentTasks;
+    
+    // Reset any tasks that were left in "started" state
+    tasks.forEach(task => {
         if (task.status === 'started') {
             task.status = 'pending';
             task.claimAvailable = false;
-            task.timerId = null;
-        }
-    });
-
-    saveState();
-}
-
-
-
-
-        // Եթե որևէ task նախկինում մնացել էր "started", բերում ենք "pending"
-        tasks.filter(task => task.status !== 'claimed').forEach(task => {
-            if (task.status === 'started') {
-                task.status = 'pending';
-                task.claimAvailable = false;
+            if (task.timerId) {
+                clearTimeout(task.timerId);
                 task.timerId = null;
             }
-        });
-   
-
+        }
+    });
+    
+    // Save the initialized state
     saveState();
-
-
-
-// Tasks ցուցադրումը (Home Tab)
-function renderTasks() {
-    const taskList = document.getElementById('taskList');
-    taskList.innerHTML = '';
-
-    tasks.filter(task => task.status !== 'claimed').forEach(task => {
-        const taskItem = document.createElement('div');
-        taskItem.classList.add('task-item');
-
-        // Ձախ մաս: Icon, Title, Reward
-        const taskLeft = document.createElement('div');
-        taskLeft.classList.add('task-left');
-        const iconDiv = document.createElement('div');
-iconDiv.classList.add('task-icon');
-
-if (task.icon && task.icon.startsWith('http')) {
-    const img = document.createElement('img');
-    img.src = task.icon;
-    img.alt = 'icon';
-    img.style.width = '24px';
-    img.style.height = '24px';
-    iconDiv.appendChild(img);
-} else {
-    iconDiv.textContent = task.icon || '';
+    
+    // Update UI
+    updateScore();
+    renderTasks();
 }
 
+/**
+ * Update the score display
+ */
+function updateScore() {
+    const scoreElement = document.getElementById('userScore');
+    if (scoreElement) {
+        scoreElement.textContent = userScore;
+    }
+}
 
+/**
+ * Show a notification
+ */
+function showNotification(message) {
+    const notificationContainer = document.getElementById('notificationContainer');
+    if (!notificationContainer) {
+        // Create notification container if it doesn't exist
+        const container = document.createElement('div');
+        container.id = 'notificationContainer';
+        container.style.position = 'fixed';
+        container.style.top = '20px';
+        container.style.right = '20px';
+        container.style.zIndex = '1000';
+        document.body.appendChild(container);
+    }
+    
+    const notification = document.createElement('div');
+    notification.classList.add('notification');
+    notification.innerHTML = message;
+    notification.style.backgroundColor = '#4CAF50';
+    notification.style.color = 'white';
+    notification.style.padding = '12px 20px';
+    notification.style.margin = '5px 0';
+    notification.style.borderRadius = '4px';
+    notification.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
+    notification.style.opacity = '0';
+    notification.style.transition = 'opacity 0.3s';
+    
+    document.getElementById('notificationContainer').appendChild(notification);
+    
+    // Show notification
+    setTimeout(() => {
+        notification.style.opacity = '1';
+    }, 10);
+    
+    // Remove notification after 3 seconds
+    setTimeout(() => {
+        notification.style.opacity = '0';
+        setTimeout(() => {
+            notification.remove();
+        }, 300);
+    }, 3000);
+}
+
+/**
+ * Render the task list
+ */
+function renderTasks() {
+    const taskList = document.getElementById('taskList');
+    if (!taskList) return;
+    
+    taskList.innerHTML = '';
+    
+    // Only show tasks that aren't claimed
+    tasks.forEach(task => {
+        const taskItem = document.createElement('div');
+        taskItem.classList.add('task-item');
+        
+        // Left part: Icon, Title, Reward
+        const taskLeft = document.createElement('div');
+        taskLeft.classList.add('task-left');
+        
+        const iconDiv = document.createElement('div');
+        iconDiv.classList.add('task-icon');
+        
+        if (task.icon && task.icon.startsWith('http')) {
+            const img = document.createElement('img');
+            img.src = task.icon;
+            img.alt = 'icon';
+            img.style.width = '24px';
+            img.style.height = '24px';
+            iconDiv.appendChild(img);
+        } else {
+            iconDiv.textContent = task.icon || '';
+        }
+        
         const taskInfo = document.createElement('div');
         taskInfo.classList.add('task-info');
-
+        
         const taskTitle = document.createElement('div');
         taskTitle.classList.add('task-title');
         taskTitle.textContent = task.title;
-
+        
         const taskReward = document.createElement('div');
         taskReward.classList.add('task-reward');
         taskReward.innerHTML = `+${task.reward} <i class="fas fa-star"></i>`;
+        
         taskInfo.appendChild(taskTitle);
         taskInfo.appendChild(taskReward);
         taskLeft.appendChild(iconDiv);
         taskLeft.appendChild(taskInfo);
-
-        // Աջ մաս: Գործողության կոճակ
+        
+        // Right part: Action button
         const taskRight = document.createElement('div');
         taskRight.classList.add('task-right');
         const actionBtn = document.createElement('button');
-
+        
         if (task.status === 'pending') {
             actionBtn.textContent = 'Start';
             actionBtn.classList.add('start-btn');
@@ -566,67 +638,184 @@ if (task.icon && task.icon.startsWith('http')) {
                 actionBtn.classList.add('claim-btn');
                 actionBtn.addEventListener('click', () => handleClaim(task.id));
             }
-        } else if (task.status === 'claimed') {
-            actionBtn.textContent = 'Claimed';
-            actionBtn.classList.add('claimed-btn');
-            actionBtn.disabled = true;
         }
-
+        
         taskRight.appendChild(actionBtn);
         taskItem.appendChild(taskLeft);
         taskItem.appendChild(taskRight);
         taskList.appendChild(taskItem);
     });
+    
+    // Show a message if no tasks are available
+    if (tasks.length === 0) {
+        const noTasksMessage = document.createElement('div');
+        noTasksMessage.classList.add('no-tasks-message');
+        noTasksMessage.textContent = 'All tasks completed!';
+        noTasksMessage.style.textAlign = 'center';
+        noTasksMessage.style.padding = '20px';
+        noTasksMessage.style.color = '#666';
+        taskList.appendChild(noTasksMessage);
+    }
 }
 
-// Start կոճակի գործողությունը
+/**
+ * Handle the Start button click
+ */
 function handleStart(taskId) {
-    const taskIndex = tasks.findIndex(t => t.id === taskId);
-    if (taskIndex === -1) return;
-    const task = tasks[taskIndex];
-
-    // Բանում ենք հղումը նոր պատուհանում
+    const task = tasks.find(t => t.id === taskId);
+    if (!task) return;
+    
+    // Open the link in a new window
     window.open(task.link, '_blank');
-
-    // Փոխում ենք իրավիճակը՝ 'started'
+    
+    // Change task status to 'started'
     task.status = 'started';
     task.claimAvailable = false;
-
-    // Սկսում ենք 20 վայրկյանանոց թայլմա՝ հետո Claim կոճակը կստացվի
+    
+    // Start a 20-second timer after which the claim button becomes available
     task.timerId = setTimeout(() => {
         task.claimAvailable = true;
         renderTasks();
         saveState();
     }, 20000);
-
+    
     renderTasks();
     saveState();
 }
 
-// Claim կոճակի գործողությունը
+/**
+ * Handle the Claim button click
+ */
 function handleClaim(taskId) {
     const taskIndex = tasks.findIndex(t => t.id === taskId);
     if (taskIndex === -1) return;
+    
     const task = tasks[taskIndex];
-
+    
+    // Add reward to user score
     userScore += task.reward;
     updateScore();
     showNotification(`You got +${task.reward} <i class="fas fa-star"></i>`);
-    // Փոխում ենք վիճակը
-    task.status = 'claimed';
-    task.claimAvailable = false;
-
-    // Հեռացնում ենք հին թայմերը
+    
+    // Permanently mark this task as claimed
+    permanentlyClaim(task.id);
+    
+    // Clear any timers
     if (task.timerId) {
         clearTimeout(task.timerId);
         task.timerId = null;
     }
-
+    
+    // Remove the task from the active tasks list
+    tasks.splice(taskIndex, 1);
+    
     saveState();
     renderTasks();
 }
 
+/**
+ * Setup detection for changes to defaultTasks
+ */
+function setupTaskUpdateDetection() {
+    // Save a stringified version of current defaultTasks for comparison
+    taskUpdateListener = JSON.stringify(defaultTasks);
+    
+    // Create a periodic check for changes to defaultTasks
+    setInterval(() => {
+        const currentDefaultTasks = JSON.stringify(defaultTasks);
+        if (currentDefaultTasks !== taskUpdateListener) {
+            // defaultTasks has changed, reload tasks
+            console.log("defaultTasks has been modified, refreshing tasks");
+            taskUpdateListener = currentDefaultTasks;
+            loadState(); // This will merge with any existing task state
+        }
+    }, 1000); // Check every second
+}
 
+/**
+ * Check for new tasks in defaultTasks
+ */
+function checkForNewTasks() {
+    const claimedTaskIds = JSON.parse(localStorage.getItem('claimedTaskIds') || '[]');
+    
+    // Check if there are any new tasks in defaultTasks that aren't in our current tasks
+    const currentTaskIds = tasks.map(task => task.id);
+    const newTasks = defaultTasks.filter(defaultTask => 
+        !currentTaskIds.includes(defaultTask.id) && 
+        !claimedTaskIds.includes(defaultTask.id)
+    );
+    
+    // Also check for updates to existing tasks (title, reward, icon, etc.)
+    let updatedTasksCount = 0;
+    tasks.forEach((task, index) => {
+        const defaultVersion = defaultTasks.find(dt => dt.id === task.id);
+        if (defaultVersion) {
+            // Check if any properties except status, claimAvailable, timerId have changed
+            const taskCopy = {...task};
+            const defaultCopy = {...defaultVersion};
+            
+            // Remove status properties for comparison
+            delete taskCopy.status;
+            delete taskCopy.claimAvailable;
+            delete taskCopy.timerId;
+            delete defaultCopy.status;
+            delete defaultCopy.claimAvailable;
+            delete defaultCopy.timerId;
+            
+            // If the properties are different, update the task
+            if (JSON.stringify(taskCopy) !== JSON.stringify(defaultCopy)) {
+                // Update task properties but preserve status
+                const status = task.status;
+                const claimAvailable = task.claimAvailable;
+                const timerId = task.timerId;
+                
+                // Update with new properties
+                tasks[index] = {...defaultVersion, 
+                    status: status, 
+                    claimAvailable: claimAvailable, 
+                    timerId: timerId
+                };
+                
+                updatedTasksCount++;
+            }
+        }
+    });
+    
+    if (newTasks.length > 0 || updatedTasksCount > 0) {
+        // Add new tasks to the current tasks list
+        newTasks.forEach(newTask => {
+            tasks.push({...newTask}); // Create a copy to avoid modifying defaults
+        });
+        
+        // Save and render
+        saveState();
+        renderTasks();
+        
+        // Show appropriate notification
+        if (newTasks.length > 0) {
+            if (newTasks.length === 1) {
+                showNotification(`New task available: ${newTasks[0].title}`);
+            } else {
+                showNotification(`${newTasks.length} new tasks available!`);
+            }
+        } else if (updatedTasksCount > 0) {
+            showNotification(`${updatedTasksCount} task${updatedTasksCount > 1 ? 's' : ''} updated!`);
+        }
+    }
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+    loadState();
+    
+    // Check for new tasks periodically (every 5 seconds)
+    setInterval(checkForNewTasks, 5000);
+    
+    // Set up a mutation observer to detect changes to defaultTasks if it's modified directly
+    setupTaskUpdateDetection();
+});
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
