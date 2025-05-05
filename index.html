@@ -46,10 +46,11 @@
 <div id="popupOverlay1" class="popup-overlay1">
   <div class="popup-content1">
     <h2 style=" margin-bottom: 15px; ">Invite your frens!</h2>
-    <p style=" margin-bottom: 15px;">Share your referral link so we can become famous❤️</p>
+    <p style=" margin-bottom: 15px;">Share your referral link so we can become famous<i class="fas fa-heart heartbeat" style="color: #00d0ff; font-size: 17px;"></i>
+    </p>
     <div class="referral-section">
       <input type="text" id="referralLink" value="https://t.me/hyperrverse_bot" readonly />
-      <button id="copyButton" class="copy-button">Copy</button>
+      <button id="copyButton" class="copy-button"><i class="fas fa-copy"></i></button>
     </div>
 
     <a id="shareTelegram" class="share-telegram" href="#" target="_blank">
@@ -87,10 +88,15 @@ closePopup.addEventListener('click', () => {
 copyButton.addEventListener('click', () => {
   referralLink.select();
   document.execCommand('copy');
-  copyButton.innerText = 'Copied!';
-  setTimeout(() => {
-    copyButton.innerText = 'Copy';
-  }, 1500);
+  copyButton.innerHTML = `
+    <i class="fas fa-copy"></i>
+    
+  `;  setTimeout(() => {
+    copyButton.innerHTML = `
+      <i class="fas fa-copy"></i>
+      
+    `;
+    }, 1500);
 });
 
 // Create the menu on page load
@@ -106,7 +112,8 @@ window.addEventListener('DOMContentLoaded', () => {
   const items = [
     { text: 'Telegram', href: 'https://t.me/HyperrVersee' },
     { text: 'Website', href: 'https://hyper070.github.io/UNIVERSE/' },
-    { text: 'Delate all data', href: '' },
+
+
   ];
 
   items.forEach(item => {
@@ -228,7 +235,7 @@ window.addEventListener('DOMContentLoaded', () => {
   <div id="mysteryPopup" class="popup">
       <div class="popup-content">
           <span class="close">&times;</span>
-          <h2>🎉 Mystery Boxes 🎉</h2>
+          <h2>Mystery Boxes</h2>
           <div class="boxes">
             <div class="box gold" data-cost="5000">
               <i class="fas fa-coins fa-lg" style="color: #464439;"></i>
@@ -740,8 +747,8 @@ function handleClaim(taskId) {
     </div>
   </div>
 
+
     <div class="medals-container">
-      <h3>🎖️ Current Title</h3>
       ${currentMedal 
         ? `<div class="medal">
             <span class="medal-emoji">${currentMedal.emoji}</span>
