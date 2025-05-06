@@ -112,6 +112,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const items = [
     { text: 'Telegram', href: 'https://t.me/HyperrVersee' },
     { text: 'Website', href: 'https://hyper070.github.io/UNIVERSE/' },
+    { text: 'History', href: '#' }, // Changed to # for JS handling
 
 
   ];
@@ -120,8 +121,19 @@ window.addEventListener('DOMContentLoaded', () => {
     const a = document.createElement('a');
     a.href = item.href;
     a.textContent = item.text;
-    a.target = '_blank'; // 👉 բացի նոր tab-ում
-    a.rel = 'noopener noreferrer'; // 🔐 անվտանգություն
+    
+    // Special handling for History item
+    if (item.text === 'History') {
+      a.addEventListener('click', function(e) {
+        e.preventDefault(); // Prevent default link behavior
+        showHistoryPopup(); // Show history popup
+        toggleMenu(); // Close menu
+      });
+    } else {
+      a.target = '_blank'; // Other links open in new tab
+      a.rel = 'noopener noreferrer'; // Security for external links
+    }
+    
     menu.appendChild(a);
   });
 
@@ -186,10 +198,11 @@ window.addEventListener('DOMContentLoaded', () => {
       <!-- Home Tab (Tasks) -->
       <div id="home" class="tab-content">
         <div class="task-section">
-          <h2 >
+          <h2 class="taskstxt">
             <i class="fas fa-tasks"></i> 
             Tasks
           </h2>
+          
                     <div class="task-list" id="taskList">
             <!-- Tasks ներմուծվում են JS-ով -->
           </div>
@@ -215,7 +228,7 @@ window.addEventListener('DOMContentLoaded', () => {
       <div class="reward-card">
         <h2><i class="fas fa-scroll"></i> Daily Quest</h2>
         <input class="" type="text" id="dailyCodeInput" placeholder="Enter today's code" />
-          <button class="reward-btn" id="submitQuestBtn" onclick="handleDailyQuest()">Submit Code</button>
+          <button class="reward-btn" id="submitQuestBtn" onclick="handleDailyQuest()">Check</button>
           <div id="questMessage" style="color: #666; text-align: center; margin-top: 10px;"></div>
       </div>
       <p style="color: #666; text-align: center;">
@@ -278,7 +291,18 @@ window.addEventListener('DOMContentLoaded', () => {
     </div>
 </div>
 
-  
+<!-- History Popup -->
+<div id="historyPopup" class="history-popup">
+  <div class="history-popup-content">
+    <div class="history-header">
+      <h2><i class="fas fa-history"></i> Score History</h2>
+      <button id="closeHistoryBtn" class="close-history-btn"><i class="fas fa-times"></i></button>
+    </div>
+    <div id="historyList" class="history-list">
+      <!-- History items will be populated here -->
+    </div>
+  </div>
+</div>
 
 <div class="loading-screen" id="loadingScreen">
   <img src="photo_2025-04-25_23-12-33.jpg" alt="Loading..." class="loading-image animate-loading">
@@ -294,6 +318,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 <div id="notification" class="notification hidden"></div>
 <div id="notification" class="notification hidden"></div>
+
 
 
 
@@ -370,8 +395,122 @@ const userScoreKey = "userScore"; // 🔥 Պահում ենք score Local Storag
 
 // Constants
 const TASKS_VERSION = '1.0'; // Add version control for potential future updates
+const HISTORY_KEY = 'scoreHistory'; // Key for storing history in localStorage
 
+// Score history tracking
+
+
+let scoreHistory = [];
 // Սկզբնական tasks-երը
+
+/**
+ * Load score history from localStorage
+ */
+ function loadScoreHistory() {
+  const savedHistory = localStorage.getItem(HISTORY_KEY);
+  if (savedHistory) {
+    try {
+      scoreHistory = JSON.parse(savedHistory);
+    } catch (e) {
+      console.error("Error parsing score history:", e);
+      scoreHistory = [];
+    }
+  }
+}
+
+/**
+ * Save score history to localStorage
+ */
+function saveScoreHistory() {
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(scoreHistory));
+}
+
+/**
+ * Add a score change to history
+ * @param {number} amount - The amount to change (positive or negative)
+ * @param {string} description - Description of the change
+ */
+function addToHistory(amount, description) {
+  // Create history entry
+  const entry = {
+    timestamp: Date.now(),
+    amount: amount,
+    description: description
+  };
+  
+  // Add to history array
+  scoreHistory.push(entry);
+  
+  // Keep history at a reasonable size (last 100 entries)
+  if (scoreHistory.length > 100) {
+    scoreHistory = scoreHistory.slice(-100);
+  }
+  
+  // Save to localStorage
+  saveScoreHistory();
+}
+
+/**
+ * Format date for display in history
+ */
+function formatDate(timestamp) {
+  const date = new Date(timestamp);
+  return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+}
+
+/**
+ * Show history popup
+ */
+function showHistoryPopup() {
+  const historyPopup = document.getElementById('historyPopup');
+  const historyList = document.getElementById('historyList');
+  
+  // Clear previous content
+  historyList.innerHTML = '';
+  
+  if (scoreHistory.length === 0) {
+    historyList.innerHTML = '<div class="history-empty">No history available</div>';
+  } else {
+    // Sort history by timestamp (newest first)
+    const sortedHistory = [...scoreHistory].sort((a, b) => b.timestamp - a.timestamp);
+    
+    // Create history items
+    sortedHistory.forEach(entry => {
+      const historyItem = document.createElement('div');
+      historyItem.classList.add('history-item');
+      historyItem.classList.add(entry.amount >= 0 ? 'plus' : 'minus');
+      
+      const amountText = entry.amount >= 0 ? `+${entry.amount}` : `${entry.amount}`;
+      
+      historyItem.innerHTML = `
+        <div>
+          <div class="details">${entry.description}</div>
+          <div class="timestamp">${formatDate(entry.timestamp)}</div>
+        </div>
+        <div class="amount ${entry.amount >= 0 ? 'plus' : 'minus'}">
+          ${amountText} <i class="fas fa-star"></i>
+        </div>
+      `;
+      
+      historyList.appendChild(historyItem);
+    });
+  }
+  
+  // Show popup
+  historyPopup.classList.add('active');
+}
+
+/**
+ * Close history popup
+ */
+function closeHistoryPopup() {
+  const historyPopup = document.getElementById('historyPopup');
+  historyPopup.classList.remove('active');
+}
+
+// Set up close button handler for history popup
+document.getElementById('closeHistoryBtn').addEventListener('click', closeHistoryPopup);
+
 const defaultTasks = [
     {
         id: 1,
