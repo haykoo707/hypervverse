@@ -512,46 +512,46 @@ function closeHistoryPopup() {
 document.getElementById('closeHistoryBtn').addEventListener('click', closeHistoryPopup);
 
 const defaultTasks = [
-    {
-        id: 1,
-        title: 'Join Telegram Channel',
-        icon: 'https://cdn-icons-png.flaticon.com/512/4926/4926616.png',
-        link: 'https://t.me/yourchannel',
-        reward: 1000,
-        status: 'pending',
-        claimAvailable: false,
-        timerId: null
-    },
-    {
-        id: 2,
-        title: 'Join HyperVerse X Community',
-        link: 'https://t.me/HyperrVersee',
-        reward: 2000,
-        status: 'pending',
-        claimAvailable: false,
-        timerId: null,
-        icon: 'https://cdn-icons-png.flaticon.com/512/733/733579.png'
-    },
-    {
-        id: 3,
-        title: 'Follow Instagram',
-        link: 'https://t.me/someOtherChannel',
-        reward: 2000,
-        status: 'pending',
-        claimAvailable: false,
-        timerId: null,
-        icon: 'https://cdn-icons-png.flaticon.com/512/1384/1384063.png'
-    },
-    {
-        id: 4,
-        title: 'Follow TikTok',
-        link: 'https://t.me/someOtherChannel',
-        reward: 2000,
-        status: 'pending',
-        claimAvailable: false,
-        timerId: null,
-        icon: 'https://cdn-icons-png.flaticon.com/512/3046/3046122.png'
-    },
+{
+    id: 1,
+    title: 'Join Telegram Channel',
+    icon: '<i class="fab fa-telegram-plane" style="color: #ffffffef; font-size: 1.5em;"></i>',
+    link: 'https://t.me/HyperrVersee',
+    reward: 2000,
+    status: 'pending',
+    claimAvailable: false,
+    timerId: null
+},
+{
+    id: 2,
+    title: 'Join HyperVerse X Community',
+    link: 'https://x.com/HyperVerse_TG',
+    reward: 2000,
+    status: 'pending',
+    claimAvailable: false,
+    timerId: null,
+    icon: '<i class="fa-brands fa-x-twitter" style="color: #ffffffef; font-size: 1.4em;"></i>'
+},
+{
+    id: 3,
+    title: 'Follow Instagram',
+    link: 'https://www.instagram.com/your_profile', // Փոխարինիր իրական հղումով
+    reward: 2000,
+    status: 'pending',
+    claimAvailable: false,
+    timerId: null,
+    icon: '<i class="fab fa-instagram" style="color: #ffffffef; font-size: 1.4em;"></i>'
+},
+{
+    id: 4,
+    title: 'Follow TikTok',
+    link: 'https://www.tiktok.com/@hyper_verse_', // Փոխարինիր իրական հղումով
+    reward: 2000,
+    status: 'pending',
+    claimAvailable: false,
+    timerId: null,
+    icon: '<i class="fab fa-tiktok" style="color: #ffffffef; font-size: 1.4em;"></i>'
+}
 
 ];
 
@@ -730,17 +730,16 @@ function renderTasks() {
         
         const iconDiv = document.createElement('div');
         iconDiv.classList.add('task-icon');
-        
-        if (task.icon && task.icon.startsWith('http')) {
-            const img = document.createElement('img');
-            img.src = task.icon;
-            img.alt = 'icon';
-            img.style.width = '24px';
-            img.style.height = '24px';
-            iconDiv.appendChild(img);
-        } else {
-            iconDiv.textContent = task.icon || '';
-        }
+        // Հին կոդ
+if (task.icon && task.icon.startsWith('http')) {
+    const img = document.createElement('img');
+    img.src = task.icon;
+    img.style.width = '24px';
+    img.style.height = '24px';
+    iconDiv.appendChild(img);
+} else {
+    iconDiv.innerHTML = task.icon || ''; // Փոխված է textContent → innerHTML
+}
         
         const taskInfo = document.createElement('div');
         taskInfo.classList.add('task-info');
