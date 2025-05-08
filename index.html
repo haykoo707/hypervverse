@@ -182,15 +182,15 @@ window.addEventListener('DOMContentLoaded', () => {
     <div class="tabs">
     </button>
     <button class="tab-button active" data-tab="play">
-<img src="Picsart_25-03-28_20-51-07-122.jpg" alt="play-xax" class="play-icon">
+<img src="https://raw.githubusercontent.com/haykoo707/hypervverse/refs/heads/main/Picsart_25-03-28_20-51-07-122.jpg" alt="play-xax" class="play-icon">
 </button>
       <button class="tab-button" data-tab="home">
-        <img src="Picsart_25-03-28_20-52-07-873.jpg" alt="Tasks" class="tasks-icon">
+        <img src="https://raw.githubusercontent.com/haykoo707/hypervverse/refs/heads/main/Picsart_25-03-28_20-52-07-873.jpg" alt="Tasks" class="tasks-icon">
         <button class="tab-button" data-tab="daily-reward">
-          <img src="Picsart_25-03-28_20-51-28-628.jpg" alt="Reward" class="reward-icon">
+          <img src="https://raw.githubusercontent.com/haykoo707/hypervverse/refs/heads/main/Picsart_25-03-28_20-51-28-628.jpg" alt="Reward" class="reward-icon">
 
       <button class="tab-button" data-tab="profile">
-        <img src="Picsart_25-03-28_20-52-49-352.jpg" alt="Profile" class="profile-icon">
+        <img src="https://raw.githubusercontent.com/haykoo707/hypervverse/refs/heads/main/Picsart_25-03-28_20-52-49-352.jpg" alt="Profile" class="profile-icon">
       </button>
     </div>
     <!-- Բովանդակության կոնտեյներ -->
@@ -305,7 +305,7 @@ window.addEventListener('DOMContentLoaded', () => {
 </div>
 
 <div class="loading-screen" id="loadingScreen">
-  <img src="photo_2025-04-25_23-12-33.jpg" alt="Loading..." class="loading-image animate-loading">
+  <img src="https://raw.githubusercontent.com/haykoo707/hypervverse/refs/heads/main/photo_2025-04-25_23-12-33.jpg" alt="Loading..." class="loading-image animate-loading">
   <h5 class="loadingh5">5.1.x</h5> 
 </div>
 
@@ -1230,7 +1230,7 @@ function handleDeleteConfirm() {
   renderDailyReward();
 
   // Նոր ավելացված մաս
-  showNotification(`+5000 <i class="fas fa-star"></i> Claimed!`);}
+  showNotification(` Claimed!`);}
 
 
     // Ինիցիալիզացիա
@@ -1389,37 +1389,34 @@ function handleDailyQuest() {
 
     const userCode = document.getElementById("dailyCodeInput").value;
     if (userCode === dailyCode) {
-      document.getElementById("questMessage").innerHTML = "✅ Correct code! You earned +1500<i class='fas fa-star'></i>!";        localStorage.setItem(questCooldownKey, now);
-
-        // Ավելացնել +1500 score
-        let currentScore = parseInt(localStorage.getItem(userScoreKey)) || 0;
-        currentScore += 1500;
-        localStorage.setItem(userScoreKey, currentScore);
-
-        // ✅ Ցուցադրել notification
-        showNotification(`+1500 <i class="fas fa-star"></i> Claimed!`);}
-        else {
-        document.getElementById("questMessage").innerText = "❌ Incorrect code! Try again.";
-    }
+    document.getElementById("questMessage").innerHTML = "✅ Correct code! You earned +1500<i class='fas fa-star'></i>!";
+    localStorage.setItem(questCooldownKey, now);
+    
+    // ✅ Show notification with star icon
+    showNotification(`+1500 Claimed!`);
+    
+} else {
+    document.getElementById("questMessage").innerText = "❌ Incorrect code! Try again.";
+}
 }
 
 // Պահպանենք սկզբնական նկարները և սեղմելուց հետո փոփոխվող նկարները
 const tabImages = {
         play: {
-            default: "Picsart_25-03-28_20-51-07-122.jpg",
-            active: "ChatGPT Image Mar 30, 2025, 03_34_08 PM.png"
+            default: "https://raw.githubusercontent.com/haykoo707/hypervverse/refs/heads/main/Picsart_25-03-28_20-51-07-122.jpg",
+            active: "https://raw.githubusercontent.com/haykoo707/hypervverse/refs/heads/main/ChatGPT%20Image%20Mar%2030%2C%202025%2C%2003_34_08%20PM.png"
         },
         home: {
-            default: "Picsart_25-03-28_20-52-07-873.jpg",
-            active: "ChatGPT Image Mar 30, 2025, 03_34_12 PM.png"
+            default: "https://raw.githubusercontent.com/haykoo707/hypervverse/refs/heads/main/Picsart_25-03-28_20-52-07-873.jpg",
+            active: "https://raw.githubusercontent.com/haykoo707/hypervverse/refs/heads/main/ChatGPT%20Image%20Mar%2030%2C%202025%2C%2003_34_12%20PM.png"
         },
         "daily-reward": {
-            default: "Picsart_25-03-28_20-51-28-628.jpg",
-            active: "ChatGPT Image Mar 30, 2025, 11_21_31 PM.png"
+            default: "https://raw.githubusercontent.com/haykoo707/hypervverse/refs/heads/main/Picsart_25-03-28_20-51-28-628.jpg",
+            active: "https://raw.githubusercontent.com/haykoo707/hypervverse/refs/heads/main/ChatGPT%20Image%20Mar%2030%2C%202025%2C%2011_21_31%20PM.png"
         },
         profile: {
-            default: "Picsart_25-03-28_20-52-49-352.jpg",
-            active: "ChatGPT Image Mar 30, 2025, 03_34_04 PM.png"
+            default: "https://raw.githubusercontent.com/haykoo707/hypervverse/refs/heads/main/Picsart_25-03-07_18-16-34-817.jpg",
+            active: "https://raw.githubusercontent.com/haykoo707/hypervverse/refs/heads/main/ChatGPT%20Image%20Mar%2030%2C%202025%2C%2003_34_04%20PM.png"
         },
       
 
