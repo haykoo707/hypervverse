@@ -111,7 +111,7 @@ window.addEventListener('DOMContentLoaded', () => {
   // Menu items
   const items = [
     { text: 'Telegram', href: 'https://t.me/HyperrVersee' },
-    { text: 'Website', href: 'https://hyper070.github.io/UNIVERSE/' },
+    { text: 'Website', href: 'https://hyper070.github.io/HYPERVERSEweb/' },
     { text: 'History', href: '#' }, // Changed to # for JS handling
 
 
@@ -215,7 +215,7 @@ window.addEventListener('DOMContentLoaded', () => {
         <h2><i class="fas fa-trophy"></i> Daily Reward</h2>
         <div class="reward-timer" id="rewardTimer">Available now</div>
         <button class="reward-btn" id="claimRewardBtn" onclick="handleDailyClaim()">
-          Claim 5000 <i class="fas fa-star"></i>
+          Claim 3000 <i class="fas fa-star"></i>
       </button>
       </div>
       <p style="color: #666; text-align: center;">
@@ -524,7 +524,7 @@ const defaultTasks = [
 },
 {
     id: 2,
-    title: 'Join HyperVerse X Community',
+    title: 'Join X Community',
     link: 'https://x.com/HyperVerse_TG',
     reward: 2000,
     status: 'pending',
@@ -551,8 +551,27 @@ const defaultTasks = [
     claimAvailable: false,
     timerId: null,
     icon: '<i class="fab fa-tiktok" style="color: #ffffffef; font-size: 1.4em;"></i>'
+},
+{
+    id: 5,
+    title: 'Verify Telegram Premium',
+    link: '',
+    reward: 5000,
+    status: 'pending',
+    claimAvailable: false,
+    timerId: null,
+    icon: '<i class="fas fa-bolt"  style="color: #ffffffef; font-size: 1.4em;"></i>'
+},
+{
+    id: 6,
+    title: '3-Day Reward Streak',
+    link: '',
+    reward: 3000,
+    status: 'pending',
+    claimAvailable: false,
+    timerId: null,
+    icon: '<i class="fas fa-gift"  style="color: #ffffffef; font-size: 1.4em;"></i>'
 }
-
 ];
 
 // Global variables
@@ -802,24 +821,71 @@ if (task.icon && task.icon.startsWith('http')) {
 function handleStart(taskId) {
     const task = tasks.find(t => t.id === taskId);
     if (!task) return;
-    
-    // Open the link in a new window
+
+    // ✅ Premium Check Task
+    if (task.id === 5) {
+        const isPremium = Telegram.WebApp.initDataUnsafe?.user?.is_premium;
+        if (isPremium) {
+            task.status = 'started';
+            task.claimAvailable = true;
+            renderTasks();
+            saveState();
+        } else {
+            showNotification("❌ Premium only task. Please upgrade your Telegram account.");
+        }
+        return;
+    }
+
+    // ✅ Daily Reward 3-Day Streak Task
+    if (task.id === 6) {
+        const claimDays = JSON.parse(localStorage.getItem("dailyClaimDays") || "[]");
+
+        // Convert to Date objects
+        const dates = claimDays.map(d => new Date(d));
+
+        if (dates.length < 3) {
+            showNotification("❌ You need 3 daily rewards in a row!");
+            return;
+        }
+
+        // Վերջին 3 օրերը sort-ենք և ստուգենք՝ անընդմեջ են?
+        dates.sort((a, b) => a - b);
+
+        const day1 = dates[0];
+        const day2 = dates[1];
+        const day3 = dates[2];
+
+        function isConsecutive(d1, d2) {
+            return (d2 - d1) / (1000 * 60 * 60 * 24) === 1;
+        }
+
+        if (isConsecutive(day1, day2) && isConsecutive(day2, day3)) {
+            task.status = 'started';
+            task.claimAvailable = true;
+            renderTasks();
+            saveState();
+        } else {
+            showNotification("You need to collect daily rewards 3 days in a row!");
+        }
+
+        return;
+    }
+
+    // ✅ Սովորական Task-երի համար
     window.open(task.link, '_blank');
-    
-    // Change task status to 'started'
     task.status = 'started';
     task.claimAvailable = false;
-    
-    // Start a 20-second timer after which the claim button becomes available
+
     task.timerId = setTimeout(() => {
         task.claimAvailable = true;
         renderTasks();
         saveState();
     }, 20000);
-    
+
     renderTasks();
     saveState();
 }
+
 
 /**
  * Handle the Claim button click
@@ -1231,9 +1297,9 @@ function handleDeleteConfirm() {
   lastClaimTime = Date.now();
   localStorage.setItem('lastClaimTime', lastClaimTime);
   
-  userScore += 5000;
+  userScore += 3000;
   updateScore();
-  addToHistory(5000, 'Claimed daily reward');
+  addToHistory(3000, 'Claimed daily reward');
   saveScoreHistory();
   renderDailyReward();
 
@@ -1252,6 +1318,16 @@ function handleDeleteConfirm() {
       renderProfile();
       updateScore();
     }
+// ⏱️ Պահել որ օրը վերցվել է reward-ը
+let claimDays = JSON.parse(localStorage.getItem("dailyClaimDays") || "[]");
+const today = new Date().toDateString(); // օրինակ՝ "Sat May 10 2025"
+if (!claimDays.includes(today)) {
+    claimDays.push(today);
+}
+if (claimDays.length > 3) {
+    claimDays = claimDays.slice(-3); // պահիր վերջին 3 օրը
+}
+localStorage.setItem("dailyClaimDays", JSON.stringify(claimDays));
 
     document.addEventListener("DOMContentLoaded", () => {
             const buttons = document.querySelectorAll(".tab-button");
@@ -1302,51 +1378,7 @@ for (let i = 0; i < numStars; i++) {
     });
 }
 
-// 🔥 Մետեորների զանգված
-const meteors = [];
 
-const numMeteors = 3; // Կարող ես ավելացնել
-
-const colors = ["white","lightyellow"];
-
-for (let i = 0; i < numMeteors; i++) {
-    let speedScale = Math.random() < 0.2 ? 0.2 : 1; // դանդաղ կամ արագ մետեոր
-
-    meteors.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * -canvas.height, // տարբեր բարձրությունից
-        speedX: (1 + Math.random()) * speedScale,
-        speedY: (1 + Math.random()) * speedScale,
-        length: 50 + Math.random() * 30,
-        color: colors[Math.floor(Math.random() * colors.length)]
-    });
-}
-
-function drawMeteor(meteor) {
-    // Պոչը՝ gradient
-    ctx.beginPath();
-    let gradient = ctx.createLinearGradient(
-        meteor.x, meteor.y,
-        meteor.x - meteor.length, meteor.y - meteor.length
-    );
-    gradient.addColorStop(0, meteor.color);
-    gradient.addColorStop(1, "transparent");
-    ctx.strokeStyle = gradient;
-    ctx.lineWidth = 3;
-    ctx.moveTo(meteor.x, meteor.y);
-    ctx.lineTo(meteor.x - meteor.length, meteor.y - meteor.length);
-    ctx.stroke();
-
-    // Թարմացնում ենք դիրքը
-    meteor.x += meteor.speedX;
-    meteor.y += meteor.speedY;
-
-    // Եթե դուրս է գալիս էկրանից՝ վերադասցնել վերև
-    if (meteor.x > canvas.width || meteor.y > canvas.height) {
-        meteor.x = Math.random() * canvas.width;
-        meteor.y = -50, -40 , -10 ;
-    }
-}
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -1374,7 +1406,7 @@ function draw() {
     });
 
     // Մետեորներ
-    meteors.forEach(drawMeteor);
+   
 
     requestAnimationFrame(draw);
 }
@@ -1532,7 +1564,7 @@ const REWARD_SETTINGS = {
             name: "Rare", 
             chance: 0.1, // 10% հավանականություն
             min: 10000, 
-            max: 14000 
+            max: 12000 
         },
 
          {
@@ -1544,7 +1576,7 @@ const REWARD_SETTINGS = {
           {
             name: "imposibe",
             chance: 0.0005,
-            min: 35000,
+            min: 25000,
             max: 50000
           }
     ]
