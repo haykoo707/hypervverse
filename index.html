@@ -83,20 +83,7 @@ fetch('https://hyperverse-backend.onrender.com/register', {
     });
   }
 })
-// Ավելացրեք score-ի ստուգում localStorage-ից
-let userScore = localStorage.getItem('userScore') 
-               ? parseInt(localStorage.getItem('userScore')) 
-               : 0;
 
-// Ստեղծեք ֆունկցիա միավորները թարմացնելու համար
-function updateScore(amount) {
-  userScore += amount;
-  localStorage.setItem('userScore', userScore);
-  document.getElementById('userScore').textContent = userScore;
-}
-
-// Օգտագործեք այսպես երբ պարգևատրեք
-updateScore(750); // +750 ավելացնել
         </script>
 
 
@@ -638,6 +625,7 @@ const defaultTasks = [
 
 // Global variables
 let tasks = [];
+let userScore = 0;
 let taskUpdateListener = null; // Used to detect changes to defaultTasks
 
 /**
