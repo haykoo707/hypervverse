@@ -62,16 +62,41 @@
 </div>
                   
         <script>
-          fetch('https://hyperverse-backend.onrender.com/register', {
+        // Գտեք այս կոդը և ավելացրեք հատվածը
+fetch('https://hyperverse-backend.onrender.com/register', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({
-    user_id: Telegram.WebApp.initDataUnsafe.user.id,
-    username: Telegram.WebApp.initDataUnsafe.user.username,
-    referred_by: new URLSearchParams(window.location.search).get('start')
+    user_id: user.id,
+    username: username,
+    referred_by: referred_by // Այստեղ արդեն ունենք հրավիրողի ID-ն
   })
-});
+})
+.then(res => res.json())
+.then(data => {
+  // Ավելացրեք այս մասը
+  if (referred_by) {
+    fetch('https://hyperverse-backend.onrender.com/reward-referrer', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ referrerId: referred_by })
+    });
+  }
+})
+// Ավելացրեք score-ի ստուգում localStorage-ից
+let userScore = localStorage.getItem('userScore') 
+               ? parseInt(localStorage.getItem('userScore')) 
+               : 0;
 
+// Ստեղծեք ֆունկցիա միավորները թարմացնելու համար
+function updateScore(amount) {
+  userScore += amount;
+  localStorage.setItem('userScore', userScore);
+  document.getElementById('userScore').textContent = userScore;
+}
+
+// Օգտագործեք այսպես երբ պարգևատրեք
+updateScore(750); // +750 ավելացնել
         </script>
 
 
@@ -613,7 +638,6 @@ const defaultTasks = [
 
 // Global variables
 let tasks = [];
-let userScore = 0;
 let taskUpdateListener = null; // Used to detect changes to defaultTasks
 
 /**
