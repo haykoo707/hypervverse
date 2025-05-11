@@ -61,7 +61,61 @@
   </div>
 </div>
                   
-        
+        <!-- Leaderboard Popup -->
+<div id="leaderboardPopup" class="leaderboard-popup">
+  <div class="leaderboard-content">
+    <div class="leaderboard-header">
+      <h2><i class="fas fa-crown"></i> Leaderboard</h2>
+      <button id="closeLeaderboard" class="close-leaderboard"><i class="fas fa-times"></i></button>
+    </div>
+    <table class="leaderboard-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Username</th>
+          <th>Score</th>
+        </tr>
+      </thead>
+      <tbody id="leaderboardBody">
+        <!-- Data gets inserted here -->
+      </tbody>
+    </table>
+  </div>
+</div>
+<script>
+const leaderboardData = [
+  { username: 'Ani', score: 95 },
+  { username: 'Gor', score: 85 },
+  { username: 'Lilit', score: 80 },
+  { username: 'Hayk', score: 75 },
+  { username: 'Mariam', score: 70 }
+];
+
+function renderLeaderboard(data) {
+  const tbody = document.getElementById('leaderboardBody');
+  tbody.innerHTML = '';
+  data.sort((a, b) => b.score - a.score);
+  data.forEach((user, index) => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${index + 1}</td>
+      <td>${user.username}</td>
+      <td>${user.score}</td>
+    `;
+    tbody.appendChild(row);
+  });
+}
+
+document.querySelector('.leaderboard-btn').addEventListener('click', () => {
+  renderLeaderboard(leaderboardData);
+  document.getElementById('leaderboardPopup').classList.add('active');
+});
+
+document.getElementById('closeLeaderboard').addEventListener('click', () => {
+  document.getElementById('leaderboardPopup').classList.remove('active');
+});
+</script>
+
 
 <script>
 
@@ -1155,8 +1209,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     </div>
 
-<button class="withdraw-btn" onclick="withdraw()">
-  Withdraw <i class="fas fa-lock"></i>
+<button class="leaderboard-btn">
+  leaderboard <i class="fas fa-lock"></i>
 </button> 
 
 <button class="sp-btn" onclick="window.location.href='paymentsup.html'">
