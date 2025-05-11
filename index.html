@@ -61,56 +61,7 @@
   </div>
 </div>
                   
-        <script>
-        // Գտեք այս կոդը և ավելացրեք հատվածը
-fetch('https://hyperverse-backend.onrender.com/register', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    user_id: user.id,
-    username: username,
-    referred_by: referred_by // Այստեղ արդեն ունենք հրավիրողի ID-ն
-  })
-})
-.then(res => res.json())
-.then(data => {
-  // Ավելացրեք այս մասը
-  if (referred_by) {
-    fetch('https://hyperverse-backend.onrender.com/reward-referrer', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ referrerId: referred_by })
-    });
-  }
-})
-
-        </script>
-
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const referred_by = new URLSearchParams(window.location.search).get('start');
-  const user = Telegram.WebApp.initDataUnsafe?.user;
-
-  if (user) {
-    const username = user.username || `user${user.id}`;
-    
-    fetch('https://hyperverse-backend.onrender.com/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        user_id: user.id,
-        username: username,
-        referred_by: referred_by
-      })
-    })
-    .then(res => res.json())
-    .then(data => console.log('✅ Referral registered:', data))
-    .catch(err => console.error('❌ Referral error:', err));
-  }
-});
-</script>
-
+        
 
 <script>
 
@@ -1176,13 +1127,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
 
     profileInfo.innerHTML = `
-
-    <div class="referral-stats">
-  <h3>Your Referrals</h3>
-  <div id="referralList"></div>
-</div>
-
-
   <h2 style="color: #fff; margin-bottom: 12px;"></h2>
   <div class="profile-item">
     <img 
@@ -1244,33 +1188,6 @@ document.addEventListener('DOMContentLoaded', () => {
   </div>
 </div>
 `;
-// Ավելացրեք այս ֆունկցիան
-async function loadReferrals() {
-  const userId = Telegram.WebApp.initDataUnsafe.user.id;
-  
-  try {
-    const response = await fetch(`https://hyperverse-backend.onrender.com/referrals/${userId}`);
-    const data = await response.json();
-    
-    const list = document.getElementById('referralList');
-    list.innerHTML = data.referrals.map(user => `
-      <div class="referral-item">
-        <span>@${user.username}</span>
-        <span>${new Date(user.registeredAt).toLocaleDateString()}</span>
-        <span>${user.rewardGiven ? '✅' : '⌛'}</span>
-      </div>
-    `).join('');
-    
-  } catch (error) {
-    console.error('Error loading referrals:', error);
-  }
-}
-
-// Կանչեք ֆունկցիան renderProfile()-ում
-function renderProfile() {
-  // ...existing code...
-  loadReferrals();
-}
 }
 function showDeleteModal() {
   document.querySelector('.delete-modal').style.display = 'flex';
@@ -1736,60 +1653,6 @@ Swal.fire({
 
 <!-- Delete Popup -->
 <div class="delete-popup" style="display:none;"></div>
-
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const referred_by = new URLSearchParams(window.location.search).get('start');
-  const user = Telegram.WebApp.initDataUnsafe?.user;
-
-  if (user) {
-    const username = user.username || `user${user.id}`;
-
-    // Register referral
-    fetch('https://hyperverse-backend.onrender.com/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        user_id: user.id,
-        username: username,
-        referred_by: referred_by
-      })
-    })
-    .then(res => res.json())
-    .then(data => console.log('✅ Referral registered:', data))
-    .catch(err => console.error('❌ Referral error:', err));
-
-    // Update referral popup
-    const referralLink = document.getElementById('referralLink');
-    const shareTelegram = document.getElementById('shareTelegram');
-    const refLink = `https://t.me/hyperrverse_bot?start=${username}`;
-    referralLink.value = refLink;
-
-    const message = encodeURIComponent(`🎯 Join me on HyperVerse and earn rewards!\n${refLink}`);
-    shareTelegram.href = `https://t.me/share/url?url=${refLink}&text=${message}`;
-  }
-});
-
-document.getElementById('inviteButton1').addEventListener('click', () => {
-  document.getElementById('popupOverlay1').classList.add('active');
-});
-
-document.getElementById('closePopup1').addEventListener('click', () => {
-  document.getElementById('popupOverlay1').classList.remove('active');
-});
-
-document.getElementById('copyButton').addEventListener('click', () => {
-  const referralLink = document.getElementById('referralLink');
-  referralLink.select();
-  document.execCommand('copy');
-  const copyButton = document.getElementById('copyButton');
-  copyButton.innerHTML = '<i class="fas fa-check"></i>';
-  setTimeout(() => {
-    copyButton.innerHTML = '<i class="fas fa-copy"></i>';
-  }, 1500);
-});
-</script>
 
 </body>
 </html>
