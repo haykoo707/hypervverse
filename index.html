@@ -215,7 +215,7 @@ window.addEventListener('DOMContentLoaded', () => {
         <h2><i class="fas fa-trophy"></i> Daily Reward</h2>
         <div class="reward-timer" id="rewardTimer">Available now</div>
         <button class="reward-btn" id="claimRewardBtn" onclick="handleDailyClaim()">
-          Claim 3000 <i class="fas fa-star"></i>
+          Claim 1000 <i class="fas fa-star"></i>
       </button>
       </div>
       <p style="color: #666; text-align: center;">
@@ -285,7 +285,7 @@ window.addEventListener('DOMContentLoaded', () => {
 <div id="play" class="tab-content active">
   <h2 class="glow">ʜʏᴘᴇʀᴠᴇʀꜱᴇ</h2>
   <a href="game.html">
-    <button class="play-btn"><span>▶</span></button>
+    <button class="play-btn"><span></span></button>
   </a>
 
     </div>
@@ -533,16 +533,6 @@ const defaultTasks = [
     icon: '<i class="fa-brands fa-x-twitter" style="color: #ffffffef; font-size: 1.4em;"></i>'
 },
 {
-    id: 3,
-    title: 'Follow Instagram',
-    link: 'https://www.instagram.com/your_profile', // Փոխարինիր իրական հղումով
-    reward: 2000,
-    status: 'pending',
-    claimAvailable: false,
-    timerId: null,
-    icon: '<i class="fab fa-instagram" style="color: #ffffffef; font-size: 1.4em;"></i>'
-},
-{
     id: 4,
     title: 'Follow TikTok',
     link: 'https://www.tiktok.com/@hyper_verse_', // Փոխարինիր իրական հղումով
@@ -560,7 +550,7 @@ const defaultTasks = [
     status: 'pending',
     claimAvailable: false,
     timerId: null,
-    icon: '<i class="fas fa-bolt"  style="color: #ffffffef; font-size: 1.4em;"></i>'
+    icon: '<i class="fas fa-crown"  style="color: #ffffffef; font-size: 1.4em;"></i>'
 },
 {
     id: 6,
@@ -571,7 +561,39 @@ const defaultTasks = [
     claimAvailable: false,
     timerId: null,
     icon: '<i class="fas fa-gift"  style="color: #ffffffef; font-size: 1.4em;"></i>'
-}
+
+},
+{
+    id: 7,
+    title: '5-Day Reward Streak',
+    link: '',
+    reward: 5000,
+    status: 'pending',
+    claimAvailable: false,
+    timerId: null,
+    icon: '<i class="fas fa-gift"  style="color: #ffffffef; font-size: 1.4em;"></i>'
+},
+{
+    id: 8,
+    title: '10-Day Reward Streak',
+    link: '',
+    reward: 10000,
+    status: 'pending',
+    claimAvailable: false,
+    timerId: null,
+    icon: '<i class="fas fa-gift"  style="color: #ffffffef; font-size: 1.4em;"></i>'
+},
+{
+    id: 9,
+    title: 'Boost Our Channel ',
+    link: '',
+    reward: 500,
+    status: 'pending',
+    claimAvailable: false,
+    timerId: null,
+    icon: '<i class="fas fa-bolt"  style="color: #ffffffef; font-size: 1.4em;"></i>'
+},
+
 ];
 
 // Global variables
@@ -870,6 +892,106 @@ function handleStart(taskId) {
 
         return;
     }
+     // ✅ Daily Reward 5-Day Streak Task
+    if (task.id === 7) {
+        const claimDays = JSON.parse(localStorage.getItem("dailyClaimDays") || "[]");
+
+        // Convert to Date objects
+        const dates = claimDays.map(d => new Date(d));
+
+        if (dates.length < 5) {
+            showNotification("❌ You need 5 daily rewards in a row!");
+            return;
+        }
+
+        // Վերջին 5 օրերը sort-ենք և ստուգենք՝ անընդմեջ են?
+        dates.sort((a, b) => a - b);
+
+        const day1 = dates[0];
+        const day2 = dates[1];
+        const day3 = dates[2];
+        const day4 = dates[3];
+        const day5 = dates[4];
+
+
+
+        function isConsecutive(d1, d2) {
+            return (d2 - d1) / (1000 * 60 * 60 * 24) === 1;
+        }
+
+        if (isConsecutive(day1, day2) && isConsecutive(day2, day3)) {
+            task.status = 'started';
+            task.claimAvailable = true;
+            renderTasks();
+            saveState();
+        } else {
+            showNotification("You need to collect daily rewards 3 days in a row!");
+        }
+
+        return;
+    }
+         // ✅ Daily Reward 10-Day Streak Task
+    if (task.id === 8) {
+        const claimDays = JSON.parse(localStorage.getItem("dailyClaimDays") || "[]");
+
+        // Convert to Date objects
+        const dates = claimDays.map(d => new Date(d));
+
+        if (dates.length < 10) {
+            showNotification("❌ You need 10 daily rewards in a row!");
+            return;
+        }
+
+        // Վերջին 10 օրերը sort-ենք և ստուգենք՝ անընդմեջ են?
+        dates.sort((a, b) => a - b);
+
+        const day1 = dates[0];
+        const day2 = dates[1];
+        const day3 = dates[2];
+        const day4 = dates[3];
+        const day5 = dates[4];
+
+
+
+        function isConsecutive(d1, d2) {
+            return (d2 - d1) / (1000 * 60 * 60 * 24) === 1;
+        }
+
+        if (isConsecutive(day1, day2) && isConsecutive(day2, day3)) {
+            task.status = 'started';
+            task.claimAvailable = true;
+            renderTasks();
+            saveState();
+        } else {
+            showNotification("You need to collect daily rewards 10 days in a row!");
+        }
+
+        return;
+    }
+    // ✅ Boost Channel task (ID 9)
+    if (task.id === 9) {
+        const boostLink = 'https://t.me/HyperrVersee?boost'; // Փոխարինիր քո channel boost հղումով
+        window.open(boostLink, '_blank');
+
+        // Սկսում ենք ժամանակաչափ (օրինակ՝ 20վ), հետո առաջարկում Claim
+        task.status = 'started';
+        task.claimAvailable = false;
+
+        task.timerId = setTimeout(() => {
+            task.claimAvailable = true;
+            renderTasks();
+            saveState();
+        }, 20000); // 20 վայրկյան
+
+        renderTasks();
+        saveState();
+        return;
+    }
+
+    // ✅ Մնացած Task-երի համար թող մնա նույնը
+    window.open(task.link, '_blank');
+    task.status = 'started';
+    task.claimAvailable = false;
 
     // ✅ Սովորական Task-երի համար
     window.open(task.link, '_blank');
@@ -1062,7 +1184,6 @@ document.addEventListener('DOMContentLoaded', () => {
       setupTabs();
       setupCloseButton();
       renderTasks();
-      renderLeaderboard();
       renderFriends();
       updateScore();
     }
@@ -1156,9 +1277,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     </div>
 
-<button class="leaderboard-btn">
-  leaderboard<i class="fas fa-trophy"></i>
-</button> 
 
 <button class="sp-btn" onclick="window.location.href='paymentsup.html'">
   Support the project <i class="fas fa-hand-holding-usd"></i>
@@ -1240,7 +1358,6 @@ function handleDeleteConfirm() {
       setupTabs();
       setupCloseButton();
       renderTasks();
-      renderLeaderboard();
       renderProfile(); // Փոխված է renderFriends()-ից
       updateScore();
     }
@@ -1298,13 +1415,13 @@ function handleDeleteConfirm() {
   lastClaimTime = Date.now();
   localStorage.setItem('lastClaimTime', lastClaimTime);
   
-  userScore += 3000;
+  userScore += 1000;
   updateScore();
-  addToHistory(3000, 'Claimed daily reward');
+  addToHistory(1000, 'Claimed daily reward');
   saveScoreHistory();
   renderDailyReward();
 
-  showNotification(`Claimed +5000 <i class='fas fa-star'></i>`);}
+  showNotification(`Claimed +1000`);}
 
 
     // Ինիցիալիզացիա
@@ -1637,6 +1754,64 @@ Swal.fire({
         }
     };
 });
+document.querySelector('.play-btn').addEventListener('click', function(e) {
+  for(let i = 0; i < 8; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    const rect = this.getBoundingClientRect();
+    const angle = (Math.PI * 2 * i) / 8;
+    particle.style.setProperty('--targetX', `${Math.cos(angle) * 50}px`);
+    particle.style.setProperty('--targetY', `${Math.sin(angle) * 50}px`);
+    particle.style.left = `${rect.width/2}px`;
+    particle.style.top = `${rect.height/2}px`;
+    this.appendChild(particle);
+    setTimeout(() => particle.remove(), 1000);
+  }
+});
+
+
+document.querySelector('.play-btn').addEventListener('click', function(e) {
+  e.preventDefault();
+  const btn = this;
+  
+  // Ավելացնում ենք clicked կլասը
+  btn.classList.add('clicked');
+  
+  // Կանենք body-ի overflow hidden
+  document.body.style.overflow = 'hidden';
+  
+  // Անիմացիայի ավարտից հետո տանում ենք game.html
+  setTimeout(() => {
+    window.location.href = 'game.html';
+  }, 600); // Համապատասխանեցրեք անիմացիայի տևողությանը (0.6s)
+  
+  // Particle effects (ըստ ցանկության)
+  for(let i = 0; i < 15; i++) {
+    const particle = document.createElement('div');
+    particle.style.cssText = `
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: #00d0ff;
+      border-radius: 50%;
+      pointer-events: none;
+      left: ${Math.random() * 100}%;
+      top: ${Math.random() * 100}%;
+      animation: explode 0.8s ease-out both;
+    `;
+    btn.appendChild(particle);
+    setTimeout(() => particle.remove(), 800);
+  }
+});
+
+// CSS անիմացիա particle-ների համար
+const style = document.createElement('style');
+style.textContent = `
+@keyframes explode {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(3); opacity: 0; }
+}`;
+document.head.appendChild(style);
   </script>
 
 <style>
@@ -1656,84 +1831,10 @@ Swal.fire({
 <div class="delete-popup" style="display:none;"></div>
 
 
-<div id="leaderboardPopup" class="leaderboard-popup">
-  <div class="leaderboard-container">
-    <!-- Ավելացված էֆեկտներ -->
-    <div class="glow-effect"></div>
-    
-    <h3 class="leaderboard-title">
-      <svg style="width:24px;height:24px; filter: drop-shadow(0 0 4px rgba(0,208,255,0.5))" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M5 16L3 5L8.5 10L12 4L15.5 10L21 5L19 16H5M19 19C19 19.6 18.6 20 18 20H6C5.4 20 5 19.6 5 19V18H19V19Z"/>
-      </svg>
-            Top Players
-
-    </h3>
-    <button class="close-leaderboard" id="closeLeaderboard">&times;</button>
-    <table class="leaderboard-table">
-      <thead>
-        <tr>
-          <th style="text-align: left; width: 20%">Rank</th>
-          <th style="text-align: left">Player</th>
-          <th style="text-align: right"><i class="fas fa-star"></i></th>
-        </tr>
-      </thead>
-      <tbody id="leaderboardBody">
-        <tr>
-          <td><span class="rank-number">🥇</span></td>
-          <td>
-            <div class="user-name">
-              <img src="avatar-placeholder.png" class="user-avatar">
-              User123
-            </div>
-          </td>
-          <td style="text-align: right">1850 <span style="color: #00d0ff; font-size:0.8em">pts</span></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
 
 
-<script>
-  const leaderboardData = [
-    { username: '@', score: 0 },
-    { username: '@', score: 0 },
-    { username: '@', score: 0 },
-    { username: '@', score: 0 },
-    { username: '@', score: 0 }
-  ];
 
-  function renderLeaderboard(data) {
-    const tbody = document.getElementById('leaderboardBody');
-    tbody.innerHTML = '';
-    data.sort((a, b) => b.score - a.score).forEach((user, index) => {
-      const row = document.createElement('tr');
-      row.innerHTML = `
-        <td>${index + 1}</td>
-        <td>${user.username}</td>
-        <td style="text-align:right;">${user.score}</td>
-      `;
-      tbody.appendChild(row);
-    });
-  }
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const btn = document.querySelector('.leaderboard-btn');
-    if (btn) {
-      btn.addEventListener('click', () => {
-        renderLeaderboard(leaderboardData);
-        document.getElementById('leaderboardPopup').style.display = 'flex';
-      });
-    }
-
-    const closeBtn = document.getElementById('closeLeaderboard');
-    if (closeBtn) {
-      closeBtn.addEventListener('click', () => {
-        document.getElementById('leaderboardPopup').style.display = 'none';
-      });
-    }
-  });
-</script>
 
 </body>
 </html>

@@ -95,7 +95,7 @@ transform: translateX(-50%);
 
 /* Hover effect */
 .tab-button:hover {
-  color: #22c5f2;
+  color: #fdfdfd;
   text-shadow: 0 0 5px #22c5f2;
   
 }
@@ -249,16 +249,7 @@ background: #22c5f2;
   font-weight: bold;
 }
 
-.leaderboard-btn {
-  width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 8px;
-  color: white;
-  font-weight: bold;
-  margin-top: 20px;
-  background: #7777;
-}
+
 
 /* Նոր ավելացված Daily Reward ոճեր */
 .daily-reward-section {
@@ -437,17 +428,74 @@ height: 48px;
   background: rgba(0, 0, 0, 0.7);
   border: 3px solid #00d0ff;
   color: white;
-  font-size: 2rem;
-  padding: 45px 55px;
+  font-size: 2.1rem;
+  width: 160px;
+  height: 160px;
   border-radius: 50%;
-  transition: 0.4s;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: absolute;
   left: 50%;
   top: 185px;
   transform: translate(-50%, -30%);
-  animation: glow 2s infinite ease-in-out;
-  box-shadow: 0 0 40px #00d0ff,
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 0 30px 5px rgba(0, 208, 255, 0.3),
+              inset 0 0 15px rgba(0, 208, 255, 0.3);
+   overflow: hidden;
+  transition: all 0.6s cubic-bezier(0.85, 0.05, 0.18, 1.35);
+  z-index: 1;
+  box-shadow:0 0 88px #1ec3ff;
+  
+  
 }
+.play-btn::before {
+  content: '';
+  position: absolute;
+  width: 150%;
+  height: 150%;
+  background: radial-gradient(circle, rgba(0,208,255,0.4) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.play-btn::after {
+  content: '▶';
+  position: relative;
+  left: 3px;
+  font-size: 1.11em;
+  transition: all 0.4s;
+}
+
+.play-btn:hover {
+  background: #00d0ff;
+  color: black;
+  box-shadow: 0 0 40px 10px rgba(0, 208, 255, 0.5),
+              inset 0 0 20px rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -30%) scale(1.05);
+}
+
+.play-btn:hover::before {
+  opacity: 1;
+}
+
+.play-btn:active {
+  transform: translate(-50%, -30%) scale(0.95);
+  box-shadow: 0 0 20px 5px rgba(0, 208, 255, 0.3);
+}
+
+@keyframes pulse {
+  0% { transform: translate(-50%, -30%) scale(1); }
+  50% { transform: translate(-50%, -30%) scale(1.08); }
+  100% { transform: translate(-50%, -30%) scale(1); }
+}
+
+.play-btn.animated {
+  animation: pulse 2s infinite;
+}
+
+/* Particles animation */
 @keyframes particles {
   to {
     transform: translate(var(--targetX), var(--targetY));
@@ -455,13 +503,13 @@ height: 48px;
   }
 }
 
-
-
-.play-btn:hover {
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
   background: #00d0ff;
-  color: black;
-  box-shadow: 0 0 20px #00d0ff;
-  
+  border-radius: 50%;
+  animation: particles 1s ease-out;
 }
 
 
@@ -1409,157 +1457,24 @@ h2{
   from { opacity: 0; }
   to { opacity: 1; }
 }
+ .task-list {
+    max-height:77vh; /* Սահմանել առավելագույն բարձրություն */
+    overflow-y: auto;  /* Ցույց տալ ուղղահայաց scroll */
+    padding-right: 8px; /* Կանխել scrollbar-ի տեղաշարժը */
+  }
 
-.leaderboard-popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0,0,0,0.9);
-    z-index: 999;
-    display: none;
-    justify-content: center;
-    align-items: center;
-    backdrop-filter: blur(5px);
-}
+  /* Ստիլավորել scrollbar-ը */
+  .task-list::-webkit-scrollbar {
+    width: 6px;
+  }
 
-.leaderboard-container {
-    background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
-    color: white;
-    padding: 2rem;
-    border-radius: 16px;
-    width: 90%;
-    max-width: 500px;
-    position: relative;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    border: 1px solid rgba(255,255,255,0.1);
-}
+  .task-list::-webkit-scrollbar-track {
+    background: #1a1a1a;
+    border-radius: 8px;
+  }
 
-.leaderboard-title {
-    margin: 0 0 1.5rem 0;
-    font-size: 1.2rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: #00d0ff;
-}
-
-.close-leaderboard {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    background: none;
-    border: none;
-    color: rgba(255,255,255,0.7);
-    font-size: 1.5rem;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.close-leaderboard:hover {
-    color: white;
-    transform: rotate(90deg);
-}
-
-.leaderboard-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.leaderboard-table th {
-    padding: 0.8rem;
-    background: rgba(255,215,0,0.1);
-    color: #00d0ff;
-}
-
-.leaderboard-table td {
-    padding: 0.8rem;
-    border-bottom: 1px solid rgba(77, 77, 77, 0.934);
-}
-
-.leaderboard-table tr:last-child td {
-    border-bottom: none;
-}
-
-.leaderboard-table tr:hover td {
-    background: rgba(255, 255, 255, 0.905);
-}
-
-.rank-number {
-    font-weight: bold;
-    color: #00d0ff;
-}
-
-.user-name {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.user-avatar {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-}
-.leaderboard-popup {
-    /* Նույնը մնում է */
-    background: rgba(0,0,0,0.9);
-}
-
-.leaderboard-container {
-    background: linear-gradient(145deg, #0a1929, #00101a);
-    border: 1px solid rgba(0,208,255,0.15);
-}
-
-.leaderboard-title {
-    color: #00d0ff;
-    text-shadow: 0 0 12px rgba(0,208,255,0.3);
-}
-
-.close-leaderboard {
-    color: rgba(255, 255, 255, 0.7);
-}
-
-.close-leaderboard:hover {
-    color: #ffffff;
-}
-
-.leaderboard-table th {
-    background: rgba(0,208,255,0.08);
-    color: #00d0ff;
-}
-
-.leaderboard-table td {
-    border-bottom: 1px solid rgba(0,208,255,0.05);
-}
-
-.leaderboard-table tr:hover td {
-    background: rgba(0,208,255,0.03);
-}
-
-.rank-number {
-    color: #00d0ff;
-}
-
-/* Ավելացված նոր էֆեկտներ */
-.glow-effect {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-    background: radial-gradient(circle at 50% 0%, rgba(0,208,255,0.15) 0%, transparent 60%);
-}
-
-.progress-bar {
-    height: 2px;
+  .task-list::-webkit-scrollbar-thumb {
     background: #00d0ff;
-    box-shadow: 0 0 8px rgba(0,208,255,0.4);
-    position: absolute;
-    top: 0;
-    left: 0;
-    animation: progress 2s infinite;
-}
-
+    border-radius: 50px;
+  }
+  
