@@ -593,8 +593,30 @@ const defaultTasks = [
     timerId: null,
     icon: '<i class="fas fa-bolt"  style="color: #ffffffef; font-size: 1.4em;"></i>'
 },
+{
+    id: 10,
+    title: 'User Verification',
+    link: '',
+    status: 'pending',
+    claimAvailable: false,
+    timerId: null,
+    icon: '<i class="fas fa-circle-check"  style="color: #ffffffef; font-size: 1.4em;"></i>'
+},
 
 ];
+function trackLoginDay() {
+    const today = new Date().toDateString();
+    let loginDays = JSON.parse(localStorage.getItem("loginDays") || "[]");
+
+    // Եթե այսօրվա օրը դեռ չկա՝ ավելացնենք
+    if (!loginDays.includes(today)) {
+        loginDays.push(today);
+        localStorage.setItem("loginDays", JSON.stringify(loginDays));
+    }
+}
+
+// Քանի անգամ խաղը բացեն՝ գրանցի օրը
+trackLoginDay();
 
 // Global variables
 let tasks = [];
@@ -987,6 +1009,34 @@ function handleStart(taskId) {
         saveState();
         return;
     }
+if (task.id === 10) {
+    let loginDays = JSON.parse(localStorage.getItem("loginDays") || "[]");
+
+    // Սորտավորել ըստ օրերի
+    const dates = loginDays.map(d => new Date(d)).sort((a, b) => a - b);
+
+    // Ստուգենք՝ արդյոք կա 90 անընդմեջ օր
+    let streak = 1;
+    for (let i = 1; i < dates.length; i++) {
+        const diff = (dates[i] - dates[i - 1]) / (1000 * 60 * 60 * 24);
+        if (diff === 1) {
+            streak++;
+        } else if (diff > 1) {
+            streak = 1; // խզվել է շարքը
+        }
+    }
+
+    if (streak >= 90) {
+        task.status = 'started';
+        task.claimAvailable = true;
+        renderTasks();
+        saveState();
+    } else {
+        showNotification(`❌ You need ${90 - streak} more day(s) to claim this task`);
+    }
+
+    return;
+}
 
     // ✅ Մնացած Task-երի համար թող մնա նույնը
     window.open(task.link, '_blank');
