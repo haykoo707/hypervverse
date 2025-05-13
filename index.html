@@ -10,9 +10,12 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-3QW0MCBKEC"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://adsgram.io/sdk.js"></script>
 
 
 <script>
+  const adsgram = new Adsgram({ app_id: "7520831618" });
+
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
@@ -593,6 +596,17 @@ const defaultTasks = [
     timerId: null,
     icon: '<i class="fas fa-bolt"  style="color: #ffffffef; font-size: 1.4em;"></i>'
 },
+{
+  id: 10,
+  title: 'Adsgram',
+  link: 'https://t.me/your_adsgram_link', // փոխիր իրական հղումով
+  reward: 500,
+  status: 'pending',
+  claimAvailable: false,
+  timerId: null,
+  icon: '<i class="fas fa-gift"  style="color: #ffffffef; font-size: 1.4em;"></i>',
+  repeatable: true
+},
 
 ];
 
@@ -987,6 +1001,53 @@ function handleStart(taskId) {
         saveState();
         return;
     }
+
+
+
+    if (task.id === 10) {
+const adLink = 'https://t.me/adsgrambot?start=7520831618';
+    window.open(adLink, '_blank');
+
+    task.status = 'started';
+    task.claimAvailable = false;
+
+    task.timerId = setTimeout(() => {
+        task.claimAvailable = true;
+        renderTasks();
+        saveState();
+    }, 15000); // օրինակ՝ 15 վայրկյան դիտելու ժամանակ
+
+    renderTasks();
+    saveState();
+    return;
+}
+function handleClaim(taskId) {
+    const taskIndex = tasks.findIndex(t => t.id === taskId);
+    if (taskIndex === -1) return;
+
+    const task = tasks[taskIndex];
+
+    userScore += task.reward;
+    updateScore();
+    addToHistory(task.reward, `Claimed task: ${task.title}`);
+    saveScoreHistory();
+    showNotification(`You got +${task.reward} <i class="fas fa-star"></i>`);
+
+    if (!task.repeatable) {
+        permanentlyClaim(task.id);
+        if (task.timerId) clearTimeout(task.timerId);
+        tasks.splice(taskIndex, 1);
+    } else {
+        // Եթե repeatable է՝ նորից դարձնենք pending
+        task.status = 'pending';
+        task.claimAvailable = false;
+        if (task.timerId) clearTimeout(task.timerId);
+    }
+
+    saveState();
+    renderTasks();
+}
+
 
     // ✅ Մնացած Task-երի համար թող մնա նույնը
     window.open(task.link, '_blank');
