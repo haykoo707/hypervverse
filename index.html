@@ -60,26 +60,7 @@
     <button id="closePopup1" class="close-button1">Close</button>
   </div>
 </div>
-                  <script>
-  window.onload = function () {
-    if (window.Telegram.WebApp) {
-      const tg = window.Telegram.WebApp;
 
-      // Ստանում ենք օգտատիրոջ username
-      const username = tg.initDataUnsafe?.user?.username;
-
-      // Եթե username գոյություն ունի
-      if (username) {
-        const referralUrl = `https://t.me/hyperrverse_bot?start=${username}`;
-        document.getElementById("referralLink").value = referralUrl;
-      } else {
-        document.getElementById("referralLink").value = "Error";
-      }
-    } else {
-      document.getElementById("referralLink").value = "not available";
-    }
-  };
-</script>
 
         
 
