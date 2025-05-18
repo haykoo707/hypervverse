@@ -58,12 +58,13 @@ background-color: #000;
 .top-bar .score {
 font-size: 15px;
 position: absolute;
+top: 0.4%;
 left: 1%;
 transform: translateX(-1%);
 background-color: #000000;
 border: #00bbff solid 2px;
 border-radius: 10px;
-padding: 8px 8px;
+padding: 6.5px 8px;
 animation: pop 0.3s;
 }
 
@@ -917,49 +918,13 @@ body {
 }
 
 
-/* Մեդալը նկատվելու է էկրանի ներքևում */
-.medals-container {
-  position: fixed;
-  bottom: -60%;
-  left: 0;
-  width: 100%;
-  background: linear-gradient(to top, rgb(67, 67, 67), rgba(61, 61, 61, 0.871));
-  backdrop-filter: blur(5px);
-  border-top: 2px solid #00d0ff;
-  padding: 10px 0;
-  text-align: center;
-  z-index: 999;
-  border-radius: 14px;
-}
-
-.medals-container h3 {
-  margin: 0;
-  font-size: 1rem;
-  color: #ffffff;
-}
-
-.medal {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  background-color: #000000;
-  border: 2px solid #00d0ff;
-  border-radius: 30px;
-  padding: 6px 14px;
-  font-size: 1rem;
-  font-weight: bold;
-  color: #ffffff;
-  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
-  margin-top: 5px;
-}
 
 .medal-emoji {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
 }
 
 .medal-label {
-  font-size: 1rem;
+  font-size: 1.1rem;
 }
 
 
@@ -1482,4 +1447,71 @@ h2{
     background: #00d0ff;
     border-radius: 50px;
   }
-  
+.score-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 86vh; /* լրիվ էկրանի բարձրություն */
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: #1a1a1a;
+  color: white;
+  opacity: 100%;
+    background-color: transparent; /* Հանում ենք գույնը */
+
+}
+
+.score-text {
+  text-align: center;
+  font-size: 33px;
+  margin-top: 10px;
+}
+
+.score-rank {
+  font-size: 14px;
+  color: #aaa;
+  margin-top: 8px;
+}
+.score-image {
+  width: 170px;
+  height: 170px;
+  object-fit: contain;
+}
+
+
+/* Հենց սա ամրացնում է կոճակները ներքևում */
+.button-group {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  padding-bottom: 20px;
+}
+
+.custom-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #1f1f1f;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  width: 110%;
+  border: #00d0ff solid 2px;
+font-weight: bold;
+
+}
+
+.custom-btn:hover {
+  background-color: #1f1f1f;
+}
+#medalsContainer {
+  text-align: center;
+}
+.score-icon {
+  display: flex;
+  justify-content: center;
+}
+.score {
+  display: none;
+}

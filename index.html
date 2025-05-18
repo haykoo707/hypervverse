@@ -111,7 +111,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Menu items
   const items = [
-    { text: 'Telegram', href: 'https://t.me/HyperrVersee' },
     { text: 'Website', href: 'https://hyper070.github.io/HYPERVERSEweb/' },
     { text: 'History', href: '#' }, // Changed to # for JS handling
 
@@ -282,14 +281,75 @@ window.addEventListener('DOMContentLoaded', () => {
         </div>
       </div>
 
-     <!-- Play Tab -->
+<!-- Play Tab -->
 <div id="play" class="tab-content active">
-  <a href="game.html">
-    <button class="play-btn"><span></span></button>
-  </a>
-
-    </div>
+  <div class="score-container">
+<div class="score-icon">
+  <img src="converted_image.png" alt="Paw Icon" class="score-image" />
 </div>
+    <div class="score-text" id="userScoreDisplay">0</div>
+    <div id="medalsContainer"></div>
+      <div class="button-group">
+<button class="custom-btn" onclick="window.location.href='https://t.me/HyperrVersee'">
+  <i class="fab fa-telegram-plane" style="color: #ffffffef; font-size: 1.3em;"></i> Join Telegram Community
+</button>
+<button class="custom-btn" onclick="window.location.href='https://x.com/HyperVerse_TG'">
+  <i class="fa-brands fa-x-twitter" style="color: #ffffffef; font-size: 1.3em;"></i> Join X Community
+</button>
+
+
+
+  </div>
+</div>
+  </div>
+</div>
+
+
+<script>
+  // Քո մեդալների զանգվածը
+const medals = [
+    { score: 100, emoji: '<i class="fas fa-medal" style="color: #cd7f32;"></i>', label: 'Bronze Medal' },
+    { score: 10000, emoji: '<i class="fas fa-medal" style="color: #c0c0c0;"></i>', label: 'Silver Medal' },
+    { score: 50000, emoji: '<i class="fas fa-medal" style="color: #ffd700;"></i>', label: 'Gold Medal' },
+    { score: 150000, emoji: '<i class="fas fa-trophy" style="color: #e5e4e2;"></i>', label: 'Platinum Medal' },
+    { score: 500000, emoji: '<i class="fas fa-gem" style="color: #b9f2ff;"></i>', label: 'Diamond Medal' },
+    { score: 1000000, emoji: '<i class="fas fa-trophy" style="color: gold;"></i>', label: 'Millionaire Medal' },
+    { score: 5000000, emoji: '<i class="fas fa-crown" style="color: #ffd700;"></i>', label: 'Legend Medal' },
+    { score: 10000000, emoji: '<i class="fas fa-infinity" style="color: #4b0082;"></i>', label: 'God Mode Medal' }
+];
+
+// Ստացիր userScore localStorage-ից
+const score = parseInt(localStorage.getItem('userScore')) || 0;
+
+// Ձևաչափում
+function formatScore(num) {
+    if (num >= 1e6) return (num / 1e6).toFixed(2) + "M";
+    if (num >= 1e3) return (num / 1e3).toFixed(2) + "K";
+    return num.toString();
+}
+
+// Գտիր մեդալը ըստ միավորի (ամենաբարձրին համապատասխանողը)
+const currentMedal = medals.reverse().find(medal => score >= medal.score);
+
+// Թարմացրու ցուցադրումը
+document.getElementById("userScoreDisplay").innerHTML = `
+  ${formatScore(score)} <i class="fas fa-star"></i>
+`;
+
+const medalsContainer = document.getElementById("medalsContainer");
+medalsContainer.innerHTML = `
+  <div class="medals-container">
+    ${currentMedal 
+      ? `<div class="medal">
+           <span class="medal-emoji">${currentMedal.emoji}</span>
+           <span class="medal-label">${currentMedal.label}</span>
+         </div>` 
+      : '<p>No title earned yet.</p>'
+    }
+  </div>
+`;
+
+</script>
 
 <!-- History Popup -->
 <div id="historyPopup" class="history-popup">
@@ -1248,52 +1308,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderProfile() {
   const profileInfo = document.getElementById('profileInfo');
 
-  const medals = [
-    { 
-        score: 100,
-        emoji: '<i class="fas fa-medal" style="color: #cd7f32;"></i>',
-        label: 'Bronze Medal'
-    },
-    { 
-        score: 10000,
-        emoji: '<i class="fas fa-medal" style="color: #c0c0c0;"></i>',
-        label: 'Silver Medal'
-    },
-    { 
-        score: 50000,
-        emoji: '<i class="fas fa-medal" style="color: #ffd700;"></i>',
-        label: 'Gold Medal'
-    },
-    { 
-        score: 150000,
-        emoji: '<i class="fas fa-trophy" style="color: #e5e4e2;"></i>',
-        label: 'Platinum Medal'
-    },
-    { 
-        score: 500000,
-        emoji: '<i class="fas fa-gem" style="color: #b9f2ff;"></i>',
-        label: 'Diamond Medal'
-    },
-    { 
-        score: 1000000,
-        emoji: '<i class="fas fa-trophy" style="color: #gold;"></i>',
-        label: 'Millionaire Medal'
-    },
-    { 
-        score: 5000000,
-        emoji: '<i class="fas fa-crown" style="color: #ffd700;"></i>',
-        label: 'Legend Medal'
-    },
-    { 
-        score: 10000000,
-        emoji: '<i class="fas fa-infinity" style="color: #4b0082;"></i>',
-        label: 'God Mode Medal'
-    },
-];
-
-  const currentMedal = medals
-    .reverse()
-    .find(medal => userProfile.score >= medal.score);
+ 
 
     
 
@@ -1315,17 +1330,6 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
   </div>
  
-
-
-    <div class="medals-container">
-      ${currentMedal 
-        ? `<div class="medal">
-            <span class="medal-emoji">${currentMedal.emoji}</span>
-            <span class="medal-label">${currentMedal.label}</span>
-          </div>` 
-        : '<p>No title earned yet.</p>'
-      }
-    </div>
 
 
 <button class="sp-btn" onclick="window.location.href='paymentsup.html'">
