@@ -1544,14 +1544,19 @@ font-weight: bold;
   margin-top: 20px;
   color: #fff;
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  justify-content: center; /* կենտրոնացնում է հորիզոնական */
+  gap: 30px;
+  flex-wrap: wrap; /* փոքր էկրանների համար */
 }
+
 .stat-item {
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px 12px;
+  border-radius: 10px;
 }
 .stat-item i {
   color: #00d0ff;
