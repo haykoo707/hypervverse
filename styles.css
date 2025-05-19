@@ -411,6 +411,7 @@ left: 50%;
 bottom: 0;
 width: 0;
 height: 3px;
+border-radius: 100px;
 background-color: #22c5f2;
 transition: width 0.3s ease-in-out, left 0.3s ease-in-out;
 }
@@ -429,84 +430,7 @@ width: 48px; /* Կամ ցանկացած հարմար չափ */
 height: 48px;
 }
 
-.play-btn {
-  background: rgba(0, 0, 0, 0.7);
-  border: 3px solid #00d0ff;
-  color: white;
-  font-size: 2.1rem;
-  width: 145px;
-  height: 145px;
-  border-radius: 50%;
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: absolute;
-  left: 50%;
-  top: 185px;
-  transform: translate(-50%, -30%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  box-shadow: 0 0 30px 5px rgba(0, 208, 255, 0.3),
-              inset 0 0 15px rgba(0, 208, 255, 0.3);
-   overflow: hidden;
-  transition: all 0.6s cubic-bezier(0.85, 0.05, 0.18, 1.35);
-  z-index: 1;
-  box-shadow:0 0 33px #1ec3ff;
-  
-  
-}
-.play-btn::before {
-  content: '';
-  position: absolute;
-  width: 150%;
-  height: 150%;
-  background: radial-gradient(circle, rgba(0,208,255,0.4) 0%, transparent 70%);
-  opacity: 0;
-  transition: opacity 0.4s;
-}
 
-.play-btn::after {
-  content: '▶';
-  position: relative;
-  left: 3px;
-  font-size: 1.11em;
-  transition: all 0.4s;
-}
-
-.play-btn:hover {
-  background: #00d0ff;
-  color: black;
-  box-shadow: 0 0 40px 10px rgba(0, 208, 255, 0.5),
-              inset 0 0 20px rgba(255, 255, 255, 0.3);
-  transform: translate(-50%, -30%) scale(1.05);
-}
-
-.play-btn:hover::before {
-  opacity: 1;
-}
-
-.play-btn:active {
-  transform: translate(-50%, -30%) scale(0.95);
-  box-shadow: 0 0 20px 5px rgba(0, 208, 255, 0.3);
-}
-
-@keyframes pulse {
-  0% { transform: translate(-50%, -30%) scale(1); }
-  50% { transform: translate(-50%, -30%) scale(1.08); }
-  100% { transform: translate(-50%, -30%) scale(1); }
-}
-
-.play-btn.animated {
-  animation: pulse 2s infinite;
-}
-
-/* Particles animation */
-@keyframes particles {
-  to {
-    transform: translate(var(--targetX), var(--targetY));
-    opacity: 0;
-  }
-}
 
 .particle {
   position: absolute;
@@ -536,15 +460,15 @@ height: 48px;
 
 
 #dailyCodeInput {
-  width: 80%;
+  width: 60%;
   padding: 10px;
   margin: 10px 0;
   border: 2px solid #90ebff;
   border-radius: 12px;
   font-size: 16px;
   text-align: center;
-  background-color: #474747;
-  color: white;
+  background-color: #000000;
+  color: rgb(255, 255, 255);
 }
 
 #dailyCodeInput:focus {
@@ -1457,7 +1381,7 @@ h2{
   background-color: #1a1a1a;
   color: white;
   opacity: 100%;
-    background-color: transparent; /* Հանում ենք գույնը */
+  background-color: transparent; /* Հանում ենք գույնը */
 
 }
 
@@ -1476,6 +1400,7 @@ h2{
   width: 160px;
   height: 180px;
   object-fit: contain;
+  border-radius: 50%;
 }
 
 
@@ -1492,7 +1417,7 @@ h2{
 .custom-btn {
   padding: 10px 20px;
   font-size: 16px;
-  background-color: #1f1f1f;
+  background-color: #000000;
   color: white;
   border: none;
   border-radius: 12px;
@@ -1503,7 +1428,7 @@ font-weight: bold;
 }
 
 .custom-btn:hover {
-  background-color: #1f1f1f;
+  background-color: #222222;
 }
 #medalsContainer {
   text-align: center;
@@ -1552,4 +1477,66 @@ font-weight: bold;
   color: #000;
   border: none;
   border-radius: 10px;
+}
+.popupbonus {
+  position: fixed;
+  z-index: 999;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  display: none;
+}
+.popup-content {
+  background: #111;
+  color: white;
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 320px;
+  margin: 100px auto;
+  border: 1px solid #00d0ff;
+  text-align: center;
+}
+.popup-content button {
+  background-color: #00d0ff;
+  color: black;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 6px;
+  margin-top: 10px;
+}
+@keyframes popupFadeIn {
+  from {
+    transform: translate(-50%, -60%) scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes popupFadeOut {
+  from {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: translate(-50%, -60%) scale(0.9);
+    opacity: 0;
+  }
+}
+
+.popupbonus .popup-content {
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #111;
+  color: white;
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 320px;
+  border: 1px solid #00d0ff;
+  text-align: center;
+  animation: popupFadeIn 0.4s ease forwards;
 }

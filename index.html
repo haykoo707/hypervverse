@@ -88,7 +88,45 @@
          <button id="inviteButton1" class="invite-button1">
             <i class="fas fa-user-friends"></i></button>
 
+<!-- Welcome Bonus Popup -->
+<div id="welcomePopup" class="popupbonus">
+  <div class="popup-content">
+    <h3>Welcome Bonus</h3>
+    <p>Claim your +500  <i class="fas fa-star"></i>
+ bonus for joining!</p>
+    <button onclick="claimWelcomeBonus()">Claim</button>
+  </div>
+</div>
+<script>
+  // Միավորների թարմացման ֆունկցիա
+function updateScore() {
+  document.getElementById('userScore').textContent = userScore;
+  localStorage.setItem('userScore', userScore);
+  document.getElementById('userScoreDisplay').innerHTML = `${formatScore(userScore)} <i class="fas fa-star"></i>`;
+  updateMedals();
+}
 
+function claimWelcomeBonus() {
+  userScore += 500;
+  updateScore();
+  localStorage.setItem("welcomeBonusClaimed", "true");
+
+  const popup = document.getElementById("welcomePopup");
+  popup.querySelector('.popup-content').style.animation = "popupFadeOut 0.4s ease forwards";
+
+  setTimeout(() => {
+    popup.style.display = "none";
+  }, 400); // same duration as the animation
+}
+window.addEventListener("load", () => {
+  const claimed = localStorage.getItem("welcomeBonusClaimed");
+  if (!claimed) {
+    document.getElementById("welcomePopup").style.display = "block";
+  }
+});
+
+
+</script>
 
           <!-- Popup -->
 <div id="popupOverlay1" class="popup-overlay1">
@@ -354,8 +392,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
 <script>
-  // Քո մեդալների զանգվածը
-const medals = [
+ function updateMedals() {
+  const medals = [
     { score: 100, emoji: '<i class="fas fa-medal" style="color: #cd7f32;"></i>', label: 'Bronze Medal' },
     { score: 10000, emoji: '<i class="fas fa-medal" style="color: #c0c0c0;"></i>', label: 'Silver Medal' },
     { score: 50000, emoji: '<i class="fas fa-medal" style="color: #ffd700;"></i>', label: 'Gold Medal' },
@@ -364,7 +402,20 @@ const medals = [
     { score: 1000000, emoji: '<i class="fas fa-trophy" style="color: gold;"></i>', label: 'Millionaire Medal' },
     { score: 5000000, emoji: '<i class="fas fa-crown" style="color: #ffd700;"></i>', label: 'Legend Medal' },
     { score: 10000000, emoji: '<i class="fas fa-infinity" style="color: #4b0082;"></i>', label: 'God Mode Medal' }
-];
+  ];
+
+  const current = [...medals].reverse().find(m => userScore >= m.score);
+  const medalsContainer = document.getElementById("medalsContainer");
+
+  medalsContainer.innerHTML = current
+    ? `<div class="medals-container">
+         <div class="medal">
+           <span class="medal-emoji">${current.emoji}</span>
+           <span class="medal-label">${current.label}</span>
+         </div>
+       </div>`
+    : '<p style = "font-size:18px">No title earned yet.</p>';
+}
 
 // Ստացիր userScore localStorage-ից
 const score = parseInt(localStorage.getItem('userScore')) || 0;
@@ -376,6 +427,7 @@ function formatScore(num) {
     return num.toString();
 }
 
+
 // Գտիր մեդալը ըստ միավորի (ամենաբարձրին համապատասխանողը)
 const currentMedal = medals.reverse().find(medal => score >= medal.score);
 
@@ -384,18 +436,6 @@ document.getElementById("userScoreDisplay").innerHTML = `
   ${formatScore(score)} <i class="fas fa-star"></i>
 `;
 
-const medalsContainer = document.getElementById("medalsContainer");
-medalsContainer.innerHTML = `
-  <div class="medals-container">
-    ${currentMedal 
-      ? `<div class="medal">
-           <span class="medal-emoji">${currentMedal.emoji}</span>
-           <span class="medal-label">${currentMedal.label}</span>
-         </div>` 
-      : '<p>No title earned yet.</p>'
-    }
-  </div>
-`;
 
 </script>
 
@@ -1312,14 +1352,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // Միավորների թարմացում
-    function updateScore() {
-      document.getElementById('userScore').textContent = userScore;
-      localStorage.setItem('userScore', userScore);
-    
+function updateScore() {
+  document.getElementById('userScore').textContent = userScore;
+  localStorage.setItem('userScore', userScore);
 
-    document.getElementById('userScoreDisplay').innerHTML = `${formatScore(userScore)} <i class="fas fa-star"></i>`;
-
+  document.getElementById('userScoreDisplay').innerHTML = `${formatScore(userScore)} <i class="fas fa-star"></i>`;
+  updateMedals(); // ✅ Թարմացնենք մեդալները նույնպես
 }
+
+
 
     // Tabs փոխման տրամաբանություն
     function setupTabs() {
@@ -1833,10 +1874,16 @@ document.querySelectorAll(".box").forEach(box => {
             userScore -= cost;
             addToHistory(-cost, `Opened ${box.classList.contains('gold') ? 'Gold' : 'Diamond'} Box`);
 
-            userScore += reward;
-            addToHistory(reward, `Reward from ${selectedTier.name} tier`);
-            saveScoreHistory();
-            localStorage.setItem("userScore", userScore);
+           userScore -= cost;
+addToHistory(-cost, `Opened ${box.classList.contains('gold') ? 'Gold' : 'Diamond'} Box`);
+
+userScore += reward;
+addToHistory(reward, `Reward from ${selectedTier.name} tier`);
+saveScoreHistory();
+localStorage.setItem("userScore", userScore);
+
+updateScore();
+
             
             Swal.fire({
     icon: 'success',
