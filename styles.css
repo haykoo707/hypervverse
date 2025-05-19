@@ -1540,3 +1540,19 @@ font-weight: bold;
   text-align: center;
   animation: popupFadeIn 0.4s ease forwards;
 }
+.user-stats {
+  margin-top: 20px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+}
+.stat-item i {
+  color: #00d0ff;
+}
