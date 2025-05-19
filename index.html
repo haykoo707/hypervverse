@@ -27,6 +27,54 @@
   tg.expand(); // full screen
 </script>
 
+
+<style>
+/* Popup animation */
+.popup {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  animation: fadeIn 0.3s ease-in-out forwards;
+}
+
+.popup-content {
+  background: #111;
+  color: white;
+  border: 1px solid #00f0ff;
+  border-radius: 10px;
+  padding: 20px;
+  width: 90%;
+  max-width: 350px;
+  margin: 100px auto;
+  text-align: center;
+  font-family: sans-serif;
+  animation: scaleIn 0.3s ease-in-out forwards;
+  transform: scale(0.9);
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+</style>
+
 </head>
 <body>
 </script>
@@ -285,10 +333,10 @@ window.addEventListener('DOMContentLoaded', () => {
 <div id="play" class="tab-content active">
   <div class="score-container">
 <div class="score-icon">
-  <img src="converted_image.png" alt="Paw Icon" class="score-image" />
+  <img src="https://raw.githubusercontent.com/haykoo707/hypervverse/refs/heads/main/ChatGPT%20Image%20May%2019%2C%202025%2C%2001_35_59%20PM.png" alt="Paw Icon" class="score-image" />
 </div>
     <div class="score-text" id="userScoreDisplay">0</div>
-    <div id="medalsContainer"></div>
+    <div id="medalsContainer" onclick="openRewardPopup()"></div>
       <div class="button-group">
 <button class="custom-btn" onclick="window.location.href='https://t.me/HyperrVersee'">
   <i class="fab fa-telegram-plane" style="color: #ffffffef; font-size: 1.3em;"></i> Join Telegram Community
@@ -365,7 +413,7 @@ medalsContainer.innerHTML = `
 </div>
 
 <div class="loading-screen" id="loadingScreen">
-  <img src="https://raw.githubusercontent.com/haykoo707/hypervverse/refs/heads/main/photo_2025-04-25_23-12-33.jpg" alt="Loading..." class="loading-image animate-loading">
+  <img src="https://raw.githubusercontent.com/haykoo707/hypervverse/refs/heads/main/ChatGPT%20Image%20May%2019%2C%202025%2C%2001_35_59%20PM.png" alt="Loading..." class="loading-image animate-loading">
   <h5 class="loadingh5">5.1.x</h5> 
 </div>
 
@@ -786,7 +834,11 @@ function updateScore() {
     const scoreElement = document.getElementById('userScore');
     if (scoreElement) {
         scoreElement.textContent = userScore;
-    }
+    
+
+    document.getElementById('userScoreDisplay').innerHTML = `${formatScore(userScore)} <i class="fas fa-star"></i>`;
+
+}
 }
 
 /**
@@ -1263,7 +1315,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateScore() {
       document.getElementById('userScore').textContent = userScore;
       localStorage.setItem('userScore', userScore);
-    }
+    
+
+    document.getElementById('userScoreDisplay').innerHTML = `${formatScore(userScore)} <i class="fas fa-star"></i>`;
+
+}
 
     // Tabs փոխման տրամաբանություն
     function setupTabs() {
@@ -1552,43 +1608,41 @@ for (let i = 0; i < numStars; i++) {
 
 
 
-function draw() {
+let lastTime = performance.now();
+
+function draw(currentTime) {
+    const delta = (currentTime - lastTime) / 16.67; // 1 frame ≈ 16.67ms at 60FPS
+    lastTime = currentTime;
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Աստղեր
-    ctx.fillStyle = "gray", "white";
     stars.forEach((star) => {
         ctx.beginPath();
         ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(200, 200, 200, ${star.alpha})`;
         ctx.fill();
 
-        // Փայլել
-        ctx.fillStyle = `rgba(200, 200, 200, ${star.alpha})`; // փայլը կախված alpha-ից
-        star.y += star.speed;
+        // Adjust star position based on delta time
+        star.y += star.speed * delta;
+
         if (star.y > canvas.height) {
             star.y = 0;
             star.x = Math.random() * canvas.width;
         }
 
         // Փոփոխել alpha-ն
-        star.alpha += star.alphaDirection * 0.01;
+        star.alpha += star.alphaDirection * 0.01 * delta;
         if (star.alpha <= 0 || star.alpha >= 1) {
             star.alphaDirection *= -1;
         }
     });
 
-    // Մետեորներ
-   
-
     requestAnimationFrame(draw);
 }
 
-draw();
+requestAnimationFrame(draw);
 
-window.addEventListener("resize", () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-});
 
 function handleDailyQuest() {
     const lastClaimTime = localStorage.getItem(questCooldownKey);
@@ -1628,7 +1682,7 @@ const tabImages = {
             active: "https://raw.githubusercontent.com/haykoo707/hypervverse/refs/heads/main/ChatGPT%20Image%20Mar%2030%2C%202025%2C%2011_21_31%20PM.png"
         },
         profile: {
-            default: "https://raw.githubusercontent.com/haykoo707/hypervverse/refs/heads/main/Picsart_25-03-07_18-16-34-817.jpg",
+            default: "https://raw.githubusercontent.com/haykoo707/hypervverse/refs/heads/main/Picsart_25-03-28_20-52-49-352.jpg",
             active: "https://raw.githubusercontent.com/haykoo707/hypervverse/refs/heads/main/ChatGPT%20Image%20Mar%2030%2C%202025%2C%2003_34_04%20PM.png"
         },
       
@@ -1889,6 +1943,38 @@ document.head.appendChild(style);
 
 
 
+
+
+<!-- Reward Info Popup -->
+<div id="rewardPopup" class="popup" style="display:none;">
+  <div class="popup-content">
+    <h3>🏅 All Medals</h3>
+    <ul id="allMedalsList"></ul>
+    <button onclick="closeRewardPopup()">Close</button>
+  </div>
+</div>
+
+
+<script>
+function openRewardPopup() {
+  document.getElementById("rewardPopup").style.display = "block";
+  const list = document.getElementById("allMedalsList");
+  const medals = [
+    { score: 100, emoji: '<i class="fas fa-medal" style="color: #cd7f32;"></i>', label: 'Bronze Medal' },
+    { score: 10000, emoji: '<i class="fas fa-medal" style="color: #c0c0c0;"></i>', label: 'Silver Medal' },
+    { score: 50000, emoji: '<i class="fas fa-medal" style="color: #ffd700;"></i>', label: 'Gold Medal' },
+    { score: 150000, emoji: '<i class="fas fa-trophy" style="color: #e5e4e2;"></i>', label: 'Platinum Medal' },
+    { score: 500000, emoji: '<i class="fas fa-gem" style="color: #b9f2ff;"></i>', label: 'Diamond Medal' },
+    { score: 1000000, emoji: '<i class="fas fa-trophy" style="color: gold;"></i>', label: 'Millionaire Medal' },
+    { score: 5000000, emoji: '<i class="fas fa-crown" style="color: #ffd700;"></i>', label: 'Legend Medal' },
+    { score: 10000000, emoji: '<i class="fas fa-infinity" style="color: #4b0082;"></i>', label: 'God Mode Medal' }
+  ];
+  list.innerHTML = medals.map(m => `<li>${m.emoji} ${m.label} — ${formatScore(m.score)}+</li>`).join("");
+}
+function closeRewardPopup() {
+  document.getElementById("rewardPopup").style.display = "none";
+}
+</script>
 
 </body>
 </html>
