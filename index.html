@@ -2030,6 +2030,7 @@ function closeRewardPopup() {
   document.getElementById("rewardPopup").style.display = "none";
 }
 </script>
+<!-- FRONTEND BACKUP-INTEGRATION CODE -->
 <script>
   const tg = window.Telegram.WebApp;
   const telegramUserId = tg.initDataUnsafe?.user?.id?.toString() || "unknown";
@@ -2041,7 +2042,7 @@ function closeRewardPopup() {
     const referrals = JSON.parse(localStorage.getItem("referrals")) || [];
     const mysteryBoxes = JSON.parse(localStorage.getItem("mysteryBoxes")) || [];
 
-    fetch("http://localhost:3000/saveData", {
+    fetch("https://tma-backend-rn5h.onrender.com/dumpData", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -2062,7 +2063,7 @@ function closeRewardPopup() {
   }
 
   function restoreUserData() {
-    fetch(`http://localhost:3000/getData?userId=${telegramUserId}`)
+    fetch(`https://tma-backend-rn5h.onrender.com/getData?userId=${telegramUserId}`)
       .then(res => res.json())
       .then(data => {
         localStorage.setItem("userScore", data.userScore);
@@ -2077,11 +2078,19 @@ function closeRewardPopup() {
       });
   }
 
-  // Օրինակ՝ պահել տվյալները ամեն 30 վայրկյանը մեկ
-  setInterval(backupUserData, 30000);
+  // Manual buttons for development/testing
+  document.addEventListener("DOMContentLoaded", () => {
+    const devUI = document.createElement("div");
+    devUI.style = "position:fixed;bottom:10px;right:10px;z-index:9999;background:#111;padding:8px;border-radius:8px;";
+    devUI.innerHTML = `
+      <button onclick="backupUserData()" style="margin:5px;">💾 Backup</button>
+      <button onclick="restoreUserData()" style="margin:5px;">♻️ Restore</button>
+    `;
+    document.body.appendChild(devUI);
 
-  // Վերականգնել տվյալները էջի բեռնելու ժամանակ
-  window.addEventListener("DOMContentLoaded", restoreUserData);
+    restoreUserData(); // Auto-restore when page loads
+    setInterval(backupUserData, 30000); // Auto-backup every 30s
+  });
 </script>
 
 </body>
