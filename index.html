@@ -22,10 +22,6 @@
 
 <title>HyperVerse</title>
 
-<script>
-  const tg = window.Telegram.WebApp;
-  tg.expand(); // full screen
-</script>
 
 
 <style>
@@ -376,6 +372,7 @@ window.addEventListener('DOMContentLoaded', () => {
     <div class="score-text" id="userScoreDisplay">0</div>
     <div id="medalsContainer" onclick="openRewardPopup()"></div>
       <div class="button-group">
+
 <button class="custom-btn" onclick="window.location.href='https://t.me/HyperrVersee'">
   <i class="fab fa-telegram-plane" style="color: #ffffffef; font-size: 1.3em;"></i> Join Telegram Community
 </button>
@@ -385,10 +382,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
 
+
+
   </div>
 </div>
   </div>
 </div>
+
 
 
 <script>
@@ -2029,6 +2029,59 @@ function openRewardPopup() {
 function closeRewardPopup() {
   document.getElementById("rewardPopup").style.display = "none";
 }
+</script>
+<script>
+  const tg = window.Telegram.WebApp;
+  const telegramUserId = tg.initDataUnsafe?.user?.id?.toString() || "unknown";
+  const username = tg.initDataUnsafe?.user?.username || "unknown";
+
+  function backupUserData() {
+    const userScore = parseInt(localStorage.getItem("userScore")) || 0;
+    const claimedTasks = JSON.parse(localStorage.getItem("claimedTaskIds")) || [];
+    const referrals = JSON.parse(localStorage.getItem("referrals")) || [];
+    const mysteryBoxes = JSON.parse(localStorage.getItem("mysteryBoxes")) || [];
+
+    fetch("http://localhost:3000/saveData", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId: telegramUserId,
+        username,
+        userScore,
+        claimedTasks,
+        referrals,
+        mysteryBoxes
+      })
+    }).then(res => res.json()).then(data => {
+      if (data.success) {
+        console.log("✅ Data backed up successfully");
+      } else {
+        console.error("❌ Failed to backup data", data);
+      }
+    });
+  }
+
+  function restoreUserData() {
+    fetch(`http://localhost:3000/getData?userId=${telegramUserId}`)
+      .then(res => res.json())
+      .then(data => {
+        localStorage.setItem("userScore", data.userScore);
+        localStorage.setItem("claimedTaskIds", JSON.stringify(data.claimedTasks));
+        localStorage.setItem("referrals", JSON.stringify(data.referrals));
+        localStorage.setItem("mysteryBoxes", JSON.stringify(data.mysteryBoxes));
+        console.log("🔁 Data restored from backup");
+        window.location.reload();
+      })
+      .catch(err => {
+        console.warn("No previous data found to restore.");
+      });
+  }
+
+  // Օրինակ՝ պահել տվյալները ամեն 30 վայրկյանը մեկ
+  setInterval(backupUserData, 30000);
+
+  // Վերականգնել տվյալները էջի բեռնելու ժամանակ
+  window.addEventListener("DOMContentLoaded", restoreUserData);
 </script>
 
 </body>
