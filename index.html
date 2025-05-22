@@ -22,6 +22,10 @@
 
 <title>HyperVerse</title>
 
+<script>
+  const tg = window.Telegram.WebApp;
+  tg.expand(); // full screen
+</script>
 
 
 <style>
@@ -372,6 +376,9 @@ window.addEventListener('DOMContentLoaded', () => {
     <div class="score-text" id="userScoreDisplay">0</div>
     <div id="medalsContainer" onclick="openRewardPopup()"></div>
       <div class="button-group">
+ <button class="custom-btn" onclick="openMarketplace()">
+  <i class="fas fa-store" style="color: #ffffffef; font-size: 1.3em;"></i> Marketplace 
+</button>
 
 <button class="custom-btn" onclick="window.location.href='https://t.me/HyperrVersee'">
   <i class="fab fa-telegram-plane" style="color: #ffffffef; font-size: 1.3em;"></i> Join Telegram Community
@@ -389,7 +396,38 @@ window.addEventListener('DOMContentLoaded', () => {
   </div>
 </div>
 
+<!-- Marketplace Fullscreen Popup -->
+<div id="marketplaceOverlay" class="popup">
+  <div class="popup-content" style="width: 95%; max-width: 1000px; height: 90vh; overflow-y: auto;">
+    <span class="close" onclick="closeMarketplace()" style="float: right; cursor: pointer; font-size: 24px;">&times;</span>
+    <h2 style="margin-bottom: 15px;"><i class="fas fa-store"></i> Marketplace</h2>
+    
+    <!-- Marketplace Tabs -->
+    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+      <button onclick="showMarketTab('packs')">🛍️ Packs</button>
+      <button onclick="showMarketTab('skins')">🎨 Skins</button>
+      <button onclick="showMarketTab('boosts')">⚡ Boosts</button>
+    </div>
 
+    <!-- Marketplace Tab Content -->
+    <div id="packs" class="market-tab">Pack items will appear here.</div>
+    <div id="skins" class="market-tab" style="display:none;">Skins list here.</div>
+    <div id="boosts" class="market-tab" style="display:none;">Boosts content here.</div>
+  </div>
+</div>
+<script>
+function openMarketplace() {
+  document.getElementById('marketplaceOverlay').style.display = 'block';
+}
+function closeMarketplace() {
+  document.getElementById('marketplaceOverlay').style.display = 'none';
+}
+function showMarketTab(tabId) {
+  const tabs = document.querySelectorAll('.market-tab');
+  tabs.forEach(tab => tab.style.display = 'none');
+  document.getElementById(tabId).style.display = 'block';
+}
+</script>
 
 <script>
  function updateMedals() {
@@ -2029,68 +2067,6 @@ function openRewardPopup() {
 function closeRewardPopup() {
   document.getElementById("rewardPopup").style.display = "none";
 }
-</script>
-<!-- FRONTEND BACKUP-INTEGRATION CODE -->
-<script>
-  const tg = window.Telegram.WebApp;
-  const telegramUserId = tg.initDataUnsafe?.user?.id?.toString() || "unknown";
-  const username = tg.initDataUnsafe?.user?.username || "unknown";
-
-  function backupUserData() {
-    const userScore = parseInt(localStorage.getItem("userScore")) || 0;
-    const claimedTasks = JSON.parse(localStorage.getItem("claimedTaskIds")) || [];
-    const referrals = JSON.parse(localStorage.getItem("referrals")) || [];
-    const mysteryBoxes = JSON.parse(localStorage.getItem("mysteryBoxes")) || [];
-
-    fetch("https://tma-backend-rn5h.onrender.com/dumpData", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        userId: telegramUserId,
-        username,
-        userScore,
-        claimedTasks,
-        referrals,
-        mysteryBoxes
-      })
-    }).then(res => res.json()).then(data => {
-      if (data.success) {
-        console.log("✅ Data backed up successfully");
-      } else {
-        console.error("❌ Failed to backup data", data);
-      }
-    });
-  }
-
-  function restoreUserData() {
-    fetch(`https://tma-backend-rn5h.onrender.com/getData?userId=${telegramUserId}`)
-      .then(res => res.json())
-      .then(data => {
-        localStorage.setItem("userScore", data.userScore);
-        localStorage.setItem("claimedTaskIds", JSON.stringify(data.claimedTasks));
-        localStorage.setItem("referrals", JSON.stringify(data.referrals));
-        localStorage.setItem("mysteryBoxes", JSON.stringify(data.mysteryBoxes));
-        console.log("🔁 Data restored from backup");
-        window.location.reload();
-      })
-      .catch(err => {
-        console.warn("No previous data found to restore.");
-      });
-  }
-
-  // Manual buttons for development/testing
-  document.addEventListener("DOMContentLoaded", () => {
-    const devUI = document.createElement("div");
-    devUI.style = "position:fixed;bottom:10px;right:10px;z-index:9999;background:#111;padding:8px;border-radius:8px;";
-    devUI.innerHTML = `
-      <button onclick="backupUserData()" style="margin:5px;">💾 Backup</button>
-      <button onclick="restoreUserData()" style="margin:5px;">♻️ Restore</button>
-    `;
-    document.body.appendChild(devUI);
-
-    restoreUserData(); // Auto-restore when page loads
-    setInterval(backupUserData, 30000); // Auto-backup every 30s
-  });
 </script>
 
 </body>
