@@ -377,7 +377,9 @@ window.addEventListener('DOMContentLoaded', () => {
     <div id="medalsContainer" onclick="openRewardPopup()"></div>
       <div class="button-group">
 <button class="custom-btn" onclick="openGamesPopup()">
-  <i class="fas fa-store" style="color: #ffffffef; font-size: 1.3em;"></i> Games
+  <i class="fas fa-dice" style="color: #ffffffef; font-size: 1.3em;"></i> Test your luck
+
+
 </button>
 
 <button class="custom-btn" onclick="window.location.href='https://t.me/HyperrVersee'">
@@ -398,18 +400,9 @@ window.addEventListener('DOMContentLoaded', () => {
 <div id="casinoPopup" class="popup" style="display:none;">
   <div class="popup-content">
     <span class="close" onclick="closeGamesPopup()">&times;</span>
-    <h2 id="gameTitle"><i class="fas fa-dice" style="color: #00d0ff;"></i> Select a Game</h2>
+    <h2 id="gameTitle"class="font-size: 8px;"><i class="fas fa-dice" style="color: #00d0ff; padding-bottom: 10px;padding-right: 5px;"></i>Slots</h2>
 
-    <div class="game-tabs">
-      <button onclick="switchGame('slots')">
-        <i class="fas fa-coins" style="margin-right: 8px;"></i> 
-        Slots
-      </button>
-      <button onclick="switchGame('rocket')">
-        <i class="fas fa-rocket" style="margin-right: 8px;"></i>
-        Rocket X
-      </button>
-    </div>
+    
 
     <div id="slotsGame" class="game-section">
       <p><i class="fas fa-star" style="color: #00d0ff;"></i> <span id="currentScoreSlots">0</span></p>
@@ -423,32 +416,8 @@ window.addEventListener('DOMContentLoaded', () => {
       </button>
       <p id="resultTextSlots" class="result-text"></p>
     </div>
-
-    <div id="rocketGame" class="game-section" style="display:none;">
-      <p><i class="fas fa-star" style="color: #00d0ff;"></i> <span id="currentScoreRocket">0</span></p>
-      <div class="input-group">
-        <i class="fas fa-coins input-icon"></i>
-        <input type="number" id="betAmountRocket" placeholder="Enter your bet" min="1">
-      </div>
-      <div class="rocket-controls">
-        <button onclick="startRocket()" class="rocket-btn">
-          <i class="fas fa-play"></i> 
-          Launch
-        </button>
-        <button onclick="cashOutRocket()" id="cashOutBtn" class="cashout-btn" style="display:none;">
-          <i class="fas fa-hand-holding-usd"></i> 
-          Cash Out
-        </button>
-      </div>
-      <div id="rocketAnimation" class="rocket-animation">
-        <i class="fas fa-rocket rocket-icon"></i>
-      </div>
-      <h3 id="liveMultiplier"><i class="fas fa-bolt" style="color: #00d0ff;"></i> x1.00</h3>
-      <p id="resultTextRocket" class="result-text"></p>
-    </div>
   </div>
 </div>
-
 
 <script>
 function openGamesPopup() {
@@ -472,25 +441,17 @@ function setUserScore(score) {
 function updateScoreDisplay() {
   const score = getUserScore();
   document.getElementById('currentScoreSlots').innerText = score;
-  document.getElementById('currentScoreRocket').innerText = score;
 }
 
 function switchGame(game) {
   const slotsGame = document.getElementById('slotsGame');
-  const rocketGame = document.getElementById('rocketGame');
   const gameTitle = document.getElementById('gameTitle');
   
   if(game === 'slots') {
     slotsGame.style.display = 'block';
-    rocketGame.style.display = 'none';
     gameTitle.innerHTML = '<i class="fas fa-sliders-h" style="color: #00d0ff;"></i> Slot Machine';
-  } else {
-    slotsGame.style.display = 'none';
-    rocketGame.style.display = 'block';
-    gameTitle.innerHTML = '<i class="fas fa-rocket" style="color: #00d0ff;"></i> Rocket X';
   }
 }
-
 
 function playSlots() {
   const bet = parseInt(document.getElementById('betAmountSlots').value);
@@ -506,39 +467,79 @@ function playSlots() {
     return;
   }
 
-  // Generate symbols with icons
-  const symbols = ['<i class="fas fa-diamond"></i>', 
-                  '<i class="fas fa-coins"></i>', 
-                  '<i class="fas fa-crown"></i>'];
-  const r1 = Math.floor(Math.random() * 3);
-  const r2 = Math.floor(Math.random() * 3);
-  const r3 = Math.floor(Math.random() * 3);
+const regularSymbols = [
+  '<i class="fas fa-coins" style="color: #FFD700;"></i>', // Ոսկե դեղին - մետաղադրամներ
+  '<i class="fas fa-crown" style="color: #FFDF00;"></i>', // Թագի ոսկի
+  '<i class="fas fa-diamond" style="color: #00d0ff;"></i>', // Ադամանդի կապույտ
+  '<i class="fas fa-chess-knight" style="color: #666666;"></i>', // Մետաղական մոխրագույն
+  '<i class="fas fa-bolt" style="color: #00BFFF;"></i>', // Էլեկտրական կապույտ
+  '<i class="fas fa-bomb" style="color: #FF4444;"></i>', // Կարմիր վտանգ
+  '<i class="fas fa-anchor" style="color: #2E5A88;"></i>', // Ծովային նավարի կապույտ
+  '<i class="fas fa-leaf" style="color: #4CAF50;"></i>', // Բնության կանաչ
+  '<i class="fas fa-feather-alt" style="color: #A0522D;"></i>' // Բնական շագանակագույն
+];
 
-  // Build result display
+
+  const jackpotSymbol = '<i class="fas fa-gem" style="color: #ff69b4;"></i>';
+  
+  // Սիմվոլների գեներացիա 2% հավանականությամբ jackpot-ի համար
+  function getSlotSymbol() {
+    return Math.random() < 0.07 ? jackpotSymbol : 
+           regularSymbols[Math.floor(Math.random() * regularSymbols.length)];
+  }
+
+  const symbols = [getSlotSymbol(), getSlotSymbol(), getSlotSymbol()];
+  
   let resultHTML = `
     <div class="slot-result">
       <div class="slot-wheel">
-        <div class="slot-symbol">${symbols[r1]}</div>
-        <div class="slot-symbol">${symbols[r2]}</div>
-        <div class="slot-symbol">${symbols[r3]}</div>
+        <div class="slot-symbol">${symbols[0]}</div>
+        <div class="slot-symbol">${symbols[1]}</div>
+        <div class="slot-symbol">${symbols[2]}</div>
       </div>
       <div class="result-message">
   `;
 
-  if (r1 === r2 && r2 === r3) {
-    const win = bet * 5;
+  // Jackpot պայմանների ստուգում
+  const isJackpot = symbols.every(s => s === jackpotSymbol);
+  const isThreeSame = symbols[0] === symbols[1] && symbols[1] === symbols[2];
+  const isTwoSame = symbols[0] === symbols[1] || symbols[1] === symbols[2] || symbols[0] === symbols[2];
+
+  if (isJackpot) {
+    const win = bet * 25;
+    score += win;
+    resultHTML += `
+        <div class="jackpot-animation">
+          <i class="fas fa-rocket fa-spin"></i>
+          <h3 style="color: #ff69b4;">MEGA JACKPOT +${win} <i class="fas fa-star"></i>
+</h3>
+        </div>`;
+  } 
+  else if (isThreeSame) {
+    const win = bet * 4;
     score += win;
     resultHTML += `
         <div class="win-animation">
           <i class="fas fa-trophy bounce"></i>
-          <h3 style="color: #4CAF50;">+${win} Points!</h3>
+          <h3 style="color: #4CAF50;">+${win} <i class="fas fa-star"></i>
+</h3>
         </div>`;
-  } else {
+  }
+  else if (isTwoSame) {
+    const win = bet * 1.5;
+    score += win;
+    resultHTML += `
+        <div class="win-animation">
+          <h3 style="color: #FFD700;">+${win}  <i class="fas fa-star"></i>
+</h3>
+        </div>`;
+  }
+  else {
     score -= bet;
     resultHTML += `
         <div class="loss-message">
-          <i class="fas fa-sad-tear"></i>
-          <h3 style="color: #FF4444;">-${bet} Points</h3>
+          <h3 style="color: #FF4444;">-${bet} <i class="fas fa-star"></i>
+</h3>
         </div>`;
   }
 
@@ -546,59 +547,17 @@ function playSlots() {
   
   setUserScore(score);
   document.getElementById('resultTextSlots').innerHTML = resultHTML;
-}
 
-let rocketInterval, rocketMultiplier = 1.00, rocketBet = 0;
-
-function startRocket() {
-  rocketBet = parseInt(document.getElementById('betAmountRocket').value);
-  let score = getUserScore();
-  if (isNaN(rocketBet) || rocketBet <= 0 || rocketBet > score) {
-    alert("Invalid bet.");
-    return;
+  // Անիմացիա jackpot-ի դեպքում
+  if(isJackpot) {
+    document.querySelector('.jackpot-animation').classList.add('blink');
+    setTimeout(() => {
+      new Audio('https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3').play();
+    }, 500);
   }
-
-  rocketMultiplier = 1.00;
-  const rocket = document.getElementById('rocketAnimation');
-  const multiplierText = document.getElementById('liveMultiplier');
-  const resultText = document.getElementById('resultTextRocket');
-  const cashOutBtn = document.getElementById('cashOutBtn');
-
-  rocket.style.display = 'block';
-  multiplierText.textContent = 'x1.00';
-  resultText.innerHTML = '';
-  cashOutBtn.style.display = 'inline-block';
-  cashOutBtn.disabled = false;
-
-  rocketInterval = setInterval(() => {
-    rocketMultiplier += Math.random() * 0.2;
-    rocketMultiplier = Math.round(rocketMultiplier * 100) / 100;
-    multiplierText.textContent = `x${rocketMultiplier.toFixed(2)}`;
-  }, 200);
-
-  setTimeout(() => {
-    clearInterval(rocketInterval);
-    rocket.style.display = 'none';
-    cashOutBtn.style.display = 'none';
-    const crash = Math.random() < 0.5;
-    if (crash) {
-      score -= rocketBet;
-      resultText.innerHTML = `You lost -${rocketBet} at x${rocketMultiplier.toFixed(2)}`;
-      setUserScore(score);
-    }
-  }, 3000);
-}
-
-function cashOutRocket() {
-  clearInterval(rocketInterval);
-  const score = getUserScore();
-  const winAmount = Math.floor(rocketBet * rocketMultiplier);
-  setUserScore(score + winAmount);
-  document.getElementById('rocketAnimation').style.display = 'none';
-  document.getElementById('resultTextRocket').innerHTML = `You cashed out +${winAmount} at x${rocketMultiplier.toFixed(2)}! 💰`;
-  document.getElementById('cashOutBtn').style.display = 'none';
 }
 </script>
+
 
 <script>
  function updateMedals() {

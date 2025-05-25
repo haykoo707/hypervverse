@@ -6,123 +6,169 @@
   <title>Payment TON</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #000000;
+      font-family: 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #1a1a1a, #000000);
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
       margin: 0;
+      padding: 20px;
+      color: white;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+      width: 100%;
+    }
+
+    .supporttxt {
+      color: white;
+      font-size: 24px;
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+
+    .faqtxt {
+      color: #a0a0a0;
+      font-size: 16px;
+      max-width: 300px;
+      margin: 0 auto;
+      line-height: 1.4;
     }
 
     .container {
       display: grid;
-      grid-template-columns: repeat(2, 150px);
-      grid-gap: 20px;
-      justify-items: center;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      width: 100%;
+      max-width: 400px;
     }
 
-    .window-button {
-      width: 150px;
-      height: 150px;
-      background-color: #ffffff;
-      border: 2px solid #ccc;
-      border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    .payment-button {
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 15px;
+      padding: 20px 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .payment-button:hover {
+      background-color: #3dd8ff;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(61, 216, 255, 0.3);
+    }
+
+    .ton-amount {
+      font-size: 22px;
+      margin-bottom: 5px;
+    }
+
+    .usd-approx {
+      font-size: 14px;
+      font-weight: normal;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .close-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: 40px;
+      height: 40px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border: none;
+      border-radius: 50%;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
       display: flex;
       justify-content: center;
       align-items: center;
-      text-align: center;
-      text-decoration: none;
-      color: #333;
-      font-weight: bold;
-      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      transition: background-color 0.3s;
     }
 
-    .window-button:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
-      background-color: #3dd8ff;
-    }
-
-    .supporttxt {
-      position: absolute;
-      top: 1%;
-      left: 50%;
-      transform: translateX(-50%);
-      color: white;
-      font-size: 24px;
-    }
-
-    @media screen and (max-width: 768px) {
-      .container {
-        grid-template-columns: 1fr 1fr;
-        width: 100%;
-        padding: 0 10px;
-      }
-
-      .window-button {
-        width: 100px;
-        height: 100px;
-        font-size: 14px;
-      }
-
-      .supporttxt {
-        font-size: 18px;
-      }
+    .close-button:hover {
+      background-color: rgba(255, 255, 255, 0.2);
     }
 
     @media screen and (max-width: 480px) {
-      .container {
-        grid-template-columns: 1fr;
-        padding: 0 5px;
+      .supporttxt {
+        font-size: 20px;
       }
-
-      .window-button {
-        width: 80px;
-        height: 80px;
+      
+      .faqtxt {
+        font-size: 14px;
+      }
+      
+      .container {
+        gap: 12px;
+      }
+      
+      .payment-button {
+        padding: 15px 10px;
+      }
+      
+      .ton-amount {
+        font-size: 18px;
+      }
+      
+      .usd-approx {
         font-size: 12px;
       }
-
-      .supporttxt {
-        font-size: 16px;
-      }
     }
-    .custom-button {
-    padding: 10px 14px;
-    font-size: 14px;
-    color: rgb(255, 255, 255);
-    background-color: #000000;
-    border: none;
-    border-radius: 12px;
-    transition: background-color 0.3s ease;
-    position: absolute;
-    top: 1%;
-    left: 1%;
-    font-weight: bold;
-}
 
-.faqtxt {
-      position: absolute;
-      top: 8%;
-      left: 50%;
-      transform: translateX(-50%);
-      color: rgb(91, 91, 91);
-      font-weight: 600;
+    @media screen and (max-width: 350px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
-  <button class="custom-button" onclick="window.location.href='index.html'">
-    X
-</button> 
-  <h2 class="supporttxt">Support the HyperVerse</h2>
-  <p class="faqtxt">All your contributions will go towards the development of the token.</p>
+  <button class="close-button" onclick="window.location.href='index.html'">×</button>
+  
+  <div class="header">
+    <h1 class="supporttxt">Support the HyperVerse</h1>
+    <p class="faqtxt">All your contributions will go towards the development of the token.</p>
+  </div>
+  
   <div class="container">
-    <a href="ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=10000000" class="window-button" target="_blank">0․01 TON</a>
-    <a href="ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=100000000" class="window-button" target="_blank">0.1 TON</a>
-    <a href="ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=1000000000" class="window-button" target="_blank">1 TON</a>
-    <a href="ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=5000000000" class="window-button" target="_blank">5 TON</a>
+    <a href="ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=10000000&text=hayk123" class="payment-button" target="_blank">
+      <span class="ton-amount">0.01 TON</span>
+      <span class="usd-approx">≈ $0.03</span>
+    </a>
+    <a href="ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=100000000" class="payment-button" target="_blank">
+      <span class="ton-amount">0.1 TON</span>
+      <span class="usd-approx">≈ $0.30</span>
+    </a>
+    <a href="ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=1000000000" class="payment-button" target="_blank">
+      <span class="ton-amount">1 TON</span>
+      <span class="usd-approx">≈ $3.00</span>
+    </a>
+    <a href="ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=5000000000" class="payment-button" target="_blank">
+      <span class="ton-amount">5 TON</span>
+      <span class="usd-approx">≈ $15.00</span>
+    </a>
+     <a href="ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=10000000000" class="payment-button" target="_blank">
+      <span class="ton-amount">10 TON</span>
+      <span class="usd-approx">≈ $30.00</span>
+    </a>
+     <a href="ton://transfer/UQBfrU75WGhBLnRpBs1ImWE5sPdxKsFMBgogpD578JxXyDbK?amount=15000000000" class="payment-button" target="_blank">
+      <span class="ton-amount">15 TON</span>
+      <span class="usd-approx">≈ $45.00</span>
+    </a>
   </div>
 </body>
 </html>
