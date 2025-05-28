@@ -104,7 +104,11 @@ function updateScore() {
   localStorage.setItem('userScore', userScore);
   document.getElementById('userScoreDisplay').innerHTML = `${formatScore(userScore)} <i class="fas fa-star"></i>`;
   updateMedals();
+
+  // ⬇️ Նոր ավելացում
+  sendScoreToServer();
 }
+
 
 function claimWelcomeBonus() {
   userScore += 500;
@@ -2197,6 +2201,30 @@ function openRewardPopup() {
 function closeRewardPopup() {
   document.getElementById("rewardPopup").style.display = "none";
 }
+async function sendScoreToServer() {
+  const tgUser = Telegram.WebApp.initDataUnsafe.user;
+  const score = userScore; // սա արդեն կա քո կոդում
+
+  const body = {
+    id: tgUser.id.toString(),
+    username: tgUser.username,
+    newScore: score
+  };
+
+  try {
+    const res = await fetch("http://localhost:3000/update-score", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body)
+    });
+
+    const data = await res.json();
+    console.log("✅ Server response:", data);
+  } catch (err) {
+    console.error("❌ Failed to update score:", err);
+  }
+}
+
 </script>
 
 </body>
