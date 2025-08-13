@@ -913,10 +913,7 @@ body {
   transition: 0.3s;
 }
 
-.menu-item:hover i {
-  transform: scale(1.1);
-  color: #00ff88; /* Hover գույն */
-}
+
 @keyframes fadeZoomIn {
   0% {
     opacity: 0;
@@ -1562,7 +1559,7 @@ font-weight: bold;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0,0,0,0.6);
+  background-color: rgba(0, 0, 0, 0.771);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1607,31 +1604,10 @@ input[type=number] {
   border-radius: 8px;
   font-size: 1em;
 }
-button {
-  padding: 10px 20px;
-  border: none;
-  background-color: #00b894;
-  color: white;
-  border-radius: 10px;
-  font-weight: bold;
-  margin-top: 5px;
-}
-button:hover {
-  background-color: #019875;
-}
-.rocket-animation {
-  width: 20px;
-  height: 40px;
-  margin: 10px auto;
-  background: url('https://cdn-icons-png.flaticon.com/512/321/321817.png') no-repeat center;
-  background-size: contain;
-  animation: rocketMove 2s linear infinite;
-  display: none;
-}
-@keyframes rocketMove {
-  0% { transform: translateY(0); opacity: 1; }
-  100% { transform: translateY(-200px); opacity: 0; }
-}
+
+
+
+
 #liveMultiplier {
   font-size: 2em;
   text-align: center;
@@ -1674,19 +1650,7 @@ input[type="number"] {
   to { transform: rotate(360deg); }
 }
 
-.rocket-icon {
-  font-size: 2.5em;
-  color: #00d0ff;
-  transition: transform 0.3s ease;
-}
 
-.rocket-btn {
-  background: linear-gradient(45deg, #00aad0, #00d0ff);
-}
-
-.cashout-btn {
-  background: linear-gradient(45deg, #4CAF50, #8BC34A);
-}
 .slot-result {
   display: flex;
   flex-direction: column;
@@ -1728,4 +1692,25 @@ input[type="number"] {
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
+}
+.jackpot-animation {
+  animation: jackpotGlow 1s infinite;
+}
+
+@keyframes jackpotGlow {
+  0% { text-shadow: 0 0 10px #ff69b4; }
+  50% { text-shadow: 0 0 30px #ff69b4, 0 0 50px #ff69b4; }
+  100% { text-shadow: 0 0 10px #ff69b4; }
+}
+
+.blink {
+  animation: blink 0.3s 5;
+}
+
+@keyframes blink {
+  50% { opacity: 0.2; }
+}
+
+.fa-gem {
+  filter: drop-shadow(0 0 8px #ff69b4);
 }
