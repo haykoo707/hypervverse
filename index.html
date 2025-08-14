@@ -696,7 +696,7 @@ tonConnectUI.onStatusChange((walletInfo) => {
         const walletAddress = walletInfo.account.address;
         const username = Telegram.WebApp?.initDataUnsafe?.user?.username || "Guest";
 
-        fetch("http://localhost:3000/save-wallet", {
+        fetch("https://haykoo707.github.io/hypervverse/", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username, wallet: walletAddress })
