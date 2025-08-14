@@ -10,7 +10,6 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-3QW0MCBKEC"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://adsgram.io/static/adsgram.min.js"></script>
 
 
 <script>
@@ -923,16 +922,6 @@ const defaultTasks = [
     timerId: null,
     icon: '<i class="fas fa-circle-check"  style="color: #ffffffef; font-size: 1.4em;"></i>'
 },
-{
-    id: 11,
-    title: 'Watch an Ad',
-    reward: 1000,
-    status: 'pending',
-    claimAvailable: false,
-    timerId: null,
-    icon: '<i class="fas fa-play-circle" style="color: #ffffffef; font-size: 1.4em;"></i>',
-    type: 'ad'
-}
 
 ];
 function trackLoginDay() {
@@ -1201,24 +1190,6 @@ function handleStart(taskId) {
     const task = tasks.find(t => t.id === taskId);
     if (!task) return;
 
-
-// ✅ Adsgram Watch Ad Task
-if (task.type === 'ad' || task.id === 11) {
-    adsgram.show().then(() => {
-        task.status = 'claimed';
-        userScore += task.reward;
-        permanentlyClaim(task.id);
-        updateScore();
-        addToHistory(task.reward, `Watched Ad: ${task.title}`);
-        saveScoreHistory();
-        saveState();
-        renderTasks();
-        showNotification(`+${task.reward} <i class="fas fa-star"></i> earned from ad!`);
-    }).catch(err => {
-        console.log("Ad not completed", err);
-    });
-    return;
-}
     // ✅ Premium Check Task
     if (task.id === 5) {
         const isPremium = Telegram.WebApp.initDataUnsafe?.user?.is_premium;
@@ -2255,49 +2226,7 @@ async function sendScoreToServer() {
 }
 
 </script>
-<script>
-  // Adsgram դինամիկ բեռնում և ինիցիալիզացիա
-  document.addEventListener('DOMContentLoaded', function() {
-    const script = document.createElement('script');
-    script.src = "https://adsgram.io/static/adsgram.min.js";
-    script.async = true;
-    script.onload = () => {
-      window.adsgram = new Adsgram({ blockId: '13855' });
-      console.log("Adsgram initialized");
-    };
-    document.head.appendChild(script);
-  });
 
-  // Թարմացված handleStart ֆունկցիա
-  function handleStart(taskId) {
-    const task = tasks.find(t => t.id === taskId);
-    if (!task) return;
-
-    if (task.type === 'ad' || task.id === 11) {
-      if (window.adsgram) {
-        window.adsgram.show().then(() => {
-          task.status = 'claimed';
-          userScore += task.reward;
-          permanentlyClaim(task.id);
-          updateScore();
-          addToHistory(task.reward, `Watched Ad: ${task.title}`);
-          saveScoreHistory();
-          saveState();
-          renderTasks();
-          showNotification(`+${task.reward} <i class="fas fa-star"></i> earned from ad!`);
-        }).catch(err => {
-          console.log("Ad not completed", err);
-        });
-      } else {
-        showNotification("Ad system is loading... please try again");
-      }
-      return;
-    }
-    
-    // ... մնացած կոդը անփոփոխ ...
-  }
-  console.log('Adsgram instance:', window.adsgram); // Պետք է տպի օբյեկտ
-</script>
 </body>
 </html>
 
