@@ -2262,7 +2262,7 @@ async function sendScoreToServer() {
     script.src = "https://adsgram.io/static/adsgram.min.js";
     script.async = true;
     script.onload = () => {
-      window.adsgram = new Adsgram({ blockId: '13854' });
+      window.adsgram = new Adsgram({ blockId: '13855' });
       console.log("Adsgram initialized");
     };
     document.head.appendChild(script);
@@ -2296,6 +2296,7 @@ async function sendScoreToServer() {
     
     // ... մնացած կոդը անփոփոխ ...
   }
+  console.log('Adsgram instance:', window.adsgram); // Պետք է տպի օբյեկտ
 </script>
 </body>
 </html>
