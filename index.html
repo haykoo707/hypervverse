@@ -686,32 +686,11 @@ document.getElementById("userScoreDisplay").innerHTML = `
 
   <script>
     
-const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-    manifestUrl: 'https://haykoo707.github.io/hypervverse/tonconnect-manifest.json',
-    buttonRootId: 'connect'
-});
-
-tonConnectUI.onStatusChange((walletInfo) => {
-    if (walletInfo && walletInfo.account) {
-        const walletAddress = walletInfo.account.address;
-        const username = Telegram.WebApp?.initDataUnsafe?.user?.username || "Guest";
-
-        fetch("https://haykoo707.github.io/hypervverse/", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, wallet: walletAddress })
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                alert("✅ Wallet saved: " + walletAddress);
-            } else {
-                alert("❌ Save failed");
-            }
-        })
-        .catch(err => console.error("❌ Request error:", err));
-    }
-});
+    const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+            manifestUrl: 'https://haykoo707.github.io/hypervverse/tonconnect-manifest.json',
+            buttonRootId: 'connect'
+            
+        });
         async function transaction() {
         const transaction = {
             validUntil: Math.round(Date.now() / 1000) + 10,
@@ -739,7 +718,6 @@ tonConnectUI.onStatusChange((walletInfo) => {
           }, 3000);
       }, 1900);
   </script>
-  
 
   <script>
   
