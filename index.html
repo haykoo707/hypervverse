@@ -11,30 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://adsgram.io/static/adsgram.min.js"></script>
-<script>
-const adsgram = new Adsgram({
-    blockId: '13854'
-});
 
-// Օրինակ՝ Watch Ad task-ի կոճակ սեղմելիս
-function watchAdAndReward(taskId) {
-    adsgram.show().then(() => {
-        // Գովազդը դիտվեց մինչև վերջ
-        const task = tasks.find(t => t.id === taskId);
-        if (task) {
-            task.status = 'claimed';
-            userScore += task.reward;
-            permanentlyClaim(taskId);
-            saveState();
-            updateScore();
-            renderTasks();
-            alert(`+${task.reward} points earned!`);
-        }
-    }).catch(err => {
-        console.log("Ad not completed", err);
-    });
-}
-</script>
 
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -2278,7 +2255,48 @@ async function sendScoreToServer() {
 }
 
 </script>
+<script>
+  // Adsgram դինամիկ բեռնում և ինիցիալիզացիա
+  document.addEventListener('DOMContentLoaded', function() {
+    const script = document.createElement('script');
+    script.src = "https://adsgram.io/static/adsgram.min.js";
+    script.async = true;
+    script.onload = () => {
+      window.adsgram = new Adsgram({ blockId: '13854' });
+      console.log("Adsgram initialized");
+    };
+    document.head.appendChild(script);
+  });
 
+  // Թարմացված handleStart ֆունկցիա
+  function handleStart(taskId) {
+    const task = tasks.find(t => t.id === taskId);
+    if (!task) return;
+
+    if (task.type === 'ad' || task.id === 11) {
+      if (window.adsgram) {
+        window.adsgram.show().then(() => {
+          task.status = 'claimed';
+          userScore += task.reward;
+          permanentlyClaim(task.id);
+          updateScore();
+          addToHistory(task.reward, `Watched Ad: ${task.title}`);
+          saveScoreHistory();
+          saveState();
+          renderTasks();
+          showNotification(`+${task.reward} <i class="fas fa-star"></i> earned from ad!`);
+        }).catch(err => {
+          console.log("Ad not completed", err);
+        });
+      } else {
+        showNotification("Ad system is loading... please try again");
+      }
+      return;
+    }
+    
+    // ... մնացած կոդը անփոփոխ ...
+  }
+</script>
 </body>
 </html>
 
