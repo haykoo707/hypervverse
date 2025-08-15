@@ -686,35 +686,11 @@ document.getElementById("userScoreDisplay").innerHTML = `
 
   <script>
     
-const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-    manifestUrl: 'https://haykoo707.github.io/hypervverse/tonconnect-manifest.json',
-    buttonRootId: 'connect'
-});
-
-// 📌 Երբ user-ը միացնում է TON դրամապանակը
-tonConnectUI.onStatusChange((walletInfo) => {
-    if (walletInfo && walletInfo.account) {
-        const walletAddress = walletInfo.account.address;
-        const username = Telegram.WebApp?.initDataUnsafe?.user?.username || "Guest";
-
-        // Ուղարկում ենք backend
-        try {
-        const res = await fetch('https://ton-backend-1-sb3q.onrender.com/save-wallet', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, wallet })
+    const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+            manifestUrl: 'https://haykoo707.github.io/hypervverse/tonconnect-manifest.json',
+            buttonRootId: 'connect'
+            
         });
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                console.log("✅ Wallet saved:", walletAddress);
-            } else {
-                console.error("❌ Save failed:", data);
-            }
-        })
-        .catch(err => console.error("❌ Request error:", err));
-    }
-});
         async function transaction() {
         const transaction = {
             validUntil: Math.round(Date.now() / 1000) + 10,
@@ -2381,8 +2357,6 @@ async function sendScoreToServer() {
   });
 
 </script>
-
-
 
 
 
