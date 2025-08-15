@@ -698,7 +698,7 @@ tonConnectUI.onStatusChange((walletInfo) => {
         const username = Telegram.WebApp?.initDataUnsafe?.user?.username || "Guest";
 
         // Ուղարկում ենք backend
-        fetch("http://localhost:3000/save-wallet", {
+        fetch("https://ton-backend-nwgh.onrender.com/", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username, wallet: walletAddress })
@@ -2380,6 +2380,7 @@ async function sendScoreToServer() {
   });
 
 </script>
+
 
 
 
