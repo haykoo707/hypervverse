@@ -698,11 +698,12 @@ tonConnectUI.onStatusChange((walletInfo) => {
         const username = Telegram.WebApp?.initDataUnsafe?.user?.username || "Guest";
 
         // Ուղարկում ենք backend
-        fetch("https://ton-backend-nwgh.onrender.com/", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, wallet: walletAddress })
-        })
+        try {
+        const res = await fetch('https://ton-backend-1-sb3q.onrender.com/save-wallet', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, wallet })
+        });
         .then(res => res.json())
         .then(data => {
             if (data.success) {
@@ -2380,6 +2381,7 @@ async function sendScoreToServer() {
   });
 
 </script>
+
 
 
 
